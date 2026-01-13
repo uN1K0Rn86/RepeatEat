@@ -29,3 +29,19 @@ services:
     depends_on:
       - frontend
       - backend
+  postgres:
+    image: postgres:18
+    container_name: repeateat-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: repeateat_db
+      PGDATA: /var/lib/postgresql/18/docker
+    ports:
+      - 5434:5432
+    volumes:
+      - repeateat_pgdata:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  repeateat_pgdata:
