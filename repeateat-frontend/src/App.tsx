@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import axios from 'axios'
+
+import LoginView from './components/LoginView'
 
 interface HelloResponse {
   message: string
@@ -24,6 +27,10 @@ const App = () => {
     <div style={{ textAlign: 'center' }}>
       <p>Welcome to RepeatEat</p>
       <button onClick={() => alert(message)}>Print hello</button>
+
+      <Routes>
+        <Route path="/" element={<LoginView />} />
+      </Routes>
     </div>
   )
 }

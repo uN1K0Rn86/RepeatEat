@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1768393698900,
+      "tag": "0000_20261401-01-add_recipe_ingredient_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1768394489769,
+      "tag": "0001_20261401-02-add_relations_add_betterauth_schema",
+      "breakpoints": true
+    }
+  ]
+}

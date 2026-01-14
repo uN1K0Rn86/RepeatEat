@@ -1,11 +1,11 @@
 {
-  "id": "15591bbc-6836-4b2e-b587-b15fcd1c9b6c",
+  "id": "dd889bc0-7d47-416e-a27c-0d8ad0f223d0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.ingredients": {
-      "name": "ingredients",
+    "public.ingredient": {
+      "name": "ingredient",
       "schema": "",
       "columns": {
         "id": {
@@ -15,7 +15,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "ingredients_id_seq",
+            "name": "ingredient_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -40,8 +40,44 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.recipe_ingredients": {
-      "name": "recipe_ingredients",
+    "public.recipe": {
+      "name": "recipe",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "recipe_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.recipe_ingredient": {
+      "name": "recipe_ingredient",
       "schema": "",
       "columns": {
         "recipe_id": {
@@ -71,10 +107,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "recipe_ingredients_recipe_id_recipes_id_fk": {
-          "name": "recipe_ingredients_recipe_id_recipes_id_fk",
-          "tableFrom": "recipe_ingredients",
-          "tableTo": "recipes",
+        "recipe_ingredient_recipe_id_recipe_id_fk": {
+          "name": "recipe_ingredient_recipe_id_recipe_id_fk",
+          "tableFrom": "recipe_ingredient",
+          "tableTo": "recipe",
           "columnsFrom": [
             "recipe_id"
           ],
@@ -84,10 +120,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "recipe_ingredients_ingredient_id_ingredients_id_fk": {
-          "name": "recipe_ingredients_ingredient_id_ingredients_id_fk",
-          "tableFrom": "recipe_ingredients",
-          "tableTo": "ingredients",
+        "recipe_ingredient_ingredient_id_ingredient_id_fk": {
+          "name": "recipe_ingredient_ingredient_id_ingredient_id_fk",
+          "tableFrom": "recipe_ingredient",
+          "tableTo": "ingredient",
           "columnsFrom": [
             "ingredient_id"
           ],
@@ -98,42 +134,6 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.recipes": {
-      "name": "recipes",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "recipes_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

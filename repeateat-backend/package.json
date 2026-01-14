@@ -12,6 +12,7 @@
     "test": "test"
   },
   "dependencies": {
+    "better-auth": "^1.4.12",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",

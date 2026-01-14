@@ -1,22 +1,145 @@
-import { integer, real, pgTable, varchar } from 'drizzle-orm/pg-core'
+import { relations } from 'drizzle-orm'
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  index,
+  integer,
+  real,
+  varchar,
+} from 'drizzle-orm/pg-core'
 
-export const recipes = pgTable('recipes', {
+export const recipe = pgTable('recipe', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
 })
 
-export const ingredients = pgTable('ingredients', {
+export const ingredient = pgTable('ingredient', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
 })
 
-export const recipeIngredients = pgTable('recipe_ingredients', {
+export const recipeIngredient = pgTable('recipe_ingredient', {
   recipeId: integer('recipe_id')
     .notNull()
-    .references(() => recipes.id, { onDelete: 'cascade' }),
+    .references(() => recipe.id, { onDelete: 'cascade' }),
   ingredientId: integer('ingredient_id')
     .notNull()
-    .references(() => ingredients.id, { onDelete: 'cascade' }),
+    .references(() => ingredient.id, { onDelete: 'cascade' }),
   quantity: real().notNull(),
   unit: varchar({ length: 255 }).notNull(),
 })
+
+export const user = pgTable('user', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  emailVerified: boolean('email_verified').default(false).notNull(),
+  image: text('image'),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at')
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+})
+
+export const session = pgTable(
+  'session',
+  {
+    id: text('id').primaryKey(),
+    expiresAt: timestamp('expires_at').notNull(),
+    token: text('token').notNull().unique(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+    ipAddress: text('ip_address'),
+    userAgent: text('user_agent'),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+  },
+  (table) => [index('session_userId_idx').on(table.userId)]
+)
+
+export const account = pgTable(
+  'account',
+  {
+    id: text('id').primaryKey(),
+    accountId: text('account_id').notNull(),
+    providerId: text('provider_id').notNull(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    accessToken: text('access_token'),
+    refreshToken: text('refresh_token'),
+    idToken: text('id_token'),
+    accessTokenExpiresAt: timestamp('access_token_expires_at'),
+    refreshTokenExpiresAt: timestamp('refresh_token_expires_at'),
+    scope: text('scope'),
+    password: text('password'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index('account_userId_idx').on(table.userId)]
+)
+
+export const verification = pgTable(
+  'verification',
+  {
+    id: text('id').primaryKey(),
+    identifier: text('identifier').notNull(),
+    value: text('value').notNull(),
+    expiresAt: timestamp('expires_at').notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => [index('verification_identifier_idx').on(table.identifier)]
+)
+
+export const userRelations = relations(user, ({ many }) => ({
+  sessions: many(session),
+  accounts: many(account),
+}))
+
+export const sessionRelations = relations(session, ({ one }) => ({
+  user: one(user, {
+    fields: [session.userId],
+    references: [user.id],
+  }),
+}))
+
+export const accountRelations = relations(account, ({ one }) => ({
+  user: one(user, {
+    fields: [account.userId],
+    references: [user.id],
+  }),
+}))
+
+export const recipeRelations = relations(recipe, ({ many }) => ({
+  ingredients: many(recipeIngredient),
+}))
+
+export const ingredientRelations = relations(ingredient, ({ many }) => ({
+  recipes: many(recipeIngredient),
+}))
+
+export const recipeIngredientRelations = relations(
+  recipeIngredient,
+  ({ one }) => ({
+    recipe: one(recipe, {
+      fields: [recipeIngredient.recipeId],
+      references: [recipe.id],
+    }),
+    ingredient: one(ingredient, {
+      fields: [recipeIngredient.ingredientId],
+      references: [ingredient.id],
+    }),
+  })
+)
