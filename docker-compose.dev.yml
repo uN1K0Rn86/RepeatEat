@@ -9,6 +9,7 @@ services:
       - ./repeateat-backend/:/usr/src/app
     environment:
       - PORT=3000
+      - DATABASE_URL=postgresql://postgres:secretpassword@postgres:5432/repeateat_db
     container_name: repeateat-backend-dev
   frontend:
     build:
