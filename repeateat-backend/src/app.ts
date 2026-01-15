@@ -4,6 +4,7 @@ import { toNodeHandler } from 'better-auth/node'
 import { auth } from './utils/auth'
 import db from './db'
 import { recipe } from './db/schema'
+import userRouter from './routers/user'
 
 const app = express()
 
@@ -11,6 +12,8 @@ app.use(cors())
 app.use('/api/auth/', toNodeHandler(auth))
 
 app.use(express.json())
+
+app.use('/api/user', userRouter)
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'Ok' })
