@@ -8,8 +8,9 @@ const NavBar = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex justify-center gap-[1em]">
+    <div className="flex justify-center gap-2">
       <Button onClick={() => void navigate('/')}>Home</Button>
+      <Button onClick={() => void navigate('/login')}>Login</Button>
       <Button onClick={() => void navigate('/register')}>Register</Button>
       <Button onClick={() => logOut}>Log out</Button>
     </div>
