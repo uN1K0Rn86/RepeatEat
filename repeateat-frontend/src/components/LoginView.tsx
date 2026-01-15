@@ -11,7 +11,7 @@ const LoginView = () => {
     e.preventDefault()
     setLoading(true)
     setError(null)
-
+    console.log('signing in')
     const { data, error } = await authClient.signIn.email({
       email,
       password,

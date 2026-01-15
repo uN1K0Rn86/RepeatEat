@@ -8,7 +8,17 @@ import userRouter from './routers/user'
 
 const app = express()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      'http://localhost:8080',
+      'http://localhost:5173',
+      'http://192.168.100.114:8080',
+      'http://192.168.100.114:5173',
+    ],
+    credentials: true,
+  })
+)
 app.use('/api/auth/', toNodeHandler(auth))
 
 app.use(express.json())

@@ -4,7 +4,12 @@ import db from '../db'
 import * as schema from '../db/schema'
 
 export const auth = betterAuth({
-  allowedOrigins: ['http://localhost:8080', 'http://localhost:5173'],
+  allowedOrigins: [
+    'http://localhost:8080',
+    'http://localhost:5173',
+    'http://192.168.100.114:8080',
+    'http://192.168.100.114:5173',
+  ],
   baseURL: process.env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: 'pg',

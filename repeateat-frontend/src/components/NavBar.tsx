@@ -7,7 +7,6 @@ const NavBar = () => {
   const navigate = useNavigate()
 
   const logOut = async () => {
-    console.log('here')
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
