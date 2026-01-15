@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { authClient } from '../utils/auth-client'
 
+import Input from './Input'
+
 const LoginView = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -30,25 +32,20 @@ const LoginView = () => {
 
   return (
     <form onSubmit={(e) => void handleSubmit(e)}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
+      <Input
+        label="Email: "
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <Input
+        label="Password: "
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
