@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App.tsx'
 import { registerSW } from 'virtual:pwa-register'
+import './index.css'
 
 registerSW({ immediate: true })
 
