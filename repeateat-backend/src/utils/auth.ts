@@ -7,8 +7,7 @@ export const auth = betterAuth({
   allowedOrigins: [
     'http://localhost:8080',
     'http://localhost:5173',
-    'http://192.168.100.114:8080',
-    'http://192.168.100.114:5173',
+    'https://e585df3bce64.ngrok-free.app',
   ],
   baseURL: process.env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {

@@ -15,6 +15,13 @@
       "when": 1768394489769,
       "tag": "0001_20261401-02-add_relations_add_betterauth_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1768508267906,
+      "tag": "0002_20261501-01-add_household_tables",
+      "breakpoints": true
     }
   ]
 }
