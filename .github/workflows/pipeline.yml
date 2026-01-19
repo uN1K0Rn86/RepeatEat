@@ -1,0 +1,26 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install backend dependencies
+        working-directory: ./repeateat-backend
+        run: npm install
+      - name: Initialize DB for tests
+        run: docker compose -f docker-compose.citest.yml up -d
+      - name: Backend tests
+        working-directory: ./repeateat-backend
+        run: npm run test
+      - name: Shut down DB container
+        run: docker compose -f docker-compose.citest.yml down
