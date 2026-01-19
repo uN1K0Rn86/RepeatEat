@@ -24,9 +24,18 @@ describe('User endpoints', () => {
       password: testPassword,
     })
 
-    console.log(res.body)
     expect(res.status).toBe(200)
     expect(res.body).toHaveProperty('user')
     expect(res.body.user.name).toBe('Test User')
+  })
+
+  it('login should fail with invalid credentials', async () => {
+    const res = await request(app).post('/api/auth/sign-in/email').send({
+      email: testEmail,
+      password: 'TestPassword123!',
+    })
+
+    expect(res.status).toBe(401)
+    expect(res.body.message).toBe('Invalid email or password')
   })
 })
