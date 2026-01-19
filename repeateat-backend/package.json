@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "test": "test"
+    "test": "NODE_ENV=test vitest"
   },
   "dependencies": {
     "better-auth": "^1.4.12",
@@ -24,10 +24,14 @@
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.7",
     "@types/pg": "^8.16.0",
+    "@types/supertest": "^6.0.3",
+    "@vitest/ui": "^4.0.17",
     "drizzle-kit": "^0.31.8",
     "nodemon": "^3.1.11",
+    "supertest": "^7.2.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
   }
 }
