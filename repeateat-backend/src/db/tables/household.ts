@@ -5,6 +5,7 @@ import {
   text,
   primaryKey,
 } from 'drizzle-orm/pg-core'
+
 import { user } from './auth'
 import { recipe } from './recipe'
 
@@ -23,7 +24,7 @@ export const householdUser = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
   },
-  (table) => [primaryKey({ columns: [table.householdId, table.userId] })]
+  (table) => [primaryKey({ columns: [table.householdId, table.userId] })],
 )
 
 export const householdRecipe = pgTable(
@@ -36,5 +37,5 @@ export const householdRecipe = pgTable(
       .notNull()
       .references(() => recipe.id, { onDelete: 'cascade' }),
   },
-  (table) => [primaryKey({ columns: [table.householdId, table.recipeId] })]
+  (table) => [primaryKey({ columns: [table.householdId, table.recipeId] })],
 )

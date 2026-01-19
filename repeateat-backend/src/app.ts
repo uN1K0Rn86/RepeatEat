@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { toNodeHandler } from 'better-auth/node'
+
 import { auth } from './utils/auth'
 import db from './db'
 import { recipe } from './db/schema'

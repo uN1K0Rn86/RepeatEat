@@ -17,6 +17,9 @@ jobs:
       - name: Install backend dependencies
         working-directory: ./repeateat-backend
         run: npm install
+      - name: Backend lint
+        working-directory: ./repeateat-backend
+        run: npm run lint
       - name: Initialize DB for tests
         run: docker compose -f docker-compose.citest.yml up -d
       - name: Backend tests

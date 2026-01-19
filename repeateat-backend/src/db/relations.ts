@@ -1,4 +1,5 @@
 import { relations } from 'drizzle-orm'
+
 import { user, session, account } from './tables/auth'
 import { recipe, ingredient, recipeIngredient } from './tables/recipe'
 import { household, householdRecipe, householdUser } from './tables/household'
@@ -43,7 +44,7 @@ export const recipeIngredientRelations = relations(
       fields: [recipeIngredient.ingredientId],
       references: [ingredient.id],
     }),
-  })
+  }),
 )
 
 export const householdRelations = relations(household, ({ many }) => ({
@@ -62,7 +63,7 @@ export const householdRecipeRelations = relations(
       fields: [householdRecipe.recipeId],
       references: [recipe.id],
     }),
-  })
+  }),
 )
 
 export const householdUserRelations = relations(householdUser, ({ one }) => ({

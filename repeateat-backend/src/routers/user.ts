@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+
 import { auth } from '../utils/auth'
 
 const userRouter = express.Router()

@@ -1,5 +1,6 @@
 import { beforeAll, afterAll } from 'vitest'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
+
 import db from '../db'
 import { user, session, account, verification } from '../db/tables/auth'
 import { recipe, ingredient, recipeIngredient } from '../db/tables/recipe'

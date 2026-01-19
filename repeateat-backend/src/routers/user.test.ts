@@ -1,6 +1,7 @@
 import request from 'supertest'
-import app from '../app'
 import { describe, it, expect } from 'vitest'
+
+import app from '../app'
 
 describe('User endpoints', () => {
   const testEmail = 'test@example.com'
