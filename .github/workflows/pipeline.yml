@@ -27,3 +27,10 @@ jobs:
           NODE_ENV: "test"
       - name: Shut down DB container
         run: docker compose -f docker-compose.citest.yml down
+
+      - name: Install frontend dependencies
+        working-directory: ./repeateat-frontend
+        run: npm install
+      - name: Frontend lint
+        working-directory: ./repeateat-frontend
+        run: npm run lint
