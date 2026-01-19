@@ -22,5 +22,8 @@ jobs:
       - name: Backend tests
         working-directory: ./repeateat-backend
         run: npm run test
+        env:
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          NODE_ENV: "test"
       - name: Shut down DB container
         run: docker compose -f docker-compose.citest.yml down

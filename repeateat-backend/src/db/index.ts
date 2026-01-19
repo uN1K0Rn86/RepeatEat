@@ -6,8 +6,6 @@ const dbUrl =
     ? process.env.TEST_DATABASE_URL
     : process.env.DATABASE_URL
 
-console.log('NODE_ENV: ', process.env.NODE_ENV)
-console.log('DBURL: ', dbUrl)
 const db = drizzle(dbUrl!)
 
 export default db
