@@ -1,47 +1,43 @@
-import { useEffect } from 'react'
-import useNotification from '../hooks/useNotification'
-import type { Notification } from '../types'
+import { useBoundStore } from '../store'
+import type { Notification, NotificationType } from '../types'
 
 interface Props {
   notification: Notification
 }
 
 const NotificationItem = ({ notification }: Props) => {
-  const { notificationDispatch } = useNotification()
-
-  useEffect(() => {
-    setTimeout(() => {
-      notificationDispatch({
-        type: 'REMOVE',
-        payload: { id: notification.id },
-      })
-    }, 4000)
-  }, [notificationDispatch, notification.id])
-
-  const colorMap = {
-    success: 'bg-green-600',
-    error: 'bg-red-600',
-    info: 'bg-blue-600',
-    warning: 'bg-yellow-600',
+  const typeStyles: Record<NotificationType, string> = {
+    success: 'border-green-500 bg-green-50 text-green-800',
+    error: 'border-red-500 bg-red-50 text-red-800',
+    info: 'border-blue-500 bg-blue-50 text-blue-800',
+    warning: 'border-yellow-500 bg-yellow-50 text-yellow-800',
   }
+
+  const removeNotification = useBoundStore((state) => state.removeNotification)
 
   return (
     <div
-      className={`rounded px-4 py-3 shadow-lg text-white flex items-center justify-between gap-4
-        ${colorMap[notification.type ?? 'info']}`}
+      className={`border-l-4 p-4 shadow-md rounded flex justify-between ${typeStyles[notification.type]}`}
     >
       <span>{notification.message}</span>
-
       <button
-        onClick={() =>
-          notificationDispatch({
-            type: 'REMOVE',
-            payload: { id: notification.id },
-          })
-        }
-        className="text-white/80 hover:text-white text-sm"
+        className="text-gray-400 hover:text-gray-600 transition-colors"
+        onClick={() => removeNotification(notification.id)}
       >
-        ✕
+        <span className="sr-only">Close</span>
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
       </button>
     </div>
   )

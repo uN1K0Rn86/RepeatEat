@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 
 import queryClient from './utils/queryClient.ts'
-import NotificationProvider from './providers/NotificationProvider.tsx'
 import App from './App.tsx'
 import './index.css'
 
@@ -15,9 +14,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Router>
       <QueryClientProvider client={queryClient}>
-        <NotificationProvider>
-          <App />
-        </NotificationProvider>
+        <App />
       </QueryClientProvider>
     </Router>
   </StrictMode>,
