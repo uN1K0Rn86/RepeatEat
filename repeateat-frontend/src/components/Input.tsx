@@ -9,12 +9,12 @@ const Input = ({ label, ...props }: InputProps) => {
   const inputId = generatedId
 
   return (
-    <div className="flex gap-2 items-center justify-center">
+    <div className="display: contents">
       {label && <label htmlFor={inputId}>{label}</label>}
       <input
         {...props}
         id={inputId}
-        className="border border-black rounded px-2 py-1"
+        className="border border-gray-300 rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
       />
     </div>
   )

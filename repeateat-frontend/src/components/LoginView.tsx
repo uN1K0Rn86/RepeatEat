@@ -2,17 +2,16 @@ import { useState } from 'react'
 import { authClient } from '../utils/auth-client'
 
 import Input from './Input'
+import Button from './Button'
 import { notify } from '../utils/notify'
 
 const LoginView = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setError(null)
     console.log('signing in')
     const { data, error } = await authClient.signIn.email({
@@ -20,8 +19,6 @@ const LoginView = () => {
       password,
       rememberMe: false,
     })
-
-    setLoading(false)
 
     if (error) {
       console.log(error)
@@ -35,27 +32,29 @@ const LoginView = () => {
   }
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)}>
-      <Input
-        label="Email: "
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <Input
-        label="Password: "
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
+    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
+      <div className="grid grid-cols-[1fr_2fr] gap-2 items-center max-w-sm">
+        <Input
+          label="Email: "
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <Input
+          label="Password: "
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+      </div>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <button type="submit" disabled={loading}>
-        {loading ? 'Signing in...' : 'Sign In'}
-      </button>
+      <div className="flex justify-center">
+        <Button>Login</Button>
+      </div>
     </form>
   )
 }

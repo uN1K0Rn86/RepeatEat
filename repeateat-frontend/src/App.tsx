@@ -9,7 +9,7 @@ import NotificationList from './components/NotificationList'
 
 const App = () => {
   return (
-    <div className="flex-1 p-2 bg-gray-700 text-gray-200 min-h-screen">
+    <div className="flex-1 p-2 bg-gray-700 text-gray-200 min-h-screen space-y-2">
       <NavBar />
       <NotificationList />
 
