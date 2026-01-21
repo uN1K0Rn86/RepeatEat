@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { authClient } from '../utils/auth-client'
 import { useBoundStore } from '@/store'
+import Input from './Input'
+import { Button } from './ui/button'
 
 const RegisterView = () => {
   const [email, setEmail] = useState<string>('')
@@ -9,7 +12,6 @@ const RegisterView = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
 
   useEffect(() => {
@@ -34,9 +36,6 @@ const RegisterView = () => {
         callbackURL: '/',
       },
       {
-        onRequest: () => {
-          setLoading(true)
-        },
         onSuccess: async () => {
           await navigate('/')
         },
@@ -46,8 +45,6 @@ const RegisterView = () => {
       },
     )
 
-    setLoading(false)
-
     if (error) {
       console.log(error)
       setError(error.message || 'Registration failed')
@@ -56,53 +53,50 @@ const RegisterView = () => {
   }
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)}>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
+    <div className="flex flex-col items-center min-h-[calc(100dvh-64px)] p-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
+        <div className="grid grid-cols-[80px_1fr] gap-2 items-center max-w-sm">
+          <Input
+            label="Email: "
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            label="Password: "
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Input
+            label="Confirm password: "
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <Input
+            label="Username: "
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
 
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
+        {error && (
+          <p className="text-destructive text-sm font-medium">{error}</p>
+        )}
 
-      <div>
-        <label>Confirm password:</label>
-        <input
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-        />
-      </div>
-
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-      </div>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <button type="submit" disabled={loading}>
-        {loading ? 'Registering...' : 'Register'}
-      </button>
-    </form>
+        <div className="flex justify-center">
+          <Button type="submit" variant={'secondary'}>
+            Register
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }
 

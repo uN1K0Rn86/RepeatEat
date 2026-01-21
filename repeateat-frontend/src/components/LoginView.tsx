@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { authClient } from '../utils/auth-client'
 
 import Input from './Input'
-import Button from './Button'
+import { Button } from './ui/button'
 import { notify } from '../utils/notify'
 import { useBoundStore } from '../store'
 import { useNavigate } from 'react-router-dom'
@@ -42,30 +42,34 @@ const LoginView = () => {
   }
 
   return (
-    <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
-      <div className="grid grid-cols-[1fr_2fr] gap-2 items-center max-w-sm">
-        <Input
-          label="Email: "
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <Input
-          label="Password: "
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
+    <div className="flex flex-col items-center min-h-[calc(100dvh-64px)] p-4">
+      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
+        <div className="grid grid-cols-[80px_2fr] gap-2 items-center max-w-sm">
+          <Input
+            label="Email: "
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            label="Password: "
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <div className="flex justify-center">
-        <Button>Login</Button>
-      </div>
-    </form>
+        <div className="flex justify-center">
+          <Button type="submit" variant={'secondary'}>
+            Login
+          </Button>
+        </div>
+      </form>
+    </div>
   )
 }
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useBoundStore } from '../store'
-import Button from './Button'
+import { Button } from './ui/button'
 
 const UserProfile = () => {
   const { user, setPageTitle } = useBoundStore()
@@ -15,7 +15,9 @@ const UserProfile = () => {
     <div>
       <div className="flex gap-4">
         <div>Name: {user.name}</div>
-        <Button onClick={() => alert('Coming')}>Modify</Button>
+        <Button onClick={() => alert('Coming')} variant={'secondary'}>
+          Modify
+        </Button>
       </div>
     </div>
   )
