@@ -5,11 +5,14 @@ import { recipe } from '../db/schema'
 
 const recipeRouter = express.Router()
 
-recipeRouter.post('/api/recipe', async (req: Request, res: Response) => {
-  const name = req.body.name
-  console.log(name)
-  const response = await db.insert(recipe).values({ name: name })
-  res.json(response)
+recipeRouter.post('/', async (req: Request, res: Response) => {
+  const name: string = req.body.name
+  const authorId: string = req.body.authorId
+  const addedRecipe = await db
+    .insert(recipe)
+    .values({ name: name, authorId: authorId })
+    .returning()
+  res.json(addedRecipe)
 })
 
 export default recipeRouter
