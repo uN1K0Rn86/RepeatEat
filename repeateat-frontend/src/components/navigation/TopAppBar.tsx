@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Menu } from 'lucide-react'
 
 const TopAppBar = () => {
   const { user, pageTitle } = useBoundStore()
@@ -34,6 +35,16 @@ const TopAppBar = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-gray-700">
       <div className="flex h-16 items-center px-4 justify-between max-w-screen-2xl mx-auto">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="default"
+              className="relative h-10 w-10 bg-gray-700"
+            >
+              <Menu />
+            </Button>
+          </DropdownMenuTrigger>
+        </DropdownMenu>
         <h1 className="font-bold">{pageTitle}</h1>
 
         {user ? (
