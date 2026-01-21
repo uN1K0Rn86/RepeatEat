@@ -1,13 +1,21 @@
 import { relations } from 'drizzle-orm'
 
 import { user, session, account } from './tables/auth'
-import { recipe, ingredient, recipeIngredient } from './tables/recipe'
+import {
+  recipe,
+  ingredient,
+  category,
+  recipeIngredient,
+  recipeStep,
+  recipeCategory,
+} from './tables/recipe'
 import { household, householdRecipe, householdUser } from './tables/household'
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   households: many(householdUser),
+  recipes: many(recipe),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -24,13 +32,20 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }))
 
-export const recipeRelations = relations(recipe, ({ many }) => ({
+export const recipeRelations = relations(recipe, ({ one, many }) => ({
   ingredients: many(recipeIngredient),
   households: many(householdRecipe),
+  steps: many(recipeStep),
+  categories: many(recipeCategory),
+  author: one(user, { fields: [recipe.authorId], references: [user.id] }),
 }))
 
 export const ingredientRelations = relations(ingredient, ({ many }) => ({
   recipes: many(recipeIngredient),
+}))
+
+export const categoryRelations = relations(category, ({ many }) => ({
+  recipeCategories: many(recipeCategory),
 }))
 
 export const recipeIngredientRelations = relations(
@@ -46,6 +61,24 @@ export const recipeIngredientRelations = relations(
     }),
   }),
 )
+
+export const recipeStepRelations = relations(recipeStep, ({ one }) => ({
+  recipe: one(recipe, {
+    fields: [recipeStep.recipeId],
+    references: [recipe.id],
+  }),
+}))
+
+export const recipeCategoryRelations = relations(recipeCategory, ({ one }) => ({
+  recipe: one(recipe, {
+    fields: [recipeCategory.recipeId],
+    references: [recipe.id],
+  }),
+  category: one(category, {
+    fields: [recipeCategory.categoryId],
+    references: [category.id],
+  }),
+}))
 
 export const householdRelations = relations(household, ({ many }) => ({
   users: many(householdUser),
