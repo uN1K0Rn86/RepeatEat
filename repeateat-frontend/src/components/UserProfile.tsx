@@ -1,8 +1,13 @@
+import { useEffect } from 'react'
 import { useBoundStore } from '../store'
 import Button from './Button'
 
 const UserProfile = () => {
-  const user = useBoundStore((state) => state.user)
+  const { user, setPageTitle } = useBoundStore()
+
+  useEffect(() => {
+    setPageTitle('Profile')
+  }, [setPageTitle])
 
   if (!user) return <div>Please sign in to view profile</div>
 

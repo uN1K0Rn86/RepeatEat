@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { authClient } from '../utils/auth-client'
+import { useBoundStore } from '@/store'
 
 const RegisterView = () => {
   const [email, setEmail] = useState<string>('')
@@ -9,6 +10,11 @@ const RegisterView = () => {
   const [name, setName] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const setPageTitle = useBoundStore((state) => state.setPageTitle)
+
+  useEffect(() => {
+    setPageTitle('Register')
+  }, [setPageTitle])
 
   const navigate = useNavigate()
 
@@ -37,7 +43,7 @@ const RegisterView = () => {
         onError: (ctx) => {
           alert(ctx.error.message)
         },
-      }
+      },
     )
 
     setLoading(false)

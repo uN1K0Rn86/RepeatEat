@@ -1,15 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { authClient } from '../utils/auth-client'
 
 import Input from './Input'
 import Button from './Button'
 import { notify } from '../utils/notify'
 import { useBoundStore } from '../store'
+import { useNavigate } from 'react-router-dom'
 
 const LoginView = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
+  const setPageTitle = useBoundStore((state) => state.setPageTitle)
+
+  useEffect(() => {
+    setPageTitle('Login')
+  }, [setPageTitle])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -28,6 +35,7 @@ const LoginView = () => {
     } else {
       notify.success(`Logged in as ${data.user.name}`)
       void useBoundStore.getState().checkAuth()
+      void navigate('/')
     }
 
     console.log(data)

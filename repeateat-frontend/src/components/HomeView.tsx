@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import Button from './Button'
+import { useBoundStore } from '@/store'
+import { Button } from './ui/button'
 
 interface HelloResponse {
   message: string
@@ -9,6 +10,11 @@ interface HelloResponse {
 
 const HomeView = () => {
   const [message, setMessage] = useState<string>('')
+  const setPageTitle = useBoundStore((state) => state.setPageTitle)
+
+  useEffect(() => {
+    setPageTitle('Home')
+  }, [setPageTitle])
 
   useEffect(() => {
     const fetchHello = async () => {
@@ -24,7 +30,9 @@ const HomeView = () => {
   return (
     <div className="flex flex-col items-center p-5">
       <p>Welcome to RepeatEat</p>
-      <Button onClick={() => alert(message)}>Say hello</Button>
+      <Button onClick={() => alert(message)} variant={'secondary'}>
+        Say hello
+      </Button>
     </div>
   )
 }
