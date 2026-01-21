@@ -1,31 +1,14 @@
-import { useEffect, useState } from 'react'
-import userService from '../services/users'
-import type { User } from 'better-auth'
-
+import { useBoundStore } from '../store'
 import Button from './Button'
 
 const UserProfile = () => {
-  const [user, setUser] = useState<User | null>(null)
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userInfo: User = await userService.me()
-        setUser(userInfo)
-        console.log(userInfo)
-      } catch (error) {
-        console.error('Failed to fetch user info:', error)
-      }
-    }
-
-    void fetchUser()
-  }, [])
+  const user = useBoundStore((state) => state.user)
 
   if (!user) return <div>Please sign in to view profile</div>
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex gap-4">
         <div>Name: {user.name}</div>
         <Button onClick={() => alert('Coming')}>Modify</Button>
       </div>

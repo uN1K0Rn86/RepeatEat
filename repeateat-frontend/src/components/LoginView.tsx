@@ -4,6 +4,7 @@ import { authClient } from '../utils/auth-client'
 import Input from './Input'
 import Button from './Button'
 import { notify } from '../utils/notify'
+import { useBoundStore } from '../store'
 
 const LoginView = () => {
   const [email, setEmail] = useState<string>('')
@@ -26,6 +27,7 @@ const LoginView = () => {
       notify.error('Login failed')
     } else {
       notify.success(`Logged in as ${data.user.name}`)
+      void useBoundStore.getState().checkAuth()
     }
 
     console.log(data)

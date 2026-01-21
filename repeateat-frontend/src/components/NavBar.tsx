@@ -2,6 +2,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { authClient } from '../utils/auth-client'
 import NavButton from './NavButton'
 import { Home, LogIn, UserPlus, User, LogOut } from 'lucide-react'
+import { useBoundStore } from '../store'
+import { notify } from '../utils/notify'
 
 const NavBar = () => {
   const navigate = useNavigate()
@@ -11,6 +13,9 @@ const NavBar = () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          const user = useBoundStore.getState().user
+          useBoundStore.getState().clearAuth()
+          notify.success(`User ${user?.name} logged out`)
           void navigate('/')
         },
       },
