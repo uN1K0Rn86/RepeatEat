@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { authClient } from '../utils/auth-client'
 
 import Input from './Input'
+import Spinner from './ui/spinner'
 import { Button } from './ui/button'
 import { notify } from '../utils/notify'
 import { useBoundStore } from '../store'
@@ -11,6 +12,7 @@ const LoginView = () => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const navigate = useNavigate()
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
 
@@ -21,7 +23,8 @@ const LoginView = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    console.log('signing in')
+    setLoading(true)
+
     const { data, error } = await authClient.signIn.email({
       email,
       password,
@@ -37,7 +40,7 @@ const LoginView = () => {
       void useBoundStore.getState().checkAuth()
       void navigate('/')
     }
-
+    setLoading(false)
     console.log(data)
   }
 
@@ -64,8 +67,8 @@ const LoginView = () => {
         {error && <p style={{ color: 'red' }}>{error}</p>}
 
         <div className="flex justify-center">
-          <Button type="submit" variant={'secondary'}>
-            Login
+          <Button type="submit" variant={'secondary'} className="w-22">
+            {loading ? <Spinner /> : 'Login'}
           </Button>
         </div>
       </form>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { authClient } from '../utils/auth-client'
 import { useBoundStore } from '@/store'
 import Input from './Input'
+import Spinner from './ui/spinner'
 import { Button } from './ui/button'
 
 const RegisterView = () => {
@@ -12,6 +13,7 @@ const RegisterView = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
 
   useEffect(() => {
@@ -27,6 +29,8 @@ const RegisterView = () => {
     if (password !== confirmPassword) {
       return alert('Passwords do not match')
     }
+
+    setLoading(true)
 
     const { data, error } = await authClient.signUp.email(
       {
@@ -44,6 +48,8 @@ const RegisterView = () => {
         },
       },
     )
+
+    setLoading(false)
 
     if (error) {
       console.log(error)
@@ -91,8 +97,8 @@ const RegisterView = () => {
         )}
 
         <div className="flex justify-center">
-          <Button type="submit" variant={'secondary'}>
-            Register
+          <Button type="submit" variant={'secondary'} className="w-22">
+            {loading ? <Spinner /> : 'Register'}
           </Button>
         </div>
       </form>
