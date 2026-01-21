@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { authClient } from '../utils/auth-client'
+import { authClient } from '../../utils/auth-client'
 
-import Input from './Input'
-import Spinner from './ui/spinner'
-import { Button } from './ui/button'
-import { notify } from '../utils/notify'
-import { useBoundStore } from '../store'
+import Input from '../ui/Input'
+import Spinner from '../ui/spinner'
+import { Button } from '../ui/button'
+import { notify } from '../../utils/notify'
+import { useBoundStore } from '../../store'
 import { useNavigate } from 'react-router-dom'
 
 const LoginView = () => {

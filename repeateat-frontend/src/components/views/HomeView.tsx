@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 import { useBoundStore } from '@/store'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 interface HelloResponse {
   message: string

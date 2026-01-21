@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Menu } from 'lucide-react'
+import RecipeDropdownMenu from '../views/recipe/RecipeDropdownMenu'
 
 const TopAppBar = () => {
   const { user, pageTitle } = useBoundStore()
@@ -44,6 +45,7 @@ const TopAppBar = () => {
               <Menu />
             </Button>
           </DropdownMenuTrigger>
+          {pageTitle === 'Recipes' && <RecipeDropdownMenu />}
         </DropdownMenu>
         <h1 className="font-bold">{pageTitle}</h1>
 

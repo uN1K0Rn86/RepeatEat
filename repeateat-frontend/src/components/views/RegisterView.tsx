@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { authClient } from '../utils/auth-client'
+import { authClient } from '@/utils/auth-client'
 import { useBoundStore } from '@/store'
-import Input from './Input'
-import Spinner from './ui/spinner'
-import { Button } from './ui/button'
+import Input from '../ui/Input'
+import Spinner from '../ui/spinner'
+import { Button } from '../ui/button'
 
 const RegisterView = () => {
   const [email, setEmail] = useState<string>('')

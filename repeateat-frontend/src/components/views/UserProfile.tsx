@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { useBoundStore } from '../store'
-import { Button } from './ui/button'
+import { useBoundStore } from '@/store'
+import { Button } from '../ui/button'
 
 const UserProfile = () => {
   const { user, setPageTitle } = useBoundStore()
