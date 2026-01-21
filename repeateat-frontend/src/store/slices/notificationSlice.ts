@@ -21,7 +21,6 @@ export const createNotificationSlice: StateCreator<NotificationSlice> = (
     }))
 
     setTimeout(() => {
-      console.log('here')
       get().removeNotification(id)
     }, 5000)
   },
