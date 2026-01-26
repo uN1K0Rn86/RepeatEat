@@ -1,0 +1,12 @@
+{
+  "name": "repeateat-monorepo",
+  "private": true,
+  "workspaces": [
+    "repeateat-frontend",
+    "repeateat-backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces"
+  }
+}

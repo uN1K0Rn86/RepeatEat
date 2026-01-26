@@ -4,7 +4,7 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string
 }
 
-const Input = ({ label, ...props }: InputProps) => {
+const InputOld = ({ label, ...props }: InputProps) => {
   const generatedId = useId()
   const inputId = generatedId
 
@@ -20,4 +20,4 @@ const Input = ({ label, ...props }: InputProps) => {
   )
 }
 
-export default Input
+export default InputOld

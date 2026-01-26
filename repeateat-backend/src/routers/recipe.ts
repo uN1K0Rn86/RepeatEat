@@ -5,6 +5,7 @@ import { recipe, ingredient } from '../db/schema'
 
 const recipeRouter = express.Router()
 
+// Recipes
 recipeRouter.get('/', async (req: Request, res: Response) => {
   const allRecipes = await db.query.recipe.findMany({
     with: {
@@ -27,6 +28,7 @@ recipeRouter.post('/', async (req: Request, res: Response) => {
   res.json(addedRecipe)
 })
 
+// Ingredients
 recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {
   const allIngredients = await db.query.ingredient.findMany({
     orderBy: (ingredient, { asc }) => [asc(ingredient.name)],
@@ -43,5 +45,16 @@ recipeRouter.post('/ingredient', async (req: Request, res: Response) => {
     .returning()
   res.json(addedIngredient)
 })
+
+// Recipe Ingredients
+recipeRouter.post(
+  '/recipe/:id/ingredient',
+  async (req: Request, res: Response) => {
+    const recipeId = req.params.id
+    const ingredientIds = req.body.ingredientIds
+    const quantity = req.body.quantity
+    const unit = req.body.unit
+  },
+)
 
 export default recipeRouter

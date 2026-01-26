@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { authClient } from '../../utils/auth-client'
 
-import Input from '../ui/Input'
+import InputOld from '../ui/InputOld'
 import Spinner from '../ui/spinner'
 import { Button } from '../ui/button'
 import { notify } from '../../utils/notify'
@@ -48,14 +48,14 @@ const LoginView = () => {
     <div className="flex flex-col items-center min-h-[calc(100dvh-64px)] p-4">
       <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
         <div className="grid grid-cols-[80px_2fr] gap-2 items-center max-w-sm">
-          <Input
+          <InputOld
             label="Email: "
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
+          <InputOld
             label="Password: "
             type="password"
             value={password}
