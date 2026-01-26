@@ -35,7 +35,7 @@ export default defineConfig([
       '@typescript-eslint/no-misused-promises': [
         'error',
         {
-          checkVoidReturn: {
+          checksVoidReturn: {
             attributes: false,
           },
         },
