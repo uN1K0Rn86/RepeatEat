@@ -1,11 +1,13 @@
-import { useBoundStore } from '../store'
-import type { Notification, NotificationType } from '../types'
+import { X } from 'lucide-react'
 
-interface Props {
+import { useBoundStore } from '../store'
+import type { Notification, NotificationType } from '@/types'
+
+interface NotificationProps {
   notification: Notification
 }
 
-const NotificationItem = ({ notification }: Props) => {
+const NotificationItem = ({ notification }: NotificationProps) => {
   const typeStyles: Record<NotificationType, string> = {
     success: 'border-green-500 bg-green-50 text-green-800',
     error: 'border-red-500 bg-red-50 text-red-800',
@@ -22,22 +24,10 @@ const NotificationItem = ({ notification }: Props) => {
       <span>{notification.message}</span>
       <button
         className="text-gray-400 hover:text-gray-600 transition-colors"
+        type="button"
         onClick={() => removeNotification(notification.id)}
       >
-        <span className="sr-only">Close</span>
-        <svg
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
+        <X className="h-4 w-4" />
       </button>
     </div>
   )
