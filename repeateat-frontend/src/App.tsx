@@ -18,7 +18,7 @@ const App = () => {
   }, [])
 
   return (
-    <div className="flex h-screen flex-col bg-gray-700 text-gray-200">
+    <div className="flex h-screen flex-col">
       <TopAppBar />
 
       <main className="flex-1 overflow-y-auto p-2 space-y-2 pb-24">

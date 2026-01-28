@@ -15,6 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Menu } from 'lucide-react'
 import RecipeDropdownMenu from '../views/recipe/RecipeDropdownMenu'
+import ThemeToggle from '../ThemeToggle'
 
 const TopAppBar = () => {
   const { user, pageTitle } = useBoundStore()
@@ -34,14 +35,11 @@ const TopAppBar = () => {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-gray-700">
+    <header className="sticky top-0 z-50 w-full border-b">
       <div className="flex h-16 items-center px-4 justify-between max-w-screen-2xl mx-auto">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="default"
-              className="relative h-10 w-10 bg-gray-700"
-            >
+            <Button variant="secondary" className="relative h-10 w-10 border-2">
               <Menu />
             </Button>
           </DropdownMenuTrigger>
@@ -50,43 +48,46 @@ const TopAppBar = () => {
         <h1 className="font-bold">{pageTitle}</h1>
 
         {user ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="secondary"
-                className="relative h-10 w-10 rounded-full"
-              >
-                <Avatar className="h-10 w-10">
-                  {user.image && (
-                    <AvatarImage src={user.image} alt={user.name} />
-                  )}
-                  <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none truncate">
-                    {user.name}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground truncate">
-                    {user.email}
-                  </p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => void navigate('/profile')}>
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => void logOut()}
-                className="text-destructive focus:text-destructive"
-              >
-                Log out
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  className="relative h-10 w-10 rounded-full"
+                >
+                  <Avatar className="h-10 w-10">
+                    {user.image && (
+                      <AvatarImage src={user.image} alt={user.name} />
+                    )}
+                    <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none truncate">
+                      {user.name}
+                    </p>
+                    <p className="text-xs leading-none text-muted-foreground truncate">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => void navigate('/profile')}>
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => void logOut()}
+                  className="text-destructive focus:text-destructive"
+                >
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <ThemeToggle />
+          </div>
         ) : (
           <div className="flex gap-2">
             <Button asChild variant="secondary" size="sm">
@@ -95,6 +96,7 @@ const TopAppBar = () => {
             <Button asChild variant="secondary" size="sm">
               <Link to="/login">Login</Link>
             </Button>
+            <ThemeToggle />
           </div>
         )}
       </div>
