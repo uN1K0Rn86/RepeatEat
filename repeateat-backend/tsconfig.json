@@ -11,7 +11,7 @@
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
-      "@repeateat/shared": ["../shared/index.ts"]
+      "@repeateat/shared": ["../shared/src/index.ts"]
     }
   },
   "include": ["src"]

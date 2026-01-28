@@ -1,77 +1,111 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { authClient } from '../../utils/auth-client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Controller, useForm } from 'react-hook-form'
 
-import InputOld from '../ui/InputOld'
-import Spinner from '../ui/spinner'
-import { Button } from '../ui/button'
-import { notify } from '../../utils/notify'
 import { useBoundStore } from '../../store'
+import { loginSchema, type LoginInput } from '@repeateat/shared'
 import { useNavigate } from 'react-router-dom'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
 
 const LoginView = () => {
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
+  const { setPageTitle, setUser } = useBoundStore()
   const navigate = useNavigate()
-  const setPageTitle = useBoundStore((state) => state.setPageTitle)
 
   useEffect(() => {
     setPageTitle('Login')
   }, [setPageTitle])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-    setLoading(true)
+  const form = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
 
+  const onSubmit = async (loginData: LoginInput) => {
     const { data, error } = await authClient.signIn.email({
-      email,
-      password,
+      email: loginData.email,
+      password: loginData.password,
       rememberMe: false,
     })
 
     if (error) {
-      console.log(error)
-      setError(error.message || 'Login failed')
-      notify.error('Login failed')
-    } else {
-      notify.success(`Logged in as ${data.user.name}`)
-      void useBoundStore.getState().checkAuth()
+      form.setError('root', { message: error.message || 'Login failed' })
+    }
+
+    if (data) {
+      setUser(data.user)
       void navigate('/')
     }
-    setLoading(false)
-    console.log(data)
   }
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100dvh-64px)] p-4">
-      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
-        <div className="grid grid-cols-[80px_2fr] gap-2 items-center max-w-sm">
-          <InputOld
-            label="Email: "
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <InputOld
-            label="Password: "
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
-        <div className="flex justify-center">
-          <Button type="submit" variant={'secondary'} className="w-22">
-            {loading ? <Spinner /> : 'Login'}
-          </Button>
-        </div>
-      </form>
+    <div className="flex min-h-screen flex-col items-center">
+      <Card className="w-full sm:max-w-md">
+        <CardHeader>
+          <CardTitle>Login</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Controller
+                name="email"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email-input">Email:</FieldLabel>
+                    <Input
+                      {...field}
+                      id="email-input"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Write your email here"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="password-input">Password:</FieldLabel>
+                    <Input
+                      {...field}
+                      id="password-input"
+                      aria-invalid={fieldState.invalid}
+                      type="password"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Field orientation="horizontal">
+            <Button type="submit" form="login-form">
+              Login
+            </Button>
+          </Field>
+        </CardFooter>
+      </Card>
     </div>
   )
 }

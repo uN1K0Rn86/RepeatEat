@@ -8,6 +8,7 @@ export interface AuthSlice {
   isLoading: boolean
   checkAuth: () => Promise<void>
   clearAuth: () => void
+  setUser: (user: User) => void
 }
 
 export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
@@ -21,6 +22,10 @@ export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
     } catch {
       set({ user: null, isLoading: false })
     }
+  },
+
+  setUser: (user: User) => {
+    set({ user: user, isLoading: false })
   },
 
   clearAuth: () => set({ user: null }),

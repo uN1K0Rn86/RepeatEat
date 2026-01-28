@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@repeateat/shared": ["../shared/index.ts"]
+      "@repeateat/shared": ["../shared/src/index.ts"]
     }
   }
 }

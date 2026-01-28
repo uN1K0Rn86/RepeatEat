@@ -10,7 +10,7 @@ import {
   FieldLegend,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { addRecipeSchema, type AddRecipe } from '@/types/recipe'
+import { addRecipeSchema, type AddRecipe } from '@repeateat/shared/src'
 import { Button } from '@/components/ui/button'
 
 const AddRecipeForm = () => {
