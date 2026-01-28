@@ -30,9 +30,7 @@ const HomeView = () => {
   return (
     <div className="flex flex-col items-center p-5">
       <p>Welcome to RepeatEat</p>
-      <Button onClick={() => alert(message)} variant={'secondary'}>
-        Say hello
-      </Button>
+      <Button onClick={() => alert(message)}>Say hello</Button>
     </div>
   )
 }

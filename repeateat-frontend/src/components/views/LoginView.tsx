@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { authClient } from '../../utils/auth-client'
+import { authClient } from '@/utils/auth-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -16,6 +16,7 @@ import {
 import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { notify } from '@/utils/notify'
 
 const LoginView = () => {
   const { setPageTitle, setUser } = useBoundStore()
@@ -46,6 +47,7 @@ const LoginView = () => {
 
     if (data) {
       setUser(data.user)
+      notify.success(`User ${data.user.name} logged in`)
       void navigate('/')
     }
   }
@@ -58,6 +60,11 @@ const LoginView = () => {
         </CardHeader>
         <CardContent>
           <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors.root && (
+              <div className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md mb-4">
+                {form.formState.errors.root.message}
+              </div>
+            )}
             <FieldGroup>
               <Controller
                 name="email"

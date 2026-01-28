@@ -1,107 +1,162 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { authClient } from '@/utils/auth-client'
+import { authClient } from '../../utils/auth-client'
 import { useBoundStore } from '@/store'
-import InputOld from '../ui/InputOld'
-import Spinner from '../ui/spinner'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { Controller, useForm } from 'react-hook-form'
+import { type RegisterInput, registerSchema } from '@repeateat/shared'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
+import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { notify } from '@/utils/notify'
 
 const RegisterView = () => {
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
-  const [confirmPassword, setConfirmPassword] = useState<string>('')
-  const [name, setName] = useState<string>('')
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState<boolean>(false)
-  const setPageTitle = useBoundStore((state) => state.setPageTitle)
+  const { setPageTitle, setUser } = useBoundStore()
+  const navigate = useNavigate()
 
   useEffect(() => {
     setPageTitle('Register')
   }, [setPageTitle])
 
-  const navigate = useNavigate()
+  const form = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      name: '',
+    },
+  })
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
-
-    if (password !== confirmPassword) {
-      return alert('Passwords do not match')
-    }
-
-    setLoading(true)
-
-    const { data, error } = await authClient.signUp.email(
-      {
-        email,
-        password,
-        name,
-        callbackURL: '/',
-      },
-      {
-        onSuccess: async () => {
-          await navigate('/')
-        },
-        onError: (ctx) => {
-          alert(ctx.error.message)
-        },
-      },
-    )
-
-    setLoading(false)
+  const onSubmit = async (values: RegisterInput) => {
+    const { email, password, name } = values
+    const { data, error } = await authClient.signUp.email({
+      email,
+      password,
+      name,
+    })
 
     if (error) {
-      console.log(error)
-      setError(error.message || 'Registration failed')
+      form.setError('root', {
+        message: error.message || 'Registration failed',
+      })
     }
-    console.log(data)
+
+    if (data) {
+      setUser(data.user)
+      notify.success(`Registration successful. Welcome ${data.user.name}!`)
+      void navigate('/')
+    }
   }
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100dvh-64px)] p-4">
-      <form onSubmit={(e) => void handleSubmit(e)} className="space-y-2">
-        <div className="grid grid-cols-[80px_1fr] gap-2 items-center max-w-sm">
-          <InputOld
-            label="Email: "
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <InputOld
-            label="Password: "
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <InputOld
-            label="Confirm password: "
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <InputOld
-            label="Username: "
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-
-        {error && (
-          <p className="text-destructive text-sm font-medium">{error}</p>
-        )}
-
-        <div className="flex justify-center">
-          <Button type="submit" variant={'secondary'} className="w-22">
-            {loading ? <Spinner /> : 'Register'}
-          </Button>
-        </div>
-      </form>
+    <div className="flex min-h-screen flex-col items-center">
+      <Card className="w-full sm:max-w-md">
+        <CardHeader>
+          <CardTitle>Register</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form id="register-form" onSubmit={form.handleSubmit(onSubmit)}>
+            {form.formState.errors.root && (
+              <div className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md mb-4">
+                {form.formState.errors.root.message}
+              </div>
+            )}
+            <FieldGroup>
+              <Controller
+                name="email"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="email-input">Email:</FieldLabel>
+                    <Input
+                      {...field}
+                      id="email-input"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Write your email here"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="password-input">Password:</FieldLabel>
+                    <Input
+                      {...field}
+                      id="password-input"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Password must be at least 8 characters"
+                      type="password"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="confirmPassword"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="confirmpassword-input">
+                      Confirm password:
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="confirmpassword-input"
+                      aria-invalid={fieldState.invalid}
+                      type="password"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="username-input">Username:</FieldLabel>
+                    <Input
+                      {...field}
+                      id="username-input"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Select your username"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Field orientation="horizontal">
+            <Button type="submit" form="register-form">
+              Register
+            </Button>
+          </Field>
+        </CardFooter>
+      </Card>
     </div>
   )
 }
