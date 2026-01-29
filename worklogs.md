@@ -10,3 +10,5 @@
 | 2026-01-20 | State management configuration, frontend appearance                            | 5.5h | 30h             |
 | 2026-01-21 | Frontend appearance and UI configuration                                       | 6.5h | 36.5h           |
 | 2026-01-26 | Form management, add backend routes for recipes & ingredients, set up monorepo | 5.5h | 42h             |
+| 2026-01-28 | Refactor login and registration forms with RHF, dark mode                      | 4h   | 46h             |
+| 2026-01-29 | Add route for recipe ingredients                                               | 2h   | 48h             |

@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 
 import db from '../db'
-import { recipe, ingredient } from '../db/schema'
+import { recipe, ingredient, recipeIngredient } from '../db/schema'
 
 const recipeRouter = express.Router()
 
@@ -47,14 +47,39 @@ recipeRouter.post('/ingredient', async (req: Request, res: Response) => {
 })
 
 // Recipe Ingredients
-recipeRouter.post(
-  '/recipe/:id/ingredient',
-  async (req: Request, res: Response) => {
-    const recipeId = req.params.id
-    const ingredientIds = req.body.ingredientIds
-    const quantity = req.body.quantity
-    const unit = req.body.unit
-  },
-)
+recipeRouter.post('/:id/ingredients', async (req: Request, res: Response) => {
+  const recipeId = Number(req.params.id)
+
+  if (isNaN(recipeId)) {
+    return res.status(400).json({ error: 'Invalid recipe ID' })
+  }
+
+  const ingredientIds = (req.body.ingredientIds || []) as string[]
+  const quantities = (req.body.quantities || []) as string[]
+  const units = (req.body.units || []) as string[]
+
+  const ingredientData = ingredientIds.map((id, index) => ({
+    recipeId,
+    ingredientId: Number(id),
+    quantity: Number(quantities[index]),
+    unit: String(units[index]),
+  }))
+
+  if (ingredientData.length === 0) {
+    return res.status(400).json({ error: 'No ingredients provided' })
+  }
+
+  try {
+    const addedIngredients = await db
+      .insert(recipeIngredient)
+      .values(ingredientData)
+      .returning()
+
+    return res.json(addedIngredients)
+  } catch (err) {
+    console.error(err)
+    return res.status(500).json({ error: 'Database insertion failed' })
+  }
+})
 
 export default recipeRouter
