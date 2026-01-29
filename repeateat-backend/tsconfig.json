@@ -14,5 +14,6 @@
       "@repeateat/shared": ["../shared/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "../shared/src", "../shared/tsconfig.json"],
+  "references": [{ "path": "../shared" }]
 }

@@ -1,9 +1,15 @@
 import { beforeAll, afterAll } from 'vitest'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 
+import { seed } from '../db/seed'
 import db from '../db'
 import { user, session, account, verification } from '../db/tables/auth'
-import { recipe, ingredient, recipeIngredient } from '../db/tables/recipe'
+import {
+  recipe,
+  ingredient,
+  recipeIngredient,
+  recipeCategory,
+} from '../db/tables/recipe'
 import {
   household,
   householdUser,
@@ -13,12 +19,15 @@ import {
 beforeAll(async () => {
   await migrate(db, { migrationsFolder: './migrations' })
   console.log('Tests starting with migrated database')
+
+  await seed()
 })
 
 afterAll(async () => {
   try {
     console.log('Clearing database...')
     await db.delete(recipeIngredient)
+    await db.delete(recipeCategory)
     await db.delete(ingredient)
     await db.delete(recipe)
     await db.delete(householdRecipe)

@@ -10,7 +10,8 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "test": "NODE_ENV=test vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "seed:test": "NODE_ENV=test tsx src/db/seed.ts"
   },
   "dependencies": {
     "@repeateat/shared": "*",

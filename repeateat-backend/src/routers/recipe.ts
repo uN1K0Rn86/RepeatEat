@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import { type Ingredient } from '@repeateat/shared'
 
 import db from '../db'
 import { recipe, ingredient, recipeIngredient } from '../db/schema'
@@ -11,6 +12,7 @@ recipeRouter.get('/', async (req: Request, res: Response) => {
     with: {
       ingredients: true,
       steps: true,
+      categories: true,
     },
     orderBy: (recipe, { asc }) => [asc(recipe.name)],
   })
@@ -30,7 +32,7 @@ recipeRouter.post('/', async (req: Request, res: Response) => {
 
 // Ingredients
 recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {
-  const allIngredients = await db.query.ingredient.findMany({
+  const allIngredients: Ingredient[] = await db.query.ingredient.findMany({
     orderBy: (ingredient, { asc }) => [asc(ingredient.name)],
   })
 
