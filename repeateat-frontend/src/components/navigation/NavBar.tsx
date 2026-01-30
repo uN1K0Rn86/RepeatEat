@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import NavButton from './NavButton'
 import { Home, NotepadText } from 'lucide-react'
 import { useBoundStore } from '@/store'
+import { useTranslation } from 'react-i18next'
 
 const NavBar = () => {
   const navigate = useNavigate()
   const { pageTitle } = useBoundStore()
+  const { t } = useTranslation(['common'])
 
   const isActive = (tabName: string) => pageTitle === tabName
 
@@ -15,14 +17,14 @@ const NavBar = () => {
       <div className="flex justify-around items-center h-16 max-w-screen-sm mx-auto">
         <NavButton
           icon={<Home size={20} />}
-          label="Home"
-          active={isActive('Home')}
+          label={t('common:home')}
+          active={isActive('home')}
           onClick={() => void navigate('/')}
         />
         <NavButton
           icon={<NotepadText size={20} />}
-          label="Recipes"
-          active={isActive('Recipes')}
+          label={t('common:recipes')}
+          active={isActive('recipes')}
           onClick={() => void navigate('/recipe')}
         />
       </div>

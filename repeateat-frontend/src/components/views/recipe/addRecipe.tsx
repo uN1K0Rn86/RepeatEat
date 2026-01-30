@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -12,9 +13,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { addRecipeSchema, type AddRecipe } from '@repeateat/shared/src'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from 'react-i18next'
 
 const AddRecipeForm = () => {
-  const { user } = useBoundStore()
+  const { user, setPageTitle } = useBoundStore()
+  const { t } = useTranslation(['common', 'recipe'])
 
   const {
     register,
@@ -29,21 +32,25 @@ const AddRecipeForm = () => {
     },
   })
 
+  useEffect(() => {
+    setPageTitle('recipes')
+  }, [setPageTitle])
+
   const onSubmit = (data: AddRecipe) => {
     console.log('Adding recipe:', data)
   }
 
   if (!user) {
-    return <div>Please login to add a recipe</div>
+    return <div>{t('recipe:login_prompt')}</div>
   }
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <FieldGroup>
-          <FieldLegend>Add Recipe</FieldLegend>
+          <FieldLegend>{t('recipe:add_recipe')}</FieldLegend>
           <Field>
-            <FieldLabel htmlFor="recipe-name">Name:</FieldLabel>
+            <FieldLabel htmlFor="recipe-name">{t('common:name')}</FieldLabel>
             <Input
               {...register('name')}
               id="recipe-name"
@@ -54,7 +61,7 @@ const AddRecipeForm = () => {
           </Field>
         </FieldGroup>
         <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Creating...' : 'Add Recipe'}
+          {isSubmitting ? t('recipe:creating') : t('recipe:add_recipe')}
         </Button>
       </form>
     </div>

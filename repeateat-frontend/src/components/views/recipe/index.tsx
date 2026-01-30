@@ -6,7 +6,7 @@ const RecipeView = () => {
   const { setPageTitle } = useBoundStore()
 
   useEffect(() => {
-    setPageTitle('Recipes')
+    setPageTitle('recipes')
   }, [setPageTitle])
 
   return <div></div>

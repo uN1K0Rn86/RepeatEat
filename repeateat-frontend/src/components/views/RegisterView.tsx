@@ -17,13 +17,15 @@ import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { notify } from '@/utils/notify'
+import { useTranslation } from 'react-i18next'
 
 const RegisterView = () => {
   const { setPageTitle, setUser } = useBoundStore()
   const navigate = useNavigate()
+  const { t } = useTranslation(['common'])
 
   useEffect(() => {
-    setPageTitle('Register')
+    setPageTitle('register')
   }, [setPageTitle])
 
   const form = useForm<RegisterInput>({
@@ -61,7 +63,7 @@ const RegisterView = () => {
     <div className="flex min-h-screen flex-col items-center">
       <Card className="w-full sm:max-w-md">
         <CardHeader>
-          <CardTitle>Register</CardTitle>
+          <CardTitle>{t('common:register')}</CardTitle>
         </CardHeader>
         <CardContent>
           <form id="register-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -76,7 +78,9 @@ const RegisterView = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="email-input">Email:</FieldLabel>
+                    <FieldLabel htmlFor="email-input">
+                      {t('common:email')}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id="email-input"
@@ -94,7 +98,9 @@ const RegisterView = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="password-input">Password:</FieldLabel>
+                    <FieldLabel htmlFor="password-input">
+                      {t('common:password')}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id="password-input"
@@ -114,7 +120,7 @@ const RegisterView = () => {
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel htmlFor="confirmpassword-input">
-                      Confirm password:
+                      {t('common:confirm_password')}
                     </FieldLabel>
                     <Input
                       {...field}
@@ -133,7 +139,9 @@ const RegisterView = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="username-input">Username:</FieldLabel>
+                    <FieldLabel htmlFor="username-input">
+                      {t('common:username')}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id="username-input"
@@ -152,7 +160,7 @@ const RegisterView = () => {
         <CardFooter>
           <Field orientation="horizontal">
             <Button type="submit" form="register-form">
-              Register
+              {t('common:register')}
             </Button>
           </Field>
         </CardFooter>

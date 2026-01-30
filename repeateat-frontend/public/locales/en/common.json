@@ -1,0 +1,17 @@
+{
+  "name": "Name",
+  "modify": "Modify",
+  "login_failed": "Login failed",
+  "login": "Login",
+  "logout": "Logout",
+  "email": "Email",
+  "password": "Password",
+  "register": "Register",
+  "confirm_password": "Confirm password",
+  "username": "Username",
+  "home": "Home",
+  "recipes": "Recipes",
+  "profile": "Profile",
+  "welcome_message": "Welcome to RepeatEat",
+  "say_hello": "Say hello"
+}

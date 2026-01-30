@@ -14,6 +14,7 @@ void i18n
     interpolation: {
       escapeValue: false,
     },
+    load: 'languageOnly',
   })
 
 export default i18n

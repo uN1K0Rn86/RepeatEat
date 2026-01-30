@@ -17,13 +17,15 @@ import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { notify } from '@/utils/notify'
+import { useTranslation } from 'react-i18next'
 
 const LoginView = () => {
   const { setPageTitle, setUser } = useBoundStore()
   const navigate = useNavigate()
+  const { t } = useTranslation(['common', 'notify'])
 
   useEffect(() => {
-    setPageTitle('Login')
+    setPageTitle('login')
   }, [setPageTitle])
 
   const form = useForm<LoginInput>({
@@ -42,12 +44,14 @@ const LoginView = () => {
     })
 
     if (error) {
-      form.setError('root', { message: error.message || 'Login failed' })
+      form.setError('root', {
+        message: error.message || t('common:login_failed'),
+      })
     }
 
     if (data) {
       setUser(data.user)
-      notify.success(`User ${data.user.name} logged in`)
+      notify.success(t('notify:login', { username: data.user.name }))
       void navigate('/')
     }
   }
@@ -56,7 +60,7 @@ const LoginView = () => {
     <div className="flex min-h-screen flex-col items-center">
       <Card className="w-full sm:max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>{t('common:login')}</CardTitle>
         </CardHeader>
         <CardContent>
           <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
@@ -71,7 +75,9 @@ const LoginView = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="email-input">Email:</FieldLabel>
+                    <FieldLabel htmlFor="email-input">
+                      {t('common:email')}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id="email-input"
@@ -89,7 +95,9 @@ const LoginView = () => {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="password-input">Password:</FieldLabel>
+                    <FieldLabel htmlFor="password-input">
+                      {t('common:password')}
+                    </FieldLabel>
                     <Input
                       {...field}
                       id="password-input"
@@ -108,7 +116,7 @@ const LoginView = () => {
         <CardFooter>
           <Field orientation="horizontal">
             <Button type="submit" form="login-form">
-              Login
+              {t('common:login')}
             </Button>
           </Field>
         </CardFooter>

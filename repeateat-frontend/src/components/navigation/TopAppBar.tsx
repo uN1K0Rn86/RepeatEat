@@ -16,10 +16,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Menu } from 'lucide-react'
 import RecipeDropdownMenu from '../views/recipe/RecipeDropdownMenu'
 import ThemeToggle from '../ThemeToggle'
+import { useTranslation } from 'react-i18next'
 
 const TopAppBar = () => {
   const { user, pageTitle } = useBoundStore()
   const navigate = useNavigate()
+  const { t } = useTranslation(['common', 'notify'])
 
   const logOut = async () => {
     await authClient.signOut({
@@ -27,7 +29,7 @@ const TopAppBar = () => {
         onSuccess: () => {
           const { clearAuth } = useBoundStore.getState()
           clearAuth()
-          notify.success(`User ${user?.name} logged out`)
+          notify.success(t('notify:logout', { username: user?.name }))
           void navigate('/')
         },
       },
@@ -43,9 +45,9 @@ const TopAppBar = () => {
               <Menu />
             </Button>
           </DropdownMenuTrigger>
-          {pageTitle === 'Recipes' && <RecipeDropdownMenu />}
+          {pageTitle === 'recipes' && <RecipeDropdownMenu />}
         </DropdownMenu>
-        <h1 className="font-bold">{pageTitle}</h1>
+        <h1 className="font-bold">{t(`common:${pageTitle}`)}</h1>
 
         {user ? (
           <div className="flex gap-2">
@@ -76,13 +78,13 @@ const TopAppBar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => void navigate('/profile')}>
-                  Profile
+                  {t('common:profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => void logOut()}
                   className="text-destructive focus:text-destructive"
                 >
-                  Log out
+                  {t('common:logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -91,10 +93,10 @@ const TopAppBar = () => {
         ) : (
           <div className="flex gap-2">
             <Button asChild variant="secondary" size="sm">
-              <Link to="/register">Register</Link>
+              <Link to="/register">{t('common:register')}</Link>
             </Button>
             <Button asChild variant="secondary" size="sm">
-              <Link to="/login">Login</Link>
+              <Link to="/login">{t('common:login')}</Link>
             </Button>
             <ThemeToggle />
           </div>

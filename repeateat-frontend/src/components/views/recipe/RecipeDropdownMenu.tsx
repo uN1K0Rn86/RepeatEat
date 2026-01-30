@@ -4,17 +4,20 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
+import { useTranslation } from 'react-i18next'
 
 const RecipeDropdownMenu = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation(['recipe'])
+
   return (
     <>
       <DropdownMenuContent className="w-56" align="start" forceMount>
         <DropdownMenuItem onClick={() => void navigate('/recipe')}>
-          Browse
+          {t('recipe:browse')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => void navigate('/recipe/add')}>
-          Add Recipe
+          {t('recipe:add_recipe')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </>

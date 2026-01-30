@@ -12,11 +12,11 @@ interface HelloResponse {
 const HomeView = () => {
   const [message, setMessage] = useState<string>('')
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
-  const { t } = useTranslation()
+  const { t } = useTranslation(['common'])
 
   useEffect(() => {
-    setPageTitle('Home')
-  }, [setPageTitle])
+    setPageTitle('home')
+  }, [t, setPageTitle])
 
   useEffect(() => {
     const fetchHello = async () => {
@@ -31,9 +31,8 @@ const HomeView = () => {
   }, [])
   return (
     <div className="flex flex-col items-center p-5">
-      <p>Welcome to RepeatEat</p>
       <p>{t('welcome_message')}</p>
-      <Button onClick={() => alert(message)}>Say hello</Button>
+      <Button onClick={() => alert(message)}>{t('common:say_hello')}</Button>
     </div>
   )
 }

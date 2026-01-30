@@ -1,0 +1,4 @@
+{
+  "login": "User {{username}} logged in",
+  "logout": "User {{username}} logged out"
+}

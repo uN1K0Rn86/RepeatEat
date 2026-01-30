@@ -1,0 +1,17 @@
+{
+  "name": "Nimi",
+  "modify": "Muokkaa",
+  "login_failed": "Kirjautuminen epäonnistui",
+  "login": "Kirjaudu sisään",
+  "logout": "Kirjaudu ulos",
+  "email": "Sähköposti",
+  "password": "Salasana",
+  "register": "Rekisteröidy",
+  "confirm_password": "Vahvista salasana",
+  "username": "Käyttäjänimi",
+  "home": "Koti",
+  "recipes": "Reseptit",
+  "profile": "Profiili",
+  "welcome_message": "Tervetuloa RepeatEat:iin",
+  "say_hello": "Sano moi"
+}
