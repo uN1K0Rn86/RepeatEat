@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import { useBoundStore } from '@/store'
 import { Button } from '../ui/button'
+import { useTranslation } from 'react-i18next'
 
 interface HelloResponse {
   message: string
@@ -11,6 +12,7 @@ interface HelloResponse {
 const HomeView = () => {
   const [message, setMessage] = useState<string>('')
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setPageTitle('Home')
@@ -30,6 +32,7 @@ const HomeView = () => {
   return (
     <div className="flex flex-col items-center p-5">
       <p>Welcome to RepeatEat</p>
+      <p>{t('welcome_message')}</p>
       <Button onClick={() => alert(message)}>Say hello</Button>
     </div>
   )

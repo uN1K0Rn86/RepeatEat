@@ -1,5 +1,6 @@
 import request from 'supertest'
 import { describe, it, expect } from 'vitest'
+import { Ingredient } from '@repeateat/shared'
 
 import app from '../app'
 
@@ -62,8 +63,9 @@ describe('Recipe-related endpoints', () => {
       const units = ['g', 'kg', 'lb']
       const recipes = await request(app).get('/api/recipe')
       const recipeId = recipes.body[0].id
-      const ingredients = await request(app).get('/api/recipe/ingredient')
-      const ingredientIds = ingredients.body.map((i) => i.id).slice(0, 3)
+      const res = await request(app).get('/api/recipe/ingredient')
+      const ingredients: Ingredient[] = res.body
+      const ingredientIds = ingredients.map((i) => i.id).slice(0, 3)
 
       const response = await request(app)
         .post(`/api/recipe/${recipeId}/ingredients`)
