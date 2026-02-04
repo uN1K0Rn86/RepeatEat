@@ -12,4 +12,5 @@
 | 2026-01-26 | Form management, add backend routes for recipes & ingredients, set up monorepo | 5.5h | 42h             |
 | 2026-01-28 | Refactor login and registration forms with RHF, dark mode                      | 4h   | 46h             |
 | 2026-01-29 | Add route for recipe ingredients, configure type import for backend            | 4h   | 50h             |
-| 2026-01-30 | Install i18n translation library                                               | 2h   | 52h             |
+| 2026-01-30 | Install i18n translation library, update translations                          | 4h   | 54h             |
+| 2026-02-04 | Work on add recipe form; ingredient picker etc.                                | 4h   | 58h             |

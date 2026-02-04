@@ -6,6 +6,6 @@ export interface AppSlice {
 }
 
 export const createAppSlice: StateCreator<AppSlice> = (set) => ({
-  pageTitle: 'Home',
+  pageTitle: 'home',
   setPageTitle: (title) => set({ pageTitle: title }),
 })

@@ -2,5 +2,9 @@
   "login_prompt": "Kirjaudu sisään lisätäksesi reseptin",
   "add_recipe": "Lisää resepti",
   "browse": "Selaa",
-  "creating": "Lisätään"
+  "creating": "Lisätään",
+  "add_ingredient": "Lisää aines",
+  "ingredient_name": "Aineksen nimi",
+  "steps": "Valmistus",
+  "step_content": "Ohjeita"
 }

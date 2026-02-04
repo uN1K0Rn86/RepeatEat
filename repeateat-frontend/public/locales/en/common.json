@@ -13,5 +13,6 @@
   "recipes": "Recipes",
   "profile": "Profile",
   "welcome_message": "Welcome to RepeatEat",
-  "say_hello": "Say hello"
+  "say_hello": "Say hello",
+  "add": "Add"
 }

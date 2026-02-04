@@ -14,21 +14,37 @@ export const ingredientSchema = ingredientBaseSchema.extend({
 export type Ingredient = z.infer<typeof ingredientSchema>
 export type AddIngredient = z.infer<typeof addIngredientSchema>
 
-// Recipe Properties
+// Recipe Ingredients
 
-const recipeIngredientSchema = z.object({
-  recipeId: z.number(),
-  ingredientId: z.number(),
+const recipeIngredientBaseSchema = z.object({
   quantity: z.number(),
   unit: z.string(),
 })
 
-const recipeStepSchema = z.object({
+const recipeIngredientSchema = recipeIngredientBaseSchema.extend({
+  recipeId: z.number(),
+  ingredientId: z.number(),
+})
+
+const addRecipeIngredientSchema = recipeIngredientBaseSchema.extend({
+  name: z.string().min(2, 'Ingredient name must be at least 2 characters'),
+})
+
+// Recipe Steps
+
+const recipeStepBaseSchema = z.object({
+  content: z.string(),
+})
+
+const recipeStepSchema = recipeStepBaseSchema.extend({
   id: z.number(),
   recipeId: z.number(),
   stepNumber: z.number(),
-  content: z.string(),
 })
+
+const addRecipeStepSchema = recipeStepBaseSchema
+
+// Recipe Categories
 
 const recipeCategorySchema = z.object({
   recipeId: z.number(),
@@ -41,8 +57,8 @@ const recipeBaseSchema = z.object({
 })
 
 export const addRecipeSchema = recipeBaseSchema.extend({
-  ingredients: z.array(z.number()),
-  steps: z.array(z.number()),
+  ingredients: z.array(addRecipeIngredientSchema),
+  steps: z.array(addRecipeStepSchema),
   categories: z.array(z.number()),
 })
 

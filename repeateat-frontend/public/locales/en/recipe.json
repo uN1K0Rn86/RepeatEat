@@ -2,5 +2,9 @@
   "login_prompt": "Please login to add a recipe",
   "add_recipe": "Add Recipe",
   "browse": "Browse",
-  "creating": "Creating"
+  "creating": "Creating",
+  "add_ingredient": "Add ingredient",
+  "ingredient_name": "Ingredient name",
+  "steps": "Preparation",
+  "step_content": "Instructions"
 }
