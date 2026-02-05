@@ -32,6 +32,8 @@ export async function seed() {
     .onConflictDoNothing()
     .returning()
 
+  const categoryIds = categories.map((c) => c.id)
+
   const ingredientNames = [
     'Tomato',
     'Flour',

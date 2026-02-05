@@ -29,6 +29,13 @@
       "when": 1768995772765,
       "tag": "0003_20260121-01-add_recipe_steps_categories_users",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1770294599973,
+      "tag": "0004_20260205-01-add_private_field_to_recipe_make_ingredient_name_unique",
+      "breakpoints": true
     }
   ]
 }

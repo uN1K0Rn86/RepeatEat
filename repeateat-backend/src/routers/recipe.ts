@@ -1,8 +1,21 @@
 import express, { Request, Response } from 'express'
-import { type Ingredient, type Recipe } from '@repeateat/shared'
+import { sql } from 'drizzle-orm'
+import {
+  AddRecipe,
+  AddRecipeIngredient,
+  type Ingredient,
+  type Recipe,
+} from '@repeateat/shared'
 
+import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import db from '../db'
-import { recipe, ingredient, recipeIngredient } from '../db/schema'
+import {
+  recipe,
+  ingredient,
+  recipeIngredient,
+  recipeStep,
+  recipeCategory,
+} from '../db/schema'
 
 const recipeRouter = express.Router()
 
@@ -20,15 +33,82 @@ recipeRouter.get('/', async (req: Request, res: Response) => {
   res.json(allRecipes)
 })
 
-recipeRouter.post('/', async (req: Request, res: Response) => {
-  const name: string = req.body.name
-  const authorId: string = req.body.authorId
-  const addedRecipe = await db
-    .insert(recipe)
-    .values({ name: name, authorId: authorId })
-    .returning()
-  res.json(addedRecipe)
-})
+recipeRouter.post(
+  '/',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    try {
+      const recipeToAdd: AddRecipe = req.body
+      const { name, ingredients, steps, categories } = recipeToAdd
+      const user = req.user
+
+      if (!user) throw new Error('Not authenticated ')
+
+      const result = await db.transaction(async (tx) => {
+        const [newRecipe] = await tx
+          .insert(recipe)
+          .values({ name, authorId: user.id })
+          .returning()
+
+        if (ingredients?.length > 0) {
+          const ingredientIds = await tx
+            .insert(ingredient)
+            .values(
+              ingredients.map((ing: AddRecipeIngredient) => ({
+                name: ing.name,
+              })),
+            )
+            .onConflictDoUpdate({
+              target: ingredient.name,
+              set: { name: sql`excluded.name` },
+            })
+            .returning({ id: ingredient.id })
+
+          const ingredientsWithIds = ingredients.map(
+            (ing: AddRecipeIngredient, index: number) => ({
+              recipeId: newRecipe.id,
+              ingredientId: ingredientIds[index].id,
+              quantity: ing.quantity,
+              unit: ing.unit,
+            }),
+          )
+
+          await tx.insert(recipeIngredient).values(ingredientsWithIds)
+        }
+
+        if (steps?.length > 0) {
+          await tx.insert(recipeStep).values(
+            steps.map((s, index) => ({
+              recipeId: newRecipe.id,
+              content: s.content,
+              stepNumber: index + 1,
+            })),
+          )
+        }
+
+        if (categories?.length > 0) {
+          await tx.insert(recipeCategory).values(
+            categories.map((catId) => ({
+              recipeId: newRecipe.id,
+              categoryId: catId,
+            })),
+          )
+        }
+
+        const recipeToReturn = {
+          ...recipeToAdd,
+          id: newRecipe.id,
+          authorId: newRecipe.authorId,
+        }
+        return recipeToReturn
+      })
+      return res.json(result)
+    } catch (error) {
+      console.error('Transaction failed:', error)
+      res.status(500).json({ error: 'Failed to create full recipe' })
+    }
+  },
+)
 
 // Ingredients
 recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {

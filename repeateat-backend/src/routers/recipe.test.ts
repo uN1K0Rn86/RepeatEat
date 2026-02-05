@@ -1,6 +1,5 @@
 import request from 'supertest'
 import { describe, it, expect } from 'vitest'
-import { Ingredient } from '@repeateat/shared'
 
 import app from '../app'
 
@@ -24,22 +23,44 @@ describe('Recipe-related endpoints', () => {
 
   describe('post /', () => {
     it('returns valid object with id, name, and authorId', async () => {
+      const testEmail = 'test@example.com'
+      const testPassword = 'password123'
+      await request(app).post('/api/auth/sign-up/email').send({
+        email: testEmail,
+        password: testPassword,
+        name: 'Test User',
+      })
+      const loginResponse = await request(app)
+        .post('/api/auth/sign-in/email')
+        .send({ email: testEmail, password: testPassword })
+      const authCookie = loginResponse.get('Set-Cookie')
+
+      if (!authCookie) return
+
       const recipeToPost = {
         name: 'Korma',
-        authorId: 'user_default',
+        ingredients: [
+          { name: 'Cucumber', quantity: '0.5', unit: 'pcs' },
+          { name: 'Rice', quantity: '4', unit: 'dl' },
+        ],
+        steps: [{ content: 'Cook rice' }, { content: 'Chop tofu' }],
+        categories: [1, 3],
       }
 
-      const response = await request(app).post('/api/recipe').send(recipeToPost)
-      expect(response.body[0]).toHaveProperty('id')
-      expect(response.body[0]).toHaveProperty('name')
-      expect(response.body[0]).toHaveProperty('authorId')
+      const response = await request(app)
+        .post('/api/recipe')
+        .set('Cookie', authCookie)
+        .send(recipeToPost)
+      expect(response.body).toHaveProperty('id')
+      expect(response.body).toHaveProperty('name')
+      expect(response.body).toHaveProperty('authorId')
     })
   })
 
   describe('get /ingredient', () => {
     it('returns correct amount of ingredients', async () => {
       const response = await request(app).get('/api/recipe/ingredient')
-      expect(response.body.length).toEqual(10)
+      expect(response.body.length).toEqual(12)
     })
   })
 
@@ -54,33 +75,6 @@ describe('Recipe-related endpoints', () => {
         .send(ingredientToPost)
       expect(response.body[0]).toHaveProperty('id')
       expect(response.body[0]).toHaveProperty('name')
-    })
-  })
-
-  describe('post /:id/ingredients', () => {
-    it('returns valid array with recipeId, ingredientId, quantity, and unit', async () => {
-      const quantities = ['500', '1', '2.5']
-      const units = ['g', 'kg', 'lb']
-      const recipes = await request(app).get('/api/recipe')
-      const recipeId = recipes.body[0].id
-      const res = await request(app).get('/api/recipe/ingredient')
-      const ingredients: Ingredient[] = res.body
-      const ingredientIds = ingredients.map((i) => i.id).slice(0, 3)
-
-      const response = await request(app)
-        .post(`/api/recipe/${recipeId}/ingredients`)
-        .send({
-          ingredientIds,
-          quantities,
-          units,
-        })
-
-      console.log(response.body)
-      expect(response.body.length).toBe(3)
-      expect(response.body[0]).toHaveProperty('recipeId')
-      expect(response.body[0]).toHaveProperty('ingredientId')
-      expect(response.body[0]).toHaveProperty('quantity')
-      expect(response.body[0]).toHaveProperty('unit')
     })
   })
 

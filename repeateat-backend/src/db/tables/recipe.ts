@@ -5,6 +5,7 @@ import {
   real,
   primaryKey,
   text,
+  boolean,
 } from 'drizzle-orm/pg-core'
 
 import { user } from './auth'
@@ -13,11 +14,12 @@ export const recipe = pgTable('recipe', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   authorId: text().references(() => user.id),
+  private: boolean().default(false),
 })
 
 export const ingredient = pgTable('ingredient', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }).notNull(),
+  name: varchar({ length: 255 }).notNull().unique(),
 })
 
 export const category = pgTable('category', {

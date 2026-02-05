@@ -1,19 +1,11 @@
 import axios from 'axios'
 
 import type { AddRecipe, Category, RecipeResponse } from '@repeateat/shared'
-import type { User } from 'better-auth'
 
 const baseUrl = '/api/recipe'
 
-const createRecipe = async (
-  newRecipe: AddRecipe,
-  user: User,
-): Promise<RecipeResponse> => {
-  const recipeForDb = {
-    name: newRecipe.name,
-    authorId: user.id,
-  }
-  const response = await axios.post<RecipeResponse>(baseUrl, recipeForDb)
+const createRecipe = async (newRecipe: AddRecipe): Promise<RecipeResponse> => {
+  const response = await axios.post<RecipeResponse>(baseUrl, newRecipe)
   return response.data
 }
 

@@ -10,7 +10,7 @@ export const useCreateRecipe = () => {
   return useMutation({
     mutationFn: (newRecipe: AddRecipe) => {
       if (!user) throw new Error('User not found')
-      return recipeService.createRecipe(newRecipe, user)
+      return recipeService.createRecipe(newRecipe)
     },
     onSuccess: () => {
       console.log('Recipe created')
