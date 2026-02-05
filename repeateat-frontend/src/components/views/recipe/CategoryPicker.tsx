@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next'
 
 import { useCategories } from '@/hooks/useCategories'
 
-import { type AddRecipe } from '@repeateat/shared'
+import { type AddRecipe, type Category } from '@repeateat/shared'
 import { FieldGroup, FieldLegend } from '@/components/ui/field'
 import { Badge } from '@/components/ui/badge'
 
 const CategoryPicker = () => {
   const { t } = useTranslation(['recipe', 'common'])
   const { control } = useFormContext<AddRecipe>()
-  const { field } = useController({
+  const { field } = useController<AddRecipe, 'categories'>({
     name: 'categories',
     control,
     defaultValue: [],
@@ -25,7 +25,8 @@ const CategoryPicker = () => {
     }
   }
 
-  const { data: categories, isLoading } = useCategories()
+  const { data, isLoading } = useCategories()
+  const categories = data ?? []
 
   if (isLoading) return <div>Loading</div>
 
@@ -33,7 +34,7 @@ const CategoryPicker = () => {
     <FieldGroup>
       <FieldLegend>{t('recipe:categories')}</FieldLegend>
       <div className="flex flex-wrap gap-2">
-        {categories?.map((cat) => {
+        {categories?.map((cat: Category) => {
           const isSelected = field.value.includes(cat.id)
 
           return (
