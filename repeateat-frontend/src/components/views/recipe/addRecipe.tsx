@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import IngredientPicker from './IngredientPicker'
 import StepAdder from './StepAdder'
+import CategoryPicker from './CategoryPicker'
 
 const AddRecipeForm = () => {
   const { user, setPageTitle } = useBoundStore()
@@ -60,6 +61,7 @@ const AddRecipeForm = () => {
         </FieldGroup>
         <IngredientPicker />
         <StepAdder />
+        <CategoryPicker />
         <Button type="submit" disabled={methods.formState.isSubmitting}>
           {methods.formState.isSubmitting
             ? t('recipe:creating')

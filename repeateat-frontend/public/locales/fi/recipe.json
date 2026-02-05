@@ -4,7 +4,9 @@
   "browse": "Selaa",
   "creating": "Lisätään",
   "add_ingredient": "Lisää aines",
+  "ingredients": "Ainekset",
   "ingredient_name": "Aineksen nimi",
   "steps": "Valmistus",
-  "step_content": "Ohjeita"
+  "step_content": "Ohjeita",
+  "categories": "Kategoriat"
 }

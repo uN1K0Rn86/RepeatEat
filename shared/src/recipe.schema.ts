@@ -33,7 +33,7 @@ const addRecipeIngredientSchema = recipeIngredientBaseSchema.extend({
 // Recipe Steps
 
 const recipeStepBaseSchema = z.object({
-  content: z.string(),
+  content: z.string().min(3, 'Step description must be at least 3 characters'),
 })
 
 const recipeStepSchema = recipeStepBaseSchema.extend({
@@ -43,6 +43,13 @@ const recipeStepSchema = recipeStepBaseSchema.extend({
 })
 
 const addRecipeStepSchema = recipeStepBaseSchema
+
+// Categories
+
+const categorySchema = z.object({
+  id: z.number(),
+  name: z.string().min(2, 'Category must have a name'),
+})
 
 // Recipe Categories
 
@@ -72,3 +79,4 @@ export const recipeSchema = recipeBaseSchema.extend({
 
 export type Recipe = z.infer<typeof recipeSchema>
 export type AddRecipe = z.infer<typeof addRecipeSchema>
+export type Category = z.infer<typeof categorySchema>

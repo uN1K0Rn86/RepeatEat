@@ -83,4 +83,11 @@ describe('Recipe-related endpoints', () => {
       expect(response.body[0]).toHaveProperty('unit')
     })
   })
+
+  describe('get /category', () => {
+    it('returns a valid array of categories with ids and names', async () => {
+      const response = await request(app).get('/api/recipe/category')
+      expect(response.body.length).toBe(6)
+    })
+  })
 })

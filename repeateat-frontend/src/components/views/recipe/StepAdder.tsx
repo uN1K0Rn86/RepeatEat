@@ -7,6 +7,7 @@ import { Plus, Trash2 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
 import { type AddRecipe } from '@repeateat/shared'
+import { getFieldError } from '@/utils/form'
 
 const StepAdder = () => {
   const { t } = useTranslation(['recipe', 'common'])
@@ -36,18 +37,25 @@ const StepAdder = () => {
           {t('common:add')}
         </Button>
       </Field>
-      {fields.map((field, index) => (
-        <div key={field.id} className="flex gap-2">
-          <span className="font-medium text-muted-foreground">
-            {index + 1}.
-          </span>
-          <Field className="flex flex-row">
-            <div>
+      {fields.map((field, index) => {
+        const stepError = getFieldError(errors, `steps.${index}.content`)
+
+        return (
+          <div key={field.id} className="flex gap-2">
+            <span className="font-medium text-muted-foreground">
+              {index + 1}.
+            </span>
+            <div className="flex-1">
               <Input
-                className="flex-1"
+                className="w-full"
                 {...register(`steps.${index}.content`)}
                 placeholder={t('recipe:step_content')}
               />
+              {stepError?.message && (
+                <p className="text-xs text-destructive mt-1">
+                  {stepError.message}
+                </p>
+              )}
             </div>
             <div>
               <Button
@@ -58,9 +66,9 @@ const StepAdder = () => {
                 <Trash2 className="w-4 h-4 text-muted-foreground" />
               </Button>
             </div>
-          </Field>
-        </div>
-      ))}
+          </div>
+        )
+      })}
     </FieldGroup>
   )
 }

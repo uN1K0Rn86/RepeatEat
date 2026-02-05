@@ -84,4 +84,14 @@ recipeRouter.post('/:id/ingredients', async (req: Request, res: Response) => {
   }
 })
 
+// Categories
+
+recipeRouter.get('/category', async (_req: Request, res: Response) => {
+  const allCategories = await db.query.category.findMany({
+    orderBy: (category, { asc }) => [asc(category.id)],
+  })
+
+  res.json(allCategories)
+})
+
 export default recipeRouter
