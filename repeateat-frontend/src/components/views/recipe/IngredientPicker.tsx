@@ -30,7 +30,7 @@ const IngredientPicker = () => {
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => append({ name: '', quantity: Number(''), unit: '' })}
+          onClick={() => append({ name: '', quantity: 0, unit: '' })}
         >
           <Plus className="w-4 h-4 mr-1" />
           {t('common:add')}
@@ -68,7 +68,9 @@ const IngredientPicker = () => {
                   </th>
                   <th className="w-24">
                     <Input
-                      {...register(`ingredients.${index}.quantity`)}
+                      {...register(`ingredients.${index}.quantity`, {
+                        valueAsNumber: true,
+                      })}
                       placeholder="Qty"
                     />
                   </th>

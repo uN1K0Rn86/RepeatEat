@@ -17,10 +17,12 @@ import { useTranslation } from 'react-i18next'
 import IngredientPicker from './IngredientPicker'
 import StepAdder from './StepAdder'
 import CategoryPicker from './CategoryPicker'
+import { useCreateRecipe } from '@/hooks/useCreateRecipe'
 
 const AddRecipeForm = () => {
   const { user, setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'recipe'])
+  const createRecipeMutation = useCreateRecipe()
 
   const methods = useForm<AddRecipe>({
     resolver: zodResolver(addRecipeSchema),
@@ -37,6 +39,7 @@ const AddRecipeForm = () => {
 
   const onSubmit = (data: AddRecipe) => {
     console.log('Adding recipe:', data)
+    createRecipeMutation.mutate(data)
   }
 
   if (!user) {
