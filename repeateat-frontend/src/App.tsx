@@ -11,6 +11,7 @@ import RecipeView from './components/views/recipe'
 import NotificationList from './components/NotificationList'
 import TopAppBar from './components/navigation/TopAppBar'
 import AddRecipeForm from './components/views/recipe/addRecipe'
+import RecipeDetailsView from './components/views/recipe/RecipeDetailsView'
 
 const App = () => {
   useEffect(() => {
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomeView />} />
           <Route path="/recipe" element={<RecipeView />} />
+          <Route path="/recipe/:id" element={<RecipeDetailsView />} />
           <Route path="/recipe/add" element={<AddRecipeForm />} />
           <Route path="/login" element={<LoginView />} />
           <Route path="/register" element={<RegisterView />} />

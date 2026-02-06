@@ -33,6 +33,42 @@ recipeRouter.get('/', async (req: Request, res: Response) => {
   res.json(allRecipes)
 })
 
+recipeRouter.get('/:id', async (req: Request, res: Response) => {
+  const recipeId = Number(req.params.id)
+
+  if (isNaN(recipeId)) {
+    return res.status(400).json({ error: 'Invalid ID format' })
+  }
+
+  try {
+    const recipeToReturn = await db.query.recipe.findFirst({
+      where: (recipe, { eq }) => eq(recipe.id, recipeId),
+      with: {
+        ingredients: {
+          with: {
+            ingredient: true,
+          },
+        },
+        steps: true,
+        categories: {
+          with: {
+            category: true,
+          },
+        },
+      },
+    })
+
+    if (!recipeToReturn) {
+      return res.status(404).json({ error: 'Recipe not found' })
+    }
+
+    return res.json(recipeToReturn)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+})
+
 recipeRouter.post(
   '/',
   isAuthenticated,

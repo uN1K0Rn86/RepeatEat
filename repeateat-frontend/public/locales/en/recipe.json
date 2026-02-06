@@ -7,5 +7,6 @@
   "ingredients": "Ingredients",
   "ingredient_name": "Ingredient name",
   "steps": "Preparation",
-  "step_content": "Instructions"
+  "step_content": "Instructions",
+  "categories": "Categories"
 }

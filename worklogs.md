@@ -15,3 +15,4 @@
 | 2026-01-30 | Install i18n translation library, update translations                          | 4h   | 54h             |
 | 2026-02-04 | Work on add recipe form; ingredient picker etc.                                | 4h   | 58h             |
 | 2026-02-05 | Continue add recipe form, convert to using single endpoint, update tests etc.  | 7h   | 65h             |
+| 2026-02-06 | Routes for single recipe and start on frontend view                            | 3h   | 68h             |
