@@ -19,6 +19,36 @@ import {
 
 const recipeRouter = express.Router()
 
+// Ingredients
+recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {
+  const allIngredients: Ingredient[] = await db.query.ingredient.findMany({
+    orderBy: (ingredient, { asc }) => [asc(ingredient.name)],
+  })
+
+  res.json(allIngredients)
+})
+
+recipeRouter.post('/ingredient', async (req: Request, res: Response) => {
+  const name: string = req.body.name
+  const addedIngredient = await db
+    .insert(ingredient)
+    .values({ name: name })
+    .returning()
+  res.json(addedIngredient)
+})
+
+// Categories
+
+recipeRouter.get('/category', async (_req: Request, res: Response) => {
+  const allCategories = await db.query.category.findMany({
+    orderBy: (category, { asc }) => [asc(category.id)],
+  })
+
+  res.json(allCategories)
+})
+
+export default recipeRouter
+
 // Recipes
 recipeRouter.get('/', async (req: Request, res: Response) => {
   const allRecipes: Recipe[] = await db.query.recipe.findMany({
@@ -146,24 +176,6 @@ recipeRouter.post(
   },
 )
 
-// Ingredients
-recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {
-  const allIngredients: Ingredient[] = await db.query.ingredient.findMany({
-    orderBy: (ingredient, { asc }) => [asc(ingredient.name)],
-  })
-
-  res.json(allIngredients)
-})
-
-recipeRouter.post('/ingredient', async (req: Request, res: Response) => {
-  const name: string = req.body.name
-  const addedIngredient = await db
-    .insert(ingredient)
-    .values({ name: name })
-    .returning()
-  res.json(addedIngredient)
-})
-
 // Recipe Ingredients
 recipeRouter.post('/:id/ingredients', async (req: Request, res: Response) => {
   const recipeId = Number(req.params.id)
@@ -199,15 +211,3 @@ recipeRouter.post('/:id/ingredients', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Database insertion failed' })
   }
 })
-
-// Categories
-
-recipeRouter.get('/category', async (_req: Request, res: Response) => {
-  const allCategories = await db.query.category.findMany({
-    orderBy: (category, { asc }) => [asc(category.id)],
-  })
-
-  res.json(allCategories)
-})
-
-export default recipeRouter
