@@ -15,5 +15,8 @@
   "welcome_message": "Tervetuloa RepeatEat:iin",
   "say_hello": "Sano moi",
   "add": "Lisää",
-  "remove": "Poista"
+  "remove": "Poista",
+  "edit": "Muokkaa",
+  "save": "Tallenna",
+  "confirm_delete": "Oletko varma että haluat poistaa?"
 }

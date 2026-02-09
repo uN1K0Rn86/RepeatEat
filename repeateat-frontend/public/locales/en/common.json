@@ -15,5 +15,8 @@
   "welcome_message": "Welcome to RepeatEat",
   "say_hello": "Say hello",
   "add": "Add",
-  "remove": "Remove"
+  "remove": "Remove",
+  "edit": "Edit",
+  "save": "Save",
+  "confirm_delete": "Are you sure you want to delete?"
 }
