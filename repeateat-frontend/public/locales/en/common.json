@@ -14,5 +14,6 @@
   "profile": "Profile",
   "welcome_message": "Welcome to RepeatEat",
   "say_hello": "Say hello",
-  "add": "Add"
+  "add": "Add",
+  "remove": "Remove"
 }

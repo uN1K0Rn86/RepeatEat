@@ -6,8 +6,10 @@
   "add_ingredient": "Add ingredient",
   "ingredients": "Ingredients",
   "ingredient_name": "Ingredient name",
-  "steps": "Preparation",
+  "preparation": "Preparation",
   "step_content": "Instructions",
   "categories": "Categories",
-  "recipe_added": "Recipe added successfully"
+  "recipe_added": "Recipe added successfully",
+  "quantity": "Quantity",
+  "unit": "Unit"
 }

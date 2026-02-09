@@ -6,8 +6,10 @@
   "add_ingredient": "Lisää aines",
   "ingredients": "Ainekset",
   "ingredient_name": "Aineksen nimi",
-  "steps": "Valmistus",
+  "preparation": "Valmistus",
   "step_content": "Ohjeita",
   "categories": "Kategoriat",
-  "recipe_added": "Resepti lisätty"
+  "recipe_added": "Resepti lisätty",
+  "quantity": "Määrä",
+  "unit": "Yksikkö"
 }

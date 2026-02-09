@@ -40,10 +40,18 @@ const IngredientPicker = () => {
         <table className="w-full">
           <thead>
             <tr className="even:bg-muted m-0 border-t p-0">
-              <th className="border px-4 py-2 text-left font-bold">Name</th>
-              <th className="border px-4 py-2 text-left font-bold">Quantity</th>
-              <th className="border px-4 py-2 text-left font-bold">Unit</th>
-              <th className="border px-4 py-2 text-left font-bold">Remove</th>
+              <th className="border px-4 py-2 text-left font-bold">
+                {t('common:name')}
+              </th>
+              <th className="border px-4 py-2 text-left font-bold">
+                {t('recipe:quantity')}
+              </th>
+              <th className="border px-4 py-2 text-left font-bold">
+                {t('recipe:unit')}
+              </th>
+              <th className="border px-4 py-2 text-left font-bold">
+                {t('common:remove')}
+              </th>
             </tr>
           </thead>
           <tbody>

@@ -24,7 +24,7 @@ const StepAdder = () => {
 
   return (
     <FieldGroup>
-      <FieldLegend>{t('recipe:steps')}</FieldLegend>
+      <FieldLegend>{t('recipe:preparation')}</FieldLegend>
       <Field>
         <Button
           className="max-w-xs"

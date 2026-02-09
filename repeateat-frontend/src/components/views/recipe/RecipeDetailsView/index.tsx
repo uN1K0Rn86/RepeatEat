@@ -1,13 +1,19 @@
 import { useParams } from 'react-router-dom'
 import { useRecipe } from '@/hooks/useRecipe'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useBoundStore } from '@/store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import ViewPicker from './ViewPicker'
+import IngredientsView from './IngredientsView'
+import StepsView from './StepsView'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, error } = useRecipe(id || '')
   const { setPageTitle } = useBoundStore()
+  const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
+    'ingredients',
+  )
 
   useEffect(() => {
     setPageTitle('recipes')
@@ -26,7 +32,16 @@ const RecipeDetailsView = () => {
         <CardHeader>
           <CardTitle>{recipe.name}</CardTitle>
         </CardHeader>
-        <CardContent></CardContent>
+        <CardContent>
+          <ViewPicker activeView={activeView} onViewChange={setActiveView} />
+          <div className="mt-4">
+            {activeView === 'ingredients' ? (
+              <IngredientsView ingredients={recipe.ingredients} />
+            ) : (
+              <StepsView steps={recipe.steps} />
+            )}
+          </div>
+        </CardContent>
       </Card>
     </div>
   )
