@@ -10,7 +10,7 @@ import UserProfile from './components/views/UserProfile'
 import RecipeView from './components/views/recipe'
 import NotificationList from './components/NotificationList'
 import TopAppBar from './components/navigation/TopAppBar'
-import AddRecipeForm from './components/views/recipe/addRecipe'
+import AddRecipeForm from './components/views/recipe/AddRecipe'
 import RecipeDetailsView from './components/views/recipe/RecipeDetailsView'
 
 const App = () => {

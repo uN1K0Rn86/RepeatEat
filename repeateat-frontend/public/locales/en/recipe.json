@@ -8,5 +8,6 @@
   "ingredient_name": "Ingredient name",
   "steps": "Preparation",
   "step_content": "Instructions",
-  "categories": "Categories"
+  "categories": "Categories",
+  "recipe_added": "Recipe added successfully"
 }

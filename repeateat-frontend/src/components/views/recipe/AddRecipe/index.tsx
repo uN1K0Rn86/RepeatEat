@@ -18,11 +18,14 @@ import IngredientPicker from './IngredientPicker'
 import StepAdder from './StepAdder'
 import CategoryPicker from './CategoryPicker'
 import { useCreateRecipe } from '@/hooks/useCreateRecipe'
+import { useNavigate } from 'react-router-dom'
+import { notify } from '@/utils/notify'
 
 const AddRecipeForm = () => {
   const { user, setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'recipe'])
   const createRecipeMutation = useCreateRecipe()
+  const navigate = useNavigate()
 
   const methods = useForm<AddRecipe>({
     resolver: zodResolver(addRecipeSchema),
@@ -37,9 +40,15 @@ const AddRecipeForm = () => {
     setPageTitle('recipes')
   }, [setPageTitle])
 
-  const onSubmit = (data: AddRecipe) => {
+  const onSubmit = async (data: AddRecipe) => {
     console.log('Adding recipe:', data)
-    createRecipeMutation.mutate(data)
+    try {
+      const newRecipe = await createRecipeMutation.mutateAsync(data)
+      void navigate(`/recipe/${newRecipe.id}`)
+      notify.success('')
+    } catch (error) {
+      console.error('Submission failed: ', error)
+    }
   }
 
   if (!user) {

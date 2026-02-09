@@ -8,5 +8,6 @@
   "ingredient_name": "Aineksen nimi",
   "steps": "Valmistus",
   "step_content": "Ohjeita",
-  "categories": "Kategoriat"
+  "categories": "Kategoriat",
+  "recipe_added": "Resepti lisätty"
 }
