@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { type UpdateRecipe } from '@repeateat/shared'
 import { ChevronUp, ChevronDown, Trash2, Plus } from 'lucide-react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
@@ -23,9 +23,12 @@ const StepsView = ({ editable }: StepsProps) => {
       {fields.map((field, index) => (
         <div key={field.id} className="flex flex-row gap-3">
           <div>{index + 1}. </div>
-          <div>
+          <div className="flex-1">
             {editable ? (
-              <Input {...register(`steps.${index}.content`)} />
+              <Textarea
+                {...register(`steps.${index}.content`)}
+                className="w-full"
+              />
             ) : (
               field.content
             )}
@@ -64,7 +67,7 @@ const StepsView = ({ editable }: StepsProps) => {
                   window.confirm(t('common:confirm_delete')) && remove(index)
                 }
               >
-                <Trash2 className="w-4 h-4 text-muted-foreground" />
+                <Trash2 className="w-4 h-4 text-destructive" />
               </Button>
             </div>
           )}

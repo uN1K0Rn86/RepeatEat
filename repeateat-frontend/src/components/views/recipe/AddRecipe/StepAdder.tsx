@@ -25,18 +25,6 @@ const StepAdder = () => {
   return (
     <FieldGroup>
       <FieldLegend>{t('recipe:preparation')}</FieldLegend>
-      <Field>
-        <Button
-          className="max-w-xs"
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => append({ content: '' })}
-        >
-          <Plus className="w-4 h-4 mr-1" />
-          {t('common:add')}
-        </Button>
-      </Field>
       {fields.map((field, index) => {
         const stepError = getFieldError(errors, `steps.${index}.content`)
 
@@ -69,6 +57,18 @@ const StepAdder = () => {
           </div>
         )
       })}
+      <Field>
+        <Button
+          className="max-w-xs"
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => append({ content: '' })}
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          {t('common:add')}
+        </Button>
+      </Field>
     </FieldGroup>
   )
 }

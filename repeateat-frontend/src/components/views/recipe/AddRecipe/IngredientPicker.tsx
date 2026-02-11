@@ -24,6 +24,78 @@ const IngredientPicker = () => {
   return (
     <FieldGroup>
       <FieldLegend>{t('recipe:ingredients')}</FieldLegend>
+
+      {fields.length > 0 && (
+        <div>
+          <table className="w-full">
+            <thead>
+              <tr className="even:bg-muted m-0 border-t p-0">
+                <th className="border px-4 py-2 text-left font-bold">
+                  {t('common:name')}
+                </th>
+                <th className="border px-4 py-2 text-left font-bold">
+                  {t('recipe:quantity')}
+                </th>
+                <th className="border px-4 py-2 text-left font-bold">
+                  {t('recipe:unit')}
+                </th>
+                <th className="border px-4 py-2 text-left font-bold">
+                  {t('common:remove')}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {fields.map((field, index) => {
+                const nameError = getFieldError(
+                  errors,
+                  `ingredients.${index}.name`,
+                )
+
+                return (
+                  <tr key={field.id} className="even:bg-muted m-0 border-t p-0">
+                    <th className="flex-1">
+                      <Input
+                        {...register(`ingredients.${index}.name`)}
+                        placeholder={t('recipe:ingredient_name')}
+                      />
+                      {nameError?.message && (
+                        <p className="text-xs text-destructive mt-1">
+                          {nameError.message}
+                        </p>
+                      )}
+                    </th>
+                    <th className="w-24">
+                      <Input
+                        {...register(`ingredients.${index}.quantity`, {
+                          valueAsNumber: true,
+                        })}
+                        placeholder="Qty"
+                      />
+                    </th>
+                    <th className="w-24">
+                      <Input
+                        {...register(`ingredients.${index}.unit`)}
+                        placeholder="eg. kg"
+                      />
+                    </th>
+                    <th>
+                      <Button
+                        className="w-full"
+                        type="button"
+                        variant="outline"
+                        onClick={() => remove(index)}
+                      >
+                        <Trash2 className="w-4 h-4 text-muted-foreground" />
+                      </Button>
+                    </th>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       <Field>
         <Button
           className="max-w-xs"
@@ -36,74 +108,6 @@ const IngredientPicker = () => {
           {t('common:add')}
         </Button>
       </Field>
-      <div>
-        <table className="w-full">
-          <thead>
-            <tr className="even:bg-muted m-0 border-t p-0">
-              <th className="border px-4 py-2 text-left font-bold">
-                {t('common:name')}
-              </th>
-              <th className="border px-4 py-2 text-left font-bold">
-                {t('recipe:quantity')}
-              </th>
-              <th className="border px-4 py-2 text-left font-bold">
-                {t('recipe:unit')}
-              </th>
-              <th className="border px-4 py-2 text-left font-bold">
-                {t('common:remove')}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {fields.map((field, index) => {
-              const nameError = getFieldError(
-                errors,
-                `ingredients.${index}.name`,
-              )
-
-              return (
-                <tr key={field.id} className="even:bg-muted m-0 border-t p-0">
-                  <th className="flex-1">
-                    <Input
-                      {...register(`ingredients.${index}.name`)}
-                      placeholder={t('recipe:ingredient_name')}
-                    />
-                    {nameError?.message && (
-                      <p className="text-xs text-destructive mt-1">
-                        {nameError.message}
-                      </p>
-                    )}
-                  </th>
-                  <th className="w-24">
-                    <Input
-                      {...register(`ingredients.${index}.quantity`, {
-                        valueAsNumber: true,
-                      })}
-                      placeholder="Qty"
-                    />
-                  </th>
-                  <th className="w-24">
-                    <Input
-                      {...register(`ingredients.${index}.unit`)}
-                      placeholder="eg. kg"
-                    />
-                  </th>
-                  <th>
-                    <Button
-                      className="w-full"
-                      type="button"
-                      variant="outline"
-                      onClick={() => remove(index)}
-                    >
-                      <Trash2 className="w-4 h-4 text-muted-foreground" />
-                    </Button>
-                  </th>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
     </FieldGroup>
   )
 }
