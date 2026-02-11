@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import { User } from 'better-auth/types'
 
 import { auth } from '../utils/auth'
+import { AppError } from '../utils/errors'
 
 export interface AuthRequest extends Request {
   user?: User
@@ -18,7 +19,7 @@ export const isAuthenticated = async (
   })
 
   if (!session) {
-    return res.status(401).json({ error: 'Unauthorized' })
+    throw new AppError('Unauthorized', 401)
   }
 
   req.user = session.user

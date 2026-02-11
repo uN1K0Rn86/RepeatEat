@@ -1,5 +1,10 @@
 import express, { Request, Response } from 'express'
-import { AddRecipe, type Ingredient, type Recipe } from '@repeateat/shared'
+import {
+  type AddRecipe,
+  type UpdateRecipe,
+  type Ingredient,
+  type Recipe,
+} from '@repeateat/shared'
 
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import {
@@ -9,14 +14,15 @@ import {
   getAllRecipes,
   getCategories,
   getFullRecipe,
+  updateRecipe,
 } from '../services/recipe.service'
+import { AppError } from '../utils/errors'
 
 const recipeRouter = express.Router()
 
 // Ingredients
 recipeRouter.get('/ingredient', async (_req: Request, res: Response) => {
   const allIngredients: Ingredient[] = await getAllIngredients()
-
   res.json(allIngredients)
 })
 
@@ -30,11 +36,8 @@ recipeRouter.post('/ingredient', async (req: Request, res: Response) => {
 
 recipeRouter.get('/category', async (_req: Request, res: Response) => {
   const allCategories = await getCategories()
-
   res.json(allCategories)
 })
-
-export default recipeRouter
 
 // Recipes
 recipeRouter.get('/', async (_req: Request, res: Response) => {
@@ -46,41 +49,46 @@ recipeRouter.get('/:id', async (req: Request, res: Response) => {
   const recipeId = Number(req.params.id)
 
   if (isNaN(recipeId)) {
-    return res.status(400).json({ error: 'Invalid ID format' })
+    throw new AppError('Invalid ID format', 400)
   }
 
-  try {
-    const recipeToReturn = await getFullRecipe(recipeId)
+  const recipeToReturn = await getFullRecipe(recipeId)
 
-    if (!recipeToReturn) {
-      return res.status(404).json({ error: 'Recipe not found' })
-    }
-
-    return res.json(recipeToReturn)
-  } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Internal Server Error' })
+  if (!recipeToReturn) {
+    throw new AppError('Recipe not found', 404)
   }
+
+  return res.json(recipeToReturn)
 })
 
 recipeRouter.post(
   '/',
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
-    try {
-      const recipeToAdd: AddRecipe = req.body
-      const user = req.user
+    const recipeToAdd: AddRecipe = req.body
+    const user = req.user
 
-      if (!user) throw new Error('Not authenticated ')
+    if (!user) throw new AppError('Authentication required', 401)
 
-      const addedRecipe = await createRecipe(recipeToAdd, user)
+    const addedRecipe = await createRecipe(recipeToAdd, user)
 
-      return res.json(addedRecipe)
-    } catch (error) {
-      console.error('Transaction failed:', error)
-      res.status(500).json({ error: 'Failed to create full recipe' })
-    }
+    return res.json(addedRecipe)
   },
 )
 
-recipeRouter.put('/:id', async (req: Request, res: Response) => {})
+recipeRouter.put(
+  '/:id',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const recipeToUpdate: UpdateRecipe = req.body
+    const user = req.user
+
+    if (!user) throw new AppError('Authentication required', 401)
+
+    const updatedRecipe = await updateRecipe(recipeToUpdate, user)
+
+    return res.json(updatedRecipe)
+  },
+)
+
+export default recipeRouter

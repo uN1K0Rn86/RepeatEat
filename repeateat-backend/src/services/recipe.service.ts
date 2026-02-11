@@ -1,6 +1,11 @@
-import { sql } from 'drizzle-orm'
+import { sql, eq } from 'drizzle-orm'
 import { User } from 'better-auth/types'
-import { Recipe, AddRecipe, AddRecipeIngredient } from '@repeateat/shared'
+import {
+  Recipe,
+  AddRecipe,
+  AddRecipeIngredient,
+  UpdateRecipe,
+} from '@repeateat/shared'
 
 import db from '../db'
 import {
@@ -10,6 +15,9 @@ import {
   recipeCategory,
   recipeIngredient,
 } from '../db/schema'
+import { AppError } from '../utils/errors'
+
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
 // Recipes
 const getAllRecipes = async () => {
@@ -46,6 +54,34 @@ const getFullRecipe = async (id: number) => {
   return recipe
 }
 
+const insertRecipeIngredients = async (
+  tx: Transaction,
+  recipeId: number,
+  ingredients: AddRecipeIngredient[],
+) => {
+  const ingredientIds = await tx
+    .insert(ingredient)
+    .values(
+      ingredients.map((ing) => ({
+        name: ing.name,
+      })),
+    )
+    .onConflictDoUpdate({
+      target: ingredient.name,
+      set: { name: sql`excluded.name` },
+    })
+    .returning({ id: ingredient.id })
+
+  const ingredientsWithIds = ingredients.map((ing, index: number) => ({
+    recipeId,
+    ingredientId: ingredientIds[index].id,
+    quantity: ing.quantity,
+    unit: ing.unit,
+  }))
+
+  await tx.insert(recipeIngredient).values(ingredientsWithIds)
+}
+
 const createRecipe = async (recipeToAdd: AddRecipe, user: User) => {
   const { name, ingredients, steps, categories } = recipeToAdd
 
@@ -56,29 +92,7 @@ const createRecipe = async (recipeToAdd: AddRecipe, user: User) => {
       .returning()
 
     if (ingredients?.length > 0) {
-      const ingredientIds = await tx
-        .insert(ingredient)
-        .values(
-          ingredients.map((ing: AddRecipeIngredient) => ({
-            name: ing.name,
-          })),
-        )
-        .onConflictDoUpdate({
-          target: ingredient.name,
-          set: { name: sql`excluded.name` },
-        })
-        .returning({ id: ingredient.id })
-
-      const ingredientsWithIds = ingredients.map(
-        (ing: AddRecipeIngredient, index: number) => ({
-          recipeId: newRecipe.id,
-          ingredientId: ingredientIds[index].id,
-          quantity: ing.quantity,
-          unit: ing.unit,
-        }),
-      )
-
-      await tx.insert(recipeIngredient).values(ingredientsWithIds)
+      await insertRecipeIngredients(tx, newRecipe.id, ingredients)
     }
 
     if (steps?.length > 0) {
@@ -111,6 +125,63 @@ const createRecipe = async (recipeToAdd: AddRecipe, user: User) => {
   return addedRecipe
 }
 
+const updateRecipe = async (recipeToUpdate: UpdateRecipe, user: User) => {
+  const { name, id, authorId, ingredients, steps, categories } = recipeToUpdate
+
+  if (user.id !== authorId) {
+    throw new AppError('You can only edit your own recipes', 401)
+  }
+
+  const updatedRecipe = await db.transaction(async (tx) => {
+    // Update recipe table
+    await tx.update(recipe).set({ name: name })
+
+    // Delete old recipe ingredients from recipe ingredient table
+    await tx.delete(recipeIngredient).where(eq(recipeIngredient.recipeId, id))
+
+    // Insert new recipe ingredients
+    const newIngredients = ingredients.map((ing) => ({
+      quantity: ing.quantity,
+      unit: ing.unit,
+      name: ing.ingredient.name,
+    }))
+
+    if (ingredients?.length > 0) {
+      await insertRecipeIngredients(tx, id, newIngredients)
+    }
+
+    // Delete old recipe steps
+    await tx.delete(recipeStep).where(eq(recipeStep.recipeId, id))
+
+    // Insert new steps
+    if (steps?.length > 0) {
+      await tx.insert(recipeStep).values(
+        steps.map((s, index) => ({
+          recipeId: id,
+          content: s.content,
+          stepNumber: index + 1,
+        })),
+      )
+    }
+
+    // Delete old categories
+    await tx.delete(recipeCategory).where(eq(recipeCategory.recipeId, id))
+
+    // Insert new categories
+    if (categories?.length > 0) {
+      await tx.insert(recipeCategory).values(
+        categories.map((cat) => ({
+          recipeId: id,
+          categoryId: cat.categoryId,
+        })),
+      )
+    }
+
+    return recipeToUpdate
+  })
+  return updatedRecipe
+}
+
 // Ingredients
 const getAllIngredients = async () => {
   return await db.query.ingredient.findMany({
@@ -133,6 +204,7 @@ export {
   getAllRecipes,
   getFullRecipe,
   createRecipe,
+  updateRecipe,
   getAllIngredients,
   createIngredient,
   getCategories,

@@ -66,8 +66,6 @@ const RecipeDetailsView = () => {
     }
   }
 
-  console.log(recipe)
-
   return (
     <FormProvider {...methods}>
       <form

@@ -3,6 +3,7 @@ import cors from 'cors'
 import { toNodeHandler } from 'better-auth/node'
 
 import { auth } from './utils/auth'
+import { errorHandler } from './middleware/errorHandler'
 import userRouter from './routers/user'
 import recipeRouter from './routers/recipe'
 
@@ -24,5 +25,7 @@ app.get('/api/hello', (_req: Request, res: Response) => {
   console.log('Test')
   res.json({ message: 'Hello from backend again' })
 })
+
+app.use(errorHandler)
 
 export default app

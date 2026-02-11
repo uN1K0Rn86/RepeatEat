@@ -50,7 +50,9 @@ const IngredientsView = ({ editable }: IngredientProps) => {
               <td className="border px-2 py-2">
                 {editable ? (
                   <Input
-                    {...register(`ingredients.${index}.quantity`)}
+                    {...register(`ingredients.${index}.quantity`, {
+                      valueAsNumber: true,
+                    })}
                     className="text-xs sm:text-sm h-8"
                   />
                 ) : (

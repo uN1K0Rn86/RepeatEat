@@ -22,7 +22,7 @@ describe('Recipe-related endpoints', () => {
   })
 
   describe('post /', () => {
-    it('returns valid object with id, name, and authorId', async () => {
+    it('returns valid object with correct properties', async () => {
       const testEmail = 'test@example.com'
       const testPassword = 'password123'
       await request(app).post('/api/auth/sign-up/email').send({
@@ -54,6 +54,9 @@ describe('Recipe-related endpoints', () => {
       expect(response.body).toHaveProperty('id')
       expect(response.body).toHaveProperty('name')
       expect(response.body).toHaveProperty('authorId')
+      expect(response.body.ingredients).toHaveLength(2)
+      expect(response.body.steps).toHaveLength(2)
+      expect(response.body.categories).toHaveLength(2)
     })
   })
 
