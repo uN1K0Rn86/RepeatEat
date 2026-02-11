@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Trash2 } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { type UpdateRecipe } from '@repeateat/shared'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -11,15 +11,15 @@ interface IngredientProps {
 
 const IngredientsView = ({ editable }: IngredientProps) => {
   const { t } = useTranslation(['recipe', 'common'])
-  const { register, control } = useFormContext<UpdateRecipe>()
+  const { register, control, getValues } = useFormContext<UpdateRecipe>()
 
-  const { fields, remove } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: 'ingredients',
   })
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="flex flex-col w-full overflow-x-auto gap-2">
       <table className="w-full table-auto border-collapse mx-auto text-xs sm:text-sm md:text-base">
         <thead>
           <tr className="even:bg-muted m-0 border-t p-0">
@@ -86,6 +86,25 @@ const IngredientsView = ({ editable }: IngredientProps) => {
           ))}
         </tbody>
       </table>
+      {editable && (
+        <Button
+          className="w-full"
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            append({
+              ingredient: { name: '' },
+              quantity: 0,
+              unit: '',
+              recipeId: getValues('id'),
+            })
+          }
+        >
+          <Plus className="w-4 h-4 mr-1" />
+          {t('common:add')}
+        </Button>
+      )}
     </div>
   )
 }

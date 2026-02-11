@@ -65,6 +65,7 @@ const RecipeDetailsView = () => {
       console.error('Failed to edit recipe', error)
     }
   }
+  console.log(recipe)
 
   return (
     <FormProvider {...methods}>

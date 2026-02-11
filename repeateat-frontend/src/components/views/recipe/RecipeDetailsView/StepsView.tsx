@@ -72,7 +72,7 @@ const StepsView = ({ editable }: StepsProps) => {
       ))}
       {editable && (
         <Button
-          className="max-w-xs"
+          className="w-full"
           type="button"
           variant="outline"
           size="sm"
