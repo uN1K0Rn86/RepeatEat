@@ -60,7 +60,6 @@ describe('Recipe-related endpoints', () => {
   describe('get /ingredient', () => {
     it('returns correct amount of ingredients', async () => {
       const response = await request(app).get('/api/recipe/ingredient')
-      console.log(response)
       expect(response.body.length).toEqual(12)
     })
   })

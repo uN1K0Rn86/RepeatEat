@@ -35,7 +35,7 @@ const addRecipeIngredientSchema = recipeIngredientBaseSchema.extend({
 })
 
 const updateRecipeIngredientSchema = recipeIngredientBaseSchema.extend({
-  ingredientId: z.number().optional,
+  ingredientId: z.number().optional(),
   recipeId: z.number(),
   ingredient: z.object({
     name: z.string().min(2, 'Ingredient name must be at least 2 characters'),

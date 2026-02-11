@@ -45,7 +45,7 @@ const AddRecipeForm = () => {
     try {
       const newRecipe = await createRecipeMutation.mutateAsync(data)
       void navigate(`/recipe/${newRecipe.id}`)
-      notify.success('')
+      notify.success(`Recipe ${newRecipe.name} added`)
     } catch (error) {
       console.error('Submission failed: ', error)
     }

@@ -5,6 +5,7 @@ import type {
   Category,
   FullRecipe,
   RecipeResponse,
+  UpdateRecipe,
 } from '@repeateat/shared'
 
 const baseUrl = '/api/recipe'
@@ -19,9 +20,19 @@ const createRecipe = async (newRecipe: AddRecipe): Promise<RecipeResponse> => {
   return response.data
 }
 
+const editRecipe = async (
+  recipeToEdit: UpdateRecipe,
+): Promise<RecipeResponse> => {
+  const response = await axios.put<RecipeResponse>(
+    `${baseUrl}/${recipeToEdit.id}`,
+    recipeToEdit,
+  )
+  return response.data
+}
+
 const getCategories = async (): Promise<Category[]> => {
   const { data } = await axios.get<Category[]>(`${baseUrl}/category`)
   return data
 }
 
-export default { getRecipeDetails, createRecipe, getCategories }
+export default { getRecipeDetails, createRecipe, editRecipe, getCategories }

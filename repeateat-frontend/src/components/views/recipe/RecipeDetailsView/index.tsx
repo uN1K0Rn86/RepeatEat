@@ -21,6 +21,8 @@ import {
   type UpdateRecipe,
 } from '@repeateat/shared'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { notify } from '@/utils/notify'
+import { useEditRecipe } from '@/hooks/useEditRecipe'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
@@ -28,6 +30,7 @@ const RecipeDetailsView = () => {
   const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common'])
   const { user } = useBoundStore()
+  const editRecipeMutation = useEditRecipe()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
     'ingredients',
@@ -48,8 +51,19 @@ const RecipeDetailsView = () => {
 
   const recipe: FullRecipe = data
 
-  const onSave = (formData: UpdateRecipe) => {
+  const onSave = async (formData: UpdateRecipe) => {
     console.log('Saving recipe', formData)
+    if (!user || (user && user.id !== recipe.authorId)) {
+      notify.error('Not authorized to edit recipe')
+    }
+
+    try {
+      const updatedRecipe = await editRecipeMutation.mutateAsync(formData)
+      setIsEditable(false)
+      notify.success(`Recipe ${updatedRecipe.name} updated`)
+    } catch (error) {
+      console.error('Failed to edit recipe', error)
+    }
   }
 
   console.log(recipe)
