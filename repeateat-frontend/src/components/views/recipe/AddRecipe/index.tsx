@@ -31,7 +31,6 @@ const AddRecipeForm = () => {
     resolver: zodResolver(addRecipeSchema),
     defaultValues: {
       name: '',
-      private: false,
       ingredients: [],
       steps: [],
       categories: [],

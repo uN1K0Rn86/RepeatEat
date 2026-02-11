@@ -84,7 +84,6 @@ const recipeCategoryWithNameSchema = recipeCategorySchema.extend({
 // Recipes
 const recipeBaseSchema = z.object({
   name: z.string().min(2, 'Name is required'),
-  private: z.boolean(),
 })
 
 export const recipeDbSchema = recipeBaseSchema.extend({
