@@ -17,4 +17,4 @@
 | 2026-02-05 | Continue add recipe form, convert to using single endpoint, update tests etc.          | 7h   | 65h             |
 | 2026-02-06 | Routes for single recipe and start on frontend view                                    | 3h   | 68h             |
 | 2026-02-09 | Add single recipe view, work on making editable                                        | 7h   | 76h             |
-| 2026-02-11 | Refactor recipe router, move db logic to separate service, put route for recipes, etc. | 4.5h | 80.5h           |
+| 2026-02-11 | Refactor recipe router, move db logic to separate service, put route for recipes, etc. | 6h   | 82h             |

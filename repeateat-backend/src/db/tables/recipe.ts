@@ -14,7 +14,7 @@ export const recipe = pgTable('recipe', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   authorId: text().references(() => user.id),
-  private: boolean().default(false),
+  private: boolean().notNull().default(false),
 })
 
 export const ingredient = pgTable('ingredient', {
