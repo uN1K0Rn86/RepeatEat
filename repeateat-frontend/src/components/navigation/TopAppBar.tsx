@@ -48,7 +48,7 @@ const TopAppBar = () => {
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuSeparator />
-            {pageTitle === 'recipes' && <RecipeDropdownMenu />}
+            <RecipeDropdownMenu />
           </DropdownMenuContent>
         </DropdownMenu>
         <h1 className="font-bold">{t(`common:${pageTitle}`)}</h1>
