@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { Field, FieldGroup, FieldLegend } from '@/components/ui/field'
 import { Button } from '@/components/ui/button'
 import { Plus, Trash2 } from 'lucide-react'
-import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 
 import { type AddRecipe } from '@repeateat/shared'
 import { getFieldError } from '@/utils/form'
@@ -34,7 +34,7 @@ const StepAdder = () => {
               {index + 1}.
             </span>
             <div className="flex-1">
-              <Input
+              <Textarea
                 className="w-full"
                 {...register(`steps.${index}.content`)}
                 placeholder={t('recipe:step_content')}
@@ -51,7 +51,7 @@ const StepAdder = () => {
                 variant="ghost"
                 onClick={() => remove(index)}
               >
-                <Trash2 className="w-4 h-4 text-muted-foreground" />
+                <Trash2 className="w-4 h-4 text-destructive" />
               </Button>
             </div>
           </div>
@@ -59,7 +59,7 @@ const StepAdder = () => {
       })}
       <Field>
         <Button
-          className="max-w-xs"
+          className="w-full"
           type="button"
           variant="outline"
           size="sm"
