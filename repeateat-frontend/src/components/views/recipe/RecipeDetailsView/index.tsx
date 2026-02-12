@@ -13,6 +13,7 @@ import ViewPicker from './ViewPicker'
 import IngredientsView from './IngredientsView'
 import StepsView from './StepsView'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { useTranslation } from 'react-i18next'
 import { useForm, FormProvider } from 'react-hook-form'
 import {
@@ -75,7 +76,18 @@ const RecipeDetailsView = () => {
       >
         <Card className="w-full sm:max-w-md">
           <CardHeader className="flex flex-row justify-between">
-            <CardTitle>{recipe.name}</CardTitle>
+            {isEditable ? (
+              <CardTitle>
+                <Input
+                  {...methods.register('name')}
+                  className="text-xs sm:text-sm h-8"
+                  placeholder={recipe.name}
+                />
+              </CardTitle>
+            ) : (
+              <CardTitle>{recipe.name}</CardTitle>
+            )}
+
             {user && user.id === recipe.authorId && (
               <Button onClick={() => setIsEditable(!isEditable)} type="button">
                 {t('common:edit')}

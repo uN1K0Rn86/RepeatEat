@@ -9,3 +9,10 @@ export const useRecipe = (recipeId: string) => {
     queryFn: () => recipeService.getRecipeDetails(recipeId),
   })
 }
+
+export const useAllRecipes = () => {
+  return useQuery<FullRecipe[]>({
+    queryKey: ['recipes'],
+    queryFn: () => recipeService.getAllRecipes(),
+  })
+}

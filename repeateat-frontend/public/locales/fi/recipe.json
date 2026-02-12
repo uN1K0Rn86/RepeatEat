@@ -11,5 +11,6 @@
   "categories": "Kategoriat",
   "recipe_added": "Resepti lisätty",
   "quantity": "Määrä",
-  "unit": "Yksikkö"
+  "unit": "Yksikkö",
+  "private_recipe": "Yksityinen resepti"
 }

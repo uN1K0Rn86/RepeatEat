@@ -134,7 +134,7 @@ const updateRecipe = async (recipeToUpdate: UpdateRecipe, user: User) => {
 
   const updatedRecipe = await db.transaction(async (tx) => {
     // Update recipe table
-    await tx.update(recipe).set({ name: name })
+    await tx.update(recipe).set({ name: name }).where(eq(recipe.id, id))
 
     // Delete old recipe ingredients from recipe ingredient table
     await tx.delete(recipeIngredient).where(eq(recipeIngredient.recipeId, id))

@@ -11,5 +11,6 @@
   "categories": "Categories",
   "recipe_added": "Recipe added successfully",
   "quantity": "Quantity",
-  "unit": "Unit"
+  "unit": "Unit",
+  "private_recipe": "Private recipe"
 }

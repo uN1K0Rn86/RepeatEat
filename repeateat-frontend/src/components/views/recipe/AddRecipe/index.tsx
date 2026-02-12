@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { useBoundStore } from '@/store'
@@ -20,6 +20,7 @@ import { useCreateRecipe } from '@/hooks/useCreateRecipe'
 import { useNavigate } from 'react-router-dom'
 import { notify } from '@/utils/notify'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const AddRecipeForm = () => {
   const { user, setPageTitle } = useBoundStore()
@@ -34,6 +35,7 @@ const AddRecipeForm = () => {
       ingredients: [],
       steps: [],
       categories: [],
+      private: false,
     },
   })
 
@@ -77,6 +79,29 @@ const AddRecipeForm = () => {
               />
               <FieldError>{methods.formState.errors.name?.message}</FieldError>
             </Field>
+            <div className="flex flex-row gap-2">
+              <div className="flex items-center">
+                <Controller
+                  control={methods.control}
+                  name="private"
+                  render={({ field }) => (
+                    <Checkbox
+                      id="recipe-private"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+              <div className="space-y-1 leading-none">
+                <FieldLabel
+                  htmlFor="recipe-private"
+                  className="text-sm font-medium"
+                >
+                  {t('recipe:private_recipe')}
+                </FieldLabel>
+              </div>
+            </div>
 
             <IngredientPicker />
             <StepAdder />

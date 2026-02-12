@@ -15,6 +15,11 @@ const getRecipeDetails = async (recipeId: string): Promise<FullRecipe> => {
   return response.data
 }
 
+const getAllRecipes = async (): Promise<FullRecipe[]> => {
+  const response = await axios.get<FullRecipe[]>(baseUrl)
+  return response.data
+}
+
 const createRecipe = async (newRecipe: AddRecipe): Promise<RecipeResponse> => {
   const response = await axios.post<RecipeResponse>(baseUrl, newRecipe)
   return response.data
@@ -35,4 +40,10 @@ const getCategories = async (): Promise<Category[]> => {
   return data
 }
 
-export default { getRecipeDetails, createRecipe, editRecipe, getCategories }
+export default {
+  getRecipeDetails,
+  getAllRecipes,
+  createRecipe,
+  editRecipe,
+  getCategories,
+}
