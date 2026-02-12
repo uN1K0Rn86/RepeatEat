@@ -5,16 +5,23 @@ import { Button } from '../ui/button'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuItem,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Menu } from 'lucide-react'
 import RecipeDropdownMenu from './RecipeDropdownMenu'
-import ThemeToggle from '../ThemeToggle'
 import { useTranslation } from 'react-i18next'
 import UserDropdownMenu from './UserDropdownMenu'
+import { useTheme } from '@/hooks/useTheme'
 
 const TopAppBar = () => {
   const { user, pageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify'])
+  const { setTheme } = useTheme()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b">
@@ -25,7 +32,24 @@ const TopAppBar = () => {
               <Menu />
             </Button>
           </DropdownMenuTrigger>
-          {pageTitle === 'recipes' && <RecipeDropdownMenu />}
+          <DropdownMenuContent className="w-56" align="start" forceMount>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onClick={() => setTheme('light')}>
+                  Light
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('dark')}>
+                  Dark
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme('system')}>
+                  System
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            {pageTitle === 'recipes' && <RecipeDropdownMenu />}
+          </DropdownMenuContent>
         </DropdownMenu>
         <h1 className="font-bold">{t(`common:${pageTitle}`)}</h1>
 
@@ -41,7 +65,6 @@ const TopAppBar = () => {
             </Button>
           </div>
         )}
-        <ThemeToggle />
       </div>
     </header>
   )
