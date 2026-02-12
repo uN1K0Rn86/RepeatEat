@@ -60,7 +60,7 @@ const IngredientsTable = ({ fields, editable, remove }: TableProps) => {
             </td>
             <td className="border px-2 py-2">
               {editable ? (
-                <div className="flex flex-row">
+                <div className="flex flex-row gap-1 items-center">
                   <Input
                     {...register(`ingredients.${index}.unit`)}
                     className="text-xs sm:text-sm h-8"

@@ -49,7 +49,11 @@ const StepAdder = () => {
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => remove(index)}
+                onClick={() => {
+                  if (window.confirm(t('common:confirm_delete'))) {
+                    remove(index)
+                  }
+                }}
               >
                 <Trash2 className="w-4 h-4 text-destructive" />
               </Button>
