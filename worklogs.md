@@ -19,3 +19,4 @@
 | 2026-02-09 | Add single recipe view, work on making editable                                                                           | 7h   | 76h             |
 | 2026-02-11 | Refactor recipe router, move db logic to separate service, put route for recipes, make frontend more mobile friendly etc. | 7h   | 83h             |
 | 2026-02-12 | Refactor add recipe form, start on all recipes page. Fix bug where editing changed name of all recipes                    | 3h   | 86h             |
+| 2026-02-13 | Add recipe search                                                                                                         | 0.5h | 86.5h           |
