@@ -24,7 +24,11 @@ const getAllRecipes = async () => {
   const allRecipes: Recipe[] = await db.query.recipe.findMany({
     where: (recipe, { eq }) => eq(recipe.private, false),
     with: {
-      ingredients: true,
+      ingredients: {
+        with: {
+          ingredient: true,
+        },
+      },
       steps: true,
       categories: true,
     },

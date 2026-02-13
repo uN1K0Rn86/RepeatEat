@@ -1,5 +1,6 @@
 import request from 'supertest'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
+import { RecipeIngredientWithName, RecipeStep } from '@repeateat/shared'
 
 import app from '../app'
 
@@ -61,14 +62,14 @@ describe('Recipe-related endpoints', () => {
     })
   })
 
-  describe('get /ingredient', () => {
+  describe('GET /ingredient', () => {
     it('returns correct amount of ingredients', async () => {
       const response = await request(app).get('/api/recipe/ingredient')
       expect(response.body.length).toEqual(12)
     })
   })
 
-  describe('post /ingredient', () => {
+  describe('POST /ingredient', () => {
     it('returns a valid object with id and name', async () => {
       const ingredientToPost = {
         name: 'Cauliflower',
@@ -82,10 +83,109 @@ describe('Recipe-related endpoints', () => {
     })
   })
 
-  describe('get /category', () => {
+  describe('GET /category', () => {
     it('returns a valid array of categories with ids and names', async () => {
       const response = await request(app).get('/api/recipe/category')
       expect(response.body.length).toBe(6)
+    })
+  })
+
+  describe('PUT /:id', () => {
+    let recipeToUpdate: any
+    let otherRecipes: any
+    let authCookie: string[] | undefined
+
+    beforeAll(async () => {
+      const loginResponse = await request(app)
+        .post('/api/auth/sign-in/email')
+        .send({ email: 'test@example.com', password: 'password123' })
+
+      authCookie = loginResponse.get('Set-Cookie')
+
+      const response = await request(app).get('/api/recipe')
+      recipeToUpdate = response.body[0]
+      otherRecipes = response.body.slice(1)
+    })
+
+    it('changes recipe name when edited', async () => {
+      const payload = { ...recipeToUpdate, name: 'Not Korma' }
+
+      const response = await request(app)
+        .put(`/api/recipe/${recipeToUpdate.id}`)
+        .set('Cookie', authCookie!)
+        .send(payload)
+      const updatedRecipe = response.body
+
+      expect(updatedRecipe.name).toBe('Not Korma')
+    })
+
+    it('does not change other recipes', async () => {
+      const payload = { ...recipeToUpdate, name: 'Not Korma' }
+
+      await request(app)
+        .put(`/api/recipe/${recipeToUpdate.id}`)
+        .set('Cookie', authCookie!)
+        .send(payload)
+
+      const newResponse = await request(app).get('/api/recipe')
+      const newOtherRecipes = newResponse.body.slice(1)
+      expect(otherRecipes).toEqual(newOtherRecipes)
+    })
+
+    it('changes ingredient when edited', async () => {
+      const indexToChange = 0
+      const payload = {
+        ...recipeToUpdate,
+        ingredients: recipeToUpdate.ingredients.map(
+          (ing: RecipeIngredientWithName, i: number) =>
+            i === indexToChange
+              ? {
+                  ...ing,
+                  ingredient: {
+                    ...ing.ingredient,
+                    name: 'Tomato',
+                  },
+                  quantity: 2,
+                  unit: 'pcs',
+                }
+              : ing,
+        ),
+      }
+
+      const response = await request(app)
+        .put(`/api/recipe/${recipeToUpdate.id}`)
+        .set('Cookie', authCookie!)
+        .send(payload)
+      const updatedIngredients = response.body.ingredients
+
+      expect(updatedIngredients[0].ingredient.name).toEqual('Tomato')
+      expect(updatedIngredients[0].quantity).toEqual(2)
+      expect(updatedIngredients[0].unit).toEqual('pcs')
+    })
+
+    it('changes step content when edited', async () => {
+      const indexToChange = 1
+      console.log(recipeToUpdate)
+
+      const payload = {
+        ...recipeToUpdate,
+        steps: recipeToUpdate.steps.map((step: RecipeStep, i: number) =>
+          i === indexToChange
+            ? {
+                ...step,
+                content: 'Dont chop tofu',
+              }
+            : step,
+        ),
+      }
+
+      const response = await request(app)
+        .put(`/api/recipe/${recipeToUpdate.id}`)
+        .set('Cookie', authCookie!)
+        .send(payload)
+      const updatedsteps = response.body.steps
+
+      expect(updatedsteps[1].content).toEqual('Dont chop tofu')
     })
   })
 })

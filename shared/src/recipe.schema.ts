@@ -11,9 +11,6 @@ export const ingredientSchema = ingredientBaseSchema.extend({
   id: z.number().int().positive(),
 })
 
-export type Ingredient = z.infer<typeof ingredientSchema>
-export type AddIngredient = z.infer<typeof addIngredientSchema>
-
 // Recipe Ingredients
 
 const recipeIngredientBaseSchema = z.object({
@@ -131,6 +128,13 @@ export type AddRecipe = z.infer<typeof addRecipeSchema>
 export type RecipeResponse = z.infer<typeof recipeResponseSchema>
 export type UpdateRecipe = z.infer<typeof updateRecipeSchema>
 
+export type Ingredient = z.infer<typeof ingredientSchema>
+export type AddIngredient = z.infer<typeof addIngredientSchema>
 export type AddRecipeIngredient = z.infer<typeof addRecipeIngredientSchema>
+export type RecipeIngredientWithName = z.infer<
+  typeof recipeIngredientWithNameSchema
+>
+
+export type RecipeStep = z.infer<typeof recipeStepSchema>
 
 export type Category = z.infer<typeof categorySchema>

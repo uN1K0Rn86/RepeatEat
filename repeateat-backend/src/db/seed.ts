@@ -55,6 +55,7 @@ export async function seed() {
       .values({
         name: `Recipe #${i}: ${['Pasta', 'Tacos', 'Cake', 'Salad', 'Soup'][i % 5]}`,
         authorId: authorId,
+        private: false,
       })
       .returning()
 
