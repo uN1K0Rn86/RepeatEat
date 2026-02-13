@@ -187,6 +187,16 @@ const updateRecipe = async (recipeToUpdate: UpdateRecipe, user: User) => {
   return updatedRecipe
 }
 
+const deleteRecipe = async (recipeToDelete: UpdateRecipe, user: User) => {
+  const { id, authorId } = recipeToDelete
+
+  if (user.id !== authorId) {
+    throw new AppError('You can only delete your own recipes', 401)
+  }
+
+  return await db.delete(recipe).where(eq(recipe.id, id)).returning()
+}
+
 // Ingredients
 const getAllIngredients = async () => {
   return await db.query.ingredient.findMany({
@@ -210,6 +220,7 @@ export {
   getFullRecipe,
   createRecipe,
   updateRecipe,
+  deleteRecipe,
   getAllIngredients,
   createIngredient,
   getCategories,

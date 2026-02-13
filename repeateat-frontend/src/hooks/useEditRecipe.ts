@@ -11,7 +11,6 @@ export const useEditRecipe = () => {
       return recipeService.editRecipe(recipeToEdit)
     },
     onSuccess: async (data) => {
-      console.log('Recipe edited')
       await queryClient.invalidateQueries({
         queryKey: ['recipe', data.id.toString()],
       })

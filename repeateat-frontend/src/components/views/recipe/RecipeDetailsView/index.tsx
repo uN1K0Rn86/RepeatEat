@@ -53,7 +53,6 @@ const RecipeDetailsView = () => {
   const recipe: FullRecipe = data
 
   const onSave = async (formData: UpdateRecipe) => {
-    console.log('Saving recipe', formData)
     if (!user || (user && user.id !== recipe.authorId)) {
       notify.error('Not authorized to edit recipe')
     }

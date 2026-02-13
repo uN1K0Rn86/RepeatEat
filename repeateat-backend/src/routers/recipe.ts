@@ -10,6 +10,7 @@ import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import {
   createIngredient,
   createRecipe,
+  deleteRecipe,
   getAllIngredients,
   getAllRecipes,
   getCategories,
@@ -88,6 +89,21 @@ recipeRouter.put(
     const updatedRecipe = await updateRecipe(recipeToUpdate, user)
 
     return res.json(updatedRecipe)
+  },
+)
+
+recipeRouter.delete(
+  '/:id',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const recipeToDelete: UpdateRecipe = req.body
+    const user = req.user
+
+    if (!user) throw new AppError('Authentication required', 401)
+
+    const deletedRecipe = await deleteRecipe(recipeToDelete, user)
+
+    return res.status(204).json(deletedRecipe)
   },
 )
 
