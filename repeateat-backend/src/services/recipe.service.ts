@@ -22,6 +22,7 @@ export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 // Recipes
 const getAllRecipes = async () => {
   const allRecipes: Recipe[] = await db.query.recipe.findMany({
+    where: (recipe, { eq }) => eq(recipe.private, false),
     with: {
       ingredients: true,
       steps: true,

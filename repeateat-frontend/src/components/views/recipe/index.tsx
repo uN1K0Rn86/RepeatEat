@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/input-group'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useTranslation } from 'react-i18next'
-import { Search } from 'lucide-react'
+import { ArrowRight, Search } from 'lucide-react'
 import { useAllRecipes } from '@/hooks/useRecipe'
 import type { FullRecipe } from '@repeateat/shared'
 import { Link } from 'react-router-dom'
@@ -51,11 +51,25 @@ const RecipeView = () => {
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {searchRecipes.map((r) => (
-            <div key={r.id} className="border rounded-sm p-2">
-              <Link to={`/recipe/${r.id}`} className="font-bold">
-                {r.name}
-              </Link>
-            </div>
+            <Link
+              key={r.id}
+              to={`/recipe/${r.id}`}
+              className="flex items-center justify-between border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
+            >
+              <div className="flex flex-col gap-1">
+                <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                  {r.name}
+                </span>
+
+                <span className="text-xs text-muted-foreground">
+                  {t('recipe:view_details')}
+                </span>
+              </div>
+
+              <div className="text-muted-foreground group-hover:translate-x-1 transition-transform">
+                <ArrowRight />
+              </div>
+            </Link>
           ))}
         </CardContent>
       </Card>

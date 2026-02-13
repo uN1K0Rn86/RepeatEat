@@ -12,5 +12,6 @@
   "recipe_added": "Recipe added successfully",
   "quantity": "Quantity",
   "unit": "Unit",
-  "private_recipe": "Private recipe"
+  "private_recipe": "Private recipe",
+  "view_details": "View details"
 }

@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest'
 import app from '../app'
 
 describe('Recipe-related endpoints', () => {
-  describe('get /', () => {
+  describe('GET /', () => {
     it('returns correct amount of recipes', async () => {
       const response = await request(app).get('/api/recipe')
       expect(response.body.length).toEqual(10)
@@ -21,7 +21,7 @@ describe('Recipe-related endpoints', () => {
     })
   })
 
-  describe('post /', () => {
+  describe('POST /', () => {
     it('returns valid object with correct properties', async () => {
       const testEmail = 'test@example.com'
       const testPassword = 'password123'
@@ -45,6 +45,7 @@ describe('Recipe-related endpoints', () => {
         ],
         steps: [{ content: 'Cook rice' }, { content: 'Chop tofu' }],
         categories: [1, 3],
+        private: false,
       }
 
       const response = await request(app)
