@@ -12,8 +12,5 @@ export const useCreateRecipe = () => {
       if (!user) throw new Error('User not found')
       return recipeService.createRecipe(newRecipe)
     },
-    onSuccess: () => {
-      console.log('Recipe created')
-    },
   })
 }

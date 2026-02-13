@@ -19,5 +19,6 @@
   "edit": "Muokkaa",
   "save": "Tallenna",
   "confirm_delete": "Oletko varma että haluat poistaa?",
-  "search": "Etsi"
+  "search": "Etsi",
+  "delete": "Poista"
 }

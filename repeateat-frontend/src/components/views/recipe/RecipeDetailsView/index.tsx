@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useRecipe } from '@/hooks/useRecipe'
 import { useEffect, useState } from 'react'
 import { useBoundStore } from '@/store'
@@ -24,14 +24,16 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
+import recipeService from '@/services/recipes'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, error } = useRecipe(id || '')
   const { setPageTitle } = useBoundStore()
-  const { t } = useTranslation(['common'])
+  const { t } = useTranslation(['common', 'notify', 'recipe'])
   const { user } = useBoundStore()
   const editRecipeMutation = useEditRecipe()
+  const navigate = useNavigate()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
     'ingredients',
@@ -60,9 +62,24 @@ const RecipeDetailsView = () => {
     try {
       const updatedRecipe = await editRecipeMutation.mutateAsync(formData)
       setIsEditable(false)
-      notify.success(`Recipe ${updatedRecipe.name} updated`)
-    } catch (error) {
-      console.error('Failed to edit recipe', error)
+      notify.success(
+        t('notify:update_recipe', { recipeName: updatedRecipe.name }),
+      )
+    } catch {
+      notify.error(t('notify:update_recipe_failed'))
+    }
+  }
+
+  const onDelete = async (id: number) => {
+    if (!window.confirm(t('recipe:confirm_del'))) return
+
+    try {
+      await recipeService.deleteRecipe(id)
+      notify.success(t('notify:recipe_deleted'))
+      void navigate('/recipe')
+    } catch (err) {
+      notify.error(t('notify:recipe_del_failed'))
+      console.error(err)
     }
   }
 
@@ -87,9 +104,21 @@ const RecipeDetailsView = () => {
             )}
 
             {user && user.id === recipe.authorId && (
-              <Button onClick={() => setIsEditable(!isEditable)} type="button">
-                {t('common:edit')}
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => onDelete(recipe.id)}
+                >
+                  {t('common:delete')}
+                </Button>
+                <Button
+                  onClick={() => setIsEditable(!isEditable)}
+                  type="button"
+                >
+                  {t('common:edit')}
+                </Button>
+              </div>
             )}
           </CardHeader>
           <CardContent>

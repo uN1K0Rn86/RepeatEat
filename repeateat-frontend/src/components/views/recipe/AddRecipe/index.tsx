@@ -44,7 +44,6 @@ const AddRecipeForm = () => {
   }, [setPageTitle])
 
   const onSubmit = async (data: AddRecipe) => {
-    console.log('Adding recipe:', data)
     try {
       const newRecipe = await createRecipeMutation.mutateAsync(data)
       void navigate(`/recipe/${newRecipe.id}`)

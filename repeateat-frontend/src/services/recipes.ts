@@ -35,6 +35,11 @@ const editRecipe = async (
   return response.data
 }
 
+const deleteRecipe = async (recipeId: number): Promise<number> => {
+  const response = await axios.delete<void>(`${baseUrl}/${recipeId}`)
+  return response.status
+}
+
 const getCategories = async (): Promise<Category[]> => {
   const { data } = await axios.get<Category[]>(`${baseUrl}/category`)
   return data
@@ -45,5 +50,6 @@ export default {
   getAllRecipes,
   createRecipe,
   editRecipe,
+  deleteRecipe,
   getCategories,
 }

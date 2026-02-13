@@ -1,4 +1,8 @@
 {
   "login": "Käyttäjä {{username}} kirjattu sisään",
-  "logout": "Käyttäjä {{username}} kirjattu ulos"
+  "logout": "Käyttäjä {{username}} kirjattu ulos",
+  "update_recipe": "Resepti {{recipeName}} päivitetty",
+  "update_recipe_failed": "Reseptin päivitys epäonnistui",
+  "recipe_deleted": "Resepti poistettu",
+  "recipe_del_failed": "Reseptin poisto epäonnistui"
 }

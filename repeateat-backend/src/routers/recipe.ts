@@ -96,14 +96,14 @@ recipeRouter.delete(
   '/:id',
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
-    const recipeToDelete: UpdateRecipe = req.body
+    const recipeId = Number(req.params.id)
     const user = req.user
 
     if (!user) throw new AppError('Authentication required', 401)
 
-    const deletedRecipe = await deleteRecipe(recipeToDelete, user)
+    await deleteRecipe(recipeId, user.id)
 
-    return res.status(204).json(deletedRecipe)
+    return res.status(204).send()
   },
 )
 
