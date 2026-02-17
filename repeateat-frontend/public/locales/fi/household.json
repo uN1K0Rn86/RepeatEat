@@ -4,5 +4,7 @@
   "make_admin": "Tee valvojaksi",
   "leave_household": "Poistu kotitaloudesta",
   "kick": "Poista kotitaloudesta",
-  "admin": "Valvoja"
+  "admin": "Valvoja",
+  "invite": "Kutsu",
+  "invite_to_household": "Kutsu kotitalouteen"
 }

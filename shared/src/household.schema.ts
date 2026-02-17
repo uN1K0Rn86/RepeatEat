@@ -1,14 +1,14 @@
 import { z } from 'zod'
 
-const householdBaseSchema = z.object({
+export const householdBaseSchema = z.object({
   name: z.string().min(2, 'Name is required'),
 })
 
-const householdResponseSchema = householdBaseSchema.extend({
+export const householdResponseSchema = householdBaseSchema.extend({
   id: z.number(),
 })
 
-const householdMembersSchema = z.object({
+export const householdMembersSchema = z.object({
   id: z.string(),
   name: z.string().nullable(),
   email: z.email(),
@@ -16,11 +16,15 @@ const householdMembersSchema = z.object({
   image: z.string().nullable(),
 })
 
-const userHouseholdSchema = z.object({
+export const userHouseholdSchema = z.object({
   householdId: z.number(),
   name: z.string(),
   role: z.enum(['admin', 'member']),
   members: z.array(householdMembersSchema),
+})
+
+export const inviteSchema = z.object({
+  email: z.email('errors:invalid_email'),
 })
 
 export type UserHousehold = z.infer<typeof userHouseholdSchema>

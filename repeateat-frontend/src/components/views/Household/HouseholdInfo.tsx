@@ -11,6 +11,7 @@ import { Home } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useBoundStore } from '@/store'
 import { Badge } from '@/components/ui/badge'
+import AddMemberForm from './AddMemberForm'
 
 export interface InfoProps {
   household: UserHousehold
@@ -29,8 +30,10 @@ const HouseholdInfo = ({ household }: InfoProps) => {
         </div>
         <Separator />
         <AccordionItem value="members">
-          <AccordionTrigger>{t('household:members')}</AccordionTrigger>
-          <AccordionContent>
+          <AccordionTrigger className="font-bold">
+            {t('household:members')}
+          </AccordionTrigger>
+          <AccordionContent className="flex flex-col gap-3">
             {user &&
               household.members.map((m: HouseholdMember) => {
                 const self = user.id === m.id
@@ -46,10 +49,13 @@ const HouseholdInfo = ({ household }: InfoProps) => {
                   </div>
                 )
               })}
+            {household.role === 'admin' && <AddMemberForm />}
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="recipes">
-          <AccordionTrigger>{t('common:recipes')}</AccordionTrigger>
+          <AccordionTrigger className="font-bold">
+            {t('common:recipes')}
+          </AccordionTrigger>
           <AccordionContent></AccordionContent>
         </AccordionItem>
       </Accordion>

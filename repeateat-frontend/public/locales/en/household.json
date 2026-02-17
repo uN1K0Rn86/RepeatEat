@@ -4,5 +4,7 @@
   "make_admin": "Make admin",
   "leave_household": "Leave household",
   "kick": "Kick from household",
-  "admin": "Admin"
+  "admin": "Admin",
+  "invite": "Invite",
+  "invite_to_household": "Invite to household"
 }
