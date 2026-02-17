@@ -12,8 +12,10 @@ import NotificationList from './components/NotificationList'
 import TopAppBar from './components/navigation/TopAppBar'
 import AddRecipeForm from './components/views/recipe/AddRecipe'
 import RecipeDetailsView from './components/views/recipe/RecipeDetailsView'
+import HouseholdView from './components/views/Household'
 
 const App = () => {
+  const { user } = useBoundStore()
   useEffect(() => {
     void useBoundStore.getState().checkAuth()
   }, [])
@@ -26,7 +28,7 @@ const App = () => {
         <NotificationList />
 
         <Routes>
-          <Route path="/" element={<HomeView />} />
+          <Route path="/" element={user ? <HouseholdView /> : <HomeView />} />
           <Route path="/recipe" element={<RecipeView />} />
           <Route path="/recipe/:id" element={<RecipeDetailsView />} />
           <Route path="/recipe/add" element={<AddRecipeForm />} />
