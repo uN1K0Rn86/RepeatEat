@@ -26,7 +26,7 @@ const HouseholdSelector = ({ userHouseholds }: SelectorProps) => {
               }
               onClick={() => setActiveHouseholdId(h.householdId)}
             >
-              {h.household.name}
+              {h.name}
             </Button>
           </div>
         ))}

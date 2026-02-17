@@ -1,3 +1,5 @@
 {
-  "select_household": "Select household"
+  "select_household": "Select household",
+  "members": "Members",
+  "make_admin": "Make admin"
 }

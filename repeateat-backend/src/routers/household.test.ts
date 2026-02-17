@@ -59,7 +59,7 @@ describe('Household-related endpoints', () => {
       const userHouseholds = userHouseholdsResponse.body
 
       expect(userHouseholds.length).toEqual(2)
-      expect(userHouseholds[0].household.name).toEqual('Mekhar')
+      expect(userHouseholds[0].name).toEqual('Mekhar')
     })
   })
 })

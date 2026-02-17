@@ -1,3 +1,5 @@
 {
-  "select_household": "Valitse kotitalous"
+  "select_household": "Valitse kotitalous",
+  "members": "Jäsenet",
+  "make_admin": "Tee valvojaksi"
 }

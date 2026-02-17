@@ -20,5 +20,7 @@
   "save": "Tallenna",
   "confirm_delete": "Oletko varma että haluat poistaa?",
   "search": "Etsi",
-  "delete": "Poista"
+  "delete": "Poista",
+  "open_menu": "Avaa valikko",
+  "actions": "Toiminnot"
 }

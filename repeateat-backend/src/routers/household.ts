@@ -32,10 +32,4 @@ householdRouter.get(
   },
 )
 
-householdRouter.get(
-  '/:id',
-  isAuthenticated,
-  async (req: AuthRequest, res: Response) => {},
-)
-
 export default householdRouter

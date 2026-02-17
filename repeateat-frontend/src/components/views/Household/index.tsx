@@ -22,13 +22,17 @@ const HouseholdView = () => {
   const userHouseholds: UserHousehold[] = data
   console.log(userHouseholds)
 
+  const activeHousehold = userHouseholds.find(
+    (h) => h.householdId === activeHouseholdId,
+  )
+
   return (
     <Card>
       <CardHeader>
         <HouseholdSelector userHouseholds={userHouseholds} />
       </CardHeader>
       <CardContent>
-        {activeHouseholdId && <HouseholdInfo householdId={activeHouseholdId} />}
+        {activeHousehold && <HouseholdInfo household={activeHousehold} />}
       </CardContent>
     </Card>
   )

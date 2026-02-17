@@ -19,13 +19,33 @@ const createHousehold = async (name: string, user: User) => {
 }
 
 const getUserHouseholds = async (userId: string) => {
-  const userHouseholds = db.query.householdUser.findMany({
-    where: (householdUser, { eq }) => eq(householdUser.userId, userId),
+  const results = await db.query.householdUser.findMany({
+    where: (hu, { eq }) => eq(hu.userId, userId),
     with: {
-      household: true,
+      household: {
+        with: {
+          users: {
+            with: {
+              user: true,
+            },
+          },
+        },
+      },
     },
   })
 
+  const userHouseholds = results.map((row) => ({
+    householdId: row.householdId,
+    role: row.role,
+    name: row.household.name,
+    members: row.household.users.map((u) => ({
+      id: u.user.id,
+      name: u.user.name,
+      email: u.user.email,
+      role: u.role,
+      image: u.user.image,
+    })),
+  }))
   return userHouseholds
 }
 
