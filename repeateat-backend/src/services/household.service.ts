@@ -18,4 +18,15 @@ const createHousehold = async (name: string, user: User) => {
   })
 }
 
-export { createHousehold }
+const getUserHouseholds = async (userId: string) => {
+  const userHouseholds = db.query.householdUser.findMany({
+    where: (householdUser, { eq }) => eq(householdUser.userId, userId),
+    with: {
+      household: true,
+    },
+  })
+
+  return userHouseholds
+}
+
+export { createHousehold, getUserHouseholds }

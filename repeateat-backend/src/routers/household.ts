@@ -1,6 +1,9 @@
 import express, { Response } from 'express'
 
-import { createHousehold } from '../services/household.service'
+import {
+  createHousehold,
+  getUserHouseholds,
+} from '../services/household.service'
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 
 const householdRouter = express.Router()
@@ -15,6 +18,17 @@ householdRouter.post(
     const newHousehold = await createHousehold(name, user!)
 
     return res.json(newHousehold)
+  },
+)
+
+householdRouter.get(
+  '/',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
+
+    const households = await getUserHouseholds(user!.id)
+    res.json(households)
   },
 )
 
