@@ -36,6 +36,13 @@
       "when": 1770294599973,
       "tag": "0004_20260205-01-add_private_field_to_recipe_make_ingredient_name_unique",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1771316692627,
+      "tag": "0005_20260217-01-add_role_household_user_table",
+      "breakpoints": true
     }
   ]
 }

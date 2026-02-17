@@ -4,10 +4,13 @@ import {
   varchar,
   text,
   primaryKey,
+  pgEnum,
 } from 'drizzle-orm/pg-core'
 
 import { user } from './auth'
 import { recipe } from './recipe'
+
+export const roleEnum = pgEnum('user_role', ['admin', 'member'])
 
 export const household = pgTable('household', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -23,6 +26,7 @@ export const householdUser = pgTable(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
+    role: roleEnum('role').notNull().default('member'),
   },
   (table) => [primaryKey({ columns: [table.householdId, table.userId] })],
 )

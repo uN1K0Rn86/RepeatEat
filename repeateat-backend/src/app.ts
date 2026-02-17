@@ -6,6 +6,7 @@ import { auth } from './utils/auth'
 import { errorHandler } from './middleware/errorHandler'
 import userRouter from './routers/user'
 import recipeRouter from './routers/recipe'
+import householdRouter from './routers/household'
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(express.json())
 
 app.use('/api/user', userRouter)
 app.use('/api/recipe', recipeRouter)
+app.use('/api/household', householdRouter)
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'Ok' })
