@@ -196,8 +196,7 @@ const deleteRecipe = async (recipeId: number, userId: string) => {
 
   if (existingRecipe.authorId !== userId)
     throw new AppError('Delete operation unauthorized', 403)
-  console.log(existingRecipe)
-  console.log('tänne päästiin')
+
   await db.delete(recipe).where(eq(recipe.id, recipeId))
 }
 

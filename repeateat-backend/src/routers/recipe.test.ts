@@ -165,7 +165,6 @@ describe('Recipe-related endpoints', () => {
 
     it('changes step content when edited', async () => {
       const indexToChange = 1
-      console.log(recipeToUpdate)
 
       const payload = {
         ...recipeToUpdate,
@@ -186,6 +185,40 @@ describe('Recipe-related endpoints', () => {
       const updatedsteps = response.body.steps
 
       expect(updatedsteps[1].content).toEqual('Dont chop tofu')
+    })
+  })
+
+  describe('DELETE /:id', () => {
+    let authCookie: string[] | undefined
+
+    beforeAll(async () => {
+      const loginResponse = await request(app)
+        .post('/api/auth/sign-in/email')
+        .send({ email: 'test@example.com', password: 'password123' })
+      authCookie = loginResponse.get('Set-Cookie')
+    })
+
+    it('deletes the recipe when called with the correct id and authenticated', async () => {
+      const newRecipe = {
+        name: 'Delete this',
+      }
+
+      const response = await request(app)
+        .post('/api/recipe')
+        .set('Cookie', authCookie!)
+        .send(newRecipe)
+      const recipeId = response.body.id
+
+      const deleteResponse = await request(app)
+        .delete(`/api/recipe/${recipeId}`)
+        .set('Cookie', authCookie!)
+
+      const getDeletedRecipeResponse = await request(app).get(
+        `/api/recipe/${recipeId}`,
+      )
+
+      expect(deleteResponse.status).toEqual(204)
+      expect(getDeletedRecipeResponse.status).toEqual(404)
     })
   })
 })
