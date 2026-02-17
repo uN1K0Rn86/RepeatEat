@@ -20,7 +20,6 @@ const HouseholdView = () => {
   if (error || !data) return <div>Households not found</div>
 
   const userHouseholds: UserHousehold[] = data
-  console.log(userHouseholds)
 
   const activeHousehold = userHouseholds.find(
     (h) => h.householdId === activeHouseholdId,

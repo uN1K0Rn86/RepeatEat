@@ -6,11 +6,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import type { HouseholdMember } from '@repeateat/shared'
 import { MoreHorizontal } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-const MemberDropdown = () => {
+interface MemberDropdownProps {
+  self: boolean
+  member: HouseholdMember
+}
+
+const MemberDropdown = ({ self, member }: MemberDropdownProps) => {
   const { t } = useTranslation(['common', 'household'])
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -21,9 +28,21 @@ const MemberDropdown = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{t('common:actions')}</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => console.log('click')}>
-          {t('household:make_admin')}
-        </DropdownMenuItem>
+        {self && (
+          <DropdownMenuItem onClick={() => console.log('leave')}>
+            {t('household:leave_household')}
+          </DropdownMenuItem>
+        )}
+        {!self && member.role === 'member' && (
+          <div>
+            <DropdownMenuItem onClick={() => console.log('make admin')}>
+              {t('household:make_admin')}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => console.log('kick')}>
+              {t('household:kick')}
+            </DropdownMenuItem>
+          </div>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )

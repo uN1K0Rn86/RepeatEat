@@ -1,5 +1,8 @@
 {
   "select_household": "Valitse kotitalous",
   "members": "Jäsenet",
-  "make_admin": "Tee valvojaksi"
+  "make_admin": "Tee valvojaksi",
+  "leave_household": "Poistu kotitaloudesta",
+  "kick": "Poista kotitaloudesta",
+  "admin": "Valvoja"
 }

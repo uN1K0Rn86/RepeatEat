@@ -9,13 +9,16 @@ import MemberDropdown from './MemberDropdown'
 import type { HouseholdMember, UserHousehold } from '@repeateat/shared'
 import { Home } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useBoundStore } from '@/store'
+import { Badge } from '@/components/ui/badge'
 
-interface InfoProps {
+export interface InfoProps {
   household: UserHousehold
 }
 
 const HouseholdInfo = ({ household }: InfoProps) => {
   const { t } = useTranslation(['household', 'common'])
+  const { user } = useBoundStore()
 
   return (
     <div>
@@ -28,12 +31,21 @@ const HouseholdInfo = ({ household }: InfoProps) => {
         <AccordionItem value="members">
           <AccordionTrigger>{t('household:members')}</AccordionTrigger>
           <AccordionContent>
-            {household.members.map((m: HouseholdMember) => (
-              <div key={m.id} className="flex flex-row justify-between">
-                <div>{m.name}</div>
-                {household.role === 'admin' && <MemberDropdown />}
-              </div>
-            ))}
+            {user &&
+              household.members.map((m: HouseholdMember) => {
+                const self = user.id === m.id
+                return (
+                  <div key={m.id} className="flex flex-row justify-between">
+                    <div className="flex items-center gap-2">
+                      <span>{m.name}</span>
+                      <Badge>{t('household:admin')}</Badge>
+                    </div>
+                    {household.role === 'admin' && (
+                      <MemberDropdown self={self} member={m} />
+                    )}
+                  </div>
+                )
+              })}
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="recipes">
