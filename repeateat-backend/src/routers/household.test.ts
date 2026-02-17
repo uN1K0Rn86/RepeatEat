@@ -38,4 +38,28 @@ describe('Household-related endpoints', () => {
       expect(response.body.error).toEqual('Unauthorized')
     })
   })
+
+  describe('GET /', () => {
+    it('returns all household objects for the logged in user', async () => {
+      const testEmail = 'def@google.com'
+      const testPassword = 'password123'
+      await request(app).post('/api/auth/sign-up/email').send({
+        email: testEmail,
+        password: testPassword,
+        name: 'Test User',
+      })
+      const loginResponse = await request(app)
+        .post('/api/auth/sign-in/email')
+        .send({ email: testEmail, password: testPassword })
+      const authCookie = loginResponse.get('Set-Cookie')
+
+      const userHouseholdsResponse = await request(app)
+        .get('/api/household')
+        .set('Cookie', authCookie!)
+      const userHouseholds = userHouseholdsResponse.body
+
+      expect(userHouseholds.length).toEqual(2)
+      expect(userHouseholds[0].household.name).toEqual('Mekhar')
+    })
+  })
 })

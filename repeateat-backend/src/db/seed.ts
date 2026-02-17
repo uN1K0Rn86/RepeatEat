@@ -1,3 +1,5 @@
+import { auth } from '../utils/auth'
+
 import * as schema from './schema'
 
 import db from '.'
@@ -5,19 +7,28 @@ import db from '.'
 export async function seed() {
   console.log('--- Seeding Database ---')
 
-  const [seedUser] = await db
-    .insert(schema.user)
-    .values({
-      id: 'user_default',
-      name: 'default',
+  // Insert seeduser
+  const seedUser = await auth.api.signUpEmail({
+    body: {
       email: 'def@google.com',
-      emailVerified: false,
-    })
-    .onConflictDoNothing()
-    .returning()
+      password: 'password123',
+      name: 'default',
+    },
+  })
 
-  const authorId = seedUser?.id || 'user_default'
+  // Insert other user
+  const otherUser = await auth.api.signUpEmail({
+    body: {
+      email: 'other@google.com',
+      password: 'password123',
+      name: 'other',
+    },
+  })
 
+  const seedUserId = seedUser.user.id
+  const otherUserId = otherUser.user.id
+
+  // Inser categories
   const categoryNames = [
     'Italian',
     'Mexican',
@@ -32,6 +43,7 @@ export async function seed() {
     .onConflictDoNothing()
     .returning()
 
+  // Insert ingredients
   const ingredientNames = [
     'Tomato',
     'Flour',
@@ -49,16 +61,18 @@ export async function seed() {
     .values(ingredientNames.map((name) => ({ name })))
     .returning()
 
+  // Insert recipes
   for (let i = 1; i <= 10; i++) {
     const [newRecipe] = await db
       .insert(schema.recipe)
       .values({
         name: `Recipe #${i}: ${['Pasta', 'Tacos', 'Cake', 'Salad', 'Soup'][i % 5]}`,
-        authorId: authorId,
+        authorId: seedUserId,
         private: false,
       })
       .returning()
 
+    // Insert recipe ingredients
     const selectedIngredients = ingredients
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
@@ -72,6 +86,7 @@ export async function seed() {
 
     await db.insert(schema.recipeIngredient).values(recipeIngs)
 
+    // Insert recipe steps
     const steps = [
       {
         recipeId: newRecipe.id,
@@ -91,6 +106,7 @@ export async function seed() {
     ]
     await db.insert(schema.recipeStep).values(steps)
 
+    // Insert recipe categories
     if (categories.length > 0) {
       await db.insert(schema.recipeCategory).values({
         recipeId: newRecipe.id,
@@ -99,6 +115,38 @@ export async function seed() {
       })
     }
   }
+
+  // Insert households with seeduser
+  const householdsWithUser = [{ name: 'Mekhar' }, { name: 'Kellanved' }]
+  await db.transaction(async (tx) => {
+    const insertedHouseholds = await tx
+      .insert(schema.household)
+      .values(householdsWithUser)
+      .returning()
+
+    const householdUserValues = insertedHouseholds.map((h) => ({
+      householdId: h.id,
+      userId: seedUserId,
+      role: 'admin' as const,
+    }))
+    await tx.insert(schema.householdUser).values(householdUserValues)
+  })
+
+  // Insert households with other user
+  const householdsWithOtherUser = [{ name: 'Fiddler' }, { name: 'Hedge' }]
+  await db.transaction(async (tx) => {
+    const insertedHouseholds = await tx
+      .insert(schema.household)
+      .values(householdsWithOtherUser)
+      .returning()
+
+    const householdUserValues = insertedHouseholds.map((h) => ({
+      householdId: h.id,
+      userId: otherUserId,
+      role: 'admin' as const,
+    }))
+    await tx.insert(schema.householdUser).values(householdUserValues)
+  })
 
   console.log('--- Seeding Completed Successfully ---')
 }
