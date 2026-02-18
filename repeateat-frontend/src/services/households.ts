@@ -8,13 +8,16 @@ const getUserHouseholds = async (): Promise<UserHousehold[]> => {
   return response.data
 }
 
-const inviteHouseholdMember = async (
-  householdId: number,
-  email: string,
-): Promise<InviteResponse> => {
+const inviteHouseholdMember = async ({
+  householdId,
+  email,
+}: {
+  householdId: number
+  email: string
+}): Promise<InviteResponse> => {
   const response = await axios.post<InviteResponse>(
     `${baseUrl}/${householdId}/invites`,
-    email,
+    { email },
   )
   return response.data
 }

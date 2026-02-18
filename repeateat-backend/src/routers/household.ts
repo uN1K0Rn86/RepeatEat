@@ -2,6 +2,7 @@ import express, { Response } from 'express'
 
 import {
   createHousehold,
+  existingHouseholdMember,
   getUserHouseholds,
   getUserRole,
 } from '../services/household.service'
@@ -39,12 +40,18 @@ householdRouter.post(
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
     const user = req.user
-    const { householdId, email } = req.body
+    const householdId = Number(req.params.id)
+    const { email } = req.body
 
     const userRole = await getUserRole(householdId, user!.id)
 
     if (userRole !== 'admin')
       throw new AppError('Only admins can invite new members', 403)
+
+    const existingMember = await existingHouseholdMember(householdId, email)
+    if (existingMember) {
+      throw new AppError('errors:existing_member', 400)
+    }
   },
 )
 

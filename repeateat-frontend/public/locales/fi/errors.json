@@ -1,3 +1,5 @@
 {
-  "invalid_email": "Virheellinen sähköpostiosoite"
+  "invalid_email": "Virheellinen sähköpostiosoite",
+  "something_wrong": "Jotain meni pieleen",
+  "existing_member": "Käyttäjä kuuluu jo tähän kotitalouteen"
 }

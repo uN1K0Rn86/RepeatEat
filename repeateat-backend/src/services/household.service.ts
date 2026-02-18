@@ -61,4 +61,28 @@ const getUserRole = async (householdId: number, userId: string) => {
   return result?.role
 }
 
-export { createHousehold, getUserHouseholds, getUserRole }
+const existingHouseholdMember = async (householdId: number, email: string) => {
+  const result = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.email, email),
+    columns: {
+      id: true,
+    },
+  })
+
+  const userId = result?.id
+  if (!userId) return false
+
+  const existingMember = await db.query.householdUser.findFirst({
+    where: (hu, { and, eq }) =>
+      and(eq(hu.householdId, householdId), eq(hu.userId, userId)),
+  })
+
+  return existingMember
+}
+
+export {
+  createHousehold,
+  getUserHouseholds,
+  getUserRole,
+  existingHouseholdMember,
+}

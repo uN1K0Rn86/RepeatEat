@@ -1,3 +1,5 @@
 {
-  "invalid_email": "Invalid email"
+  "invalid_email": "Invalid email",
+  "something_wrong": "Something went wrong",
+  "existing_member": "User is already a member of this household"
 }

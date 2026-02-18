@@ -5,11 +5,13 @@ import { inviteSchema } from '@repeateat/shared'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { InfoProps } from './HouseholdInfo'
+import { useInviteMember } from '@/hooks/useHousehold'
 
 const AddMemberForm = ({ household }: InfoProps) => {
   const { t } = useTranslation(['household', 'errors'])
   const [userSearch, setUserSearch] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
+  const inviteMemberMutation = useInviteMember()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,7 +26,13 @@ const AddMemberForm = ({ household }: InfoProps) => {
     }
 
     setError(null)
-    console.log(household)
+
+    const newInvite = inviteMemberMutation.mutate({
+      householdId: household.householdId,
+      email: userSearch,
+    })
+
+    console.log('Response', newInvite)
   }
 
   return (
