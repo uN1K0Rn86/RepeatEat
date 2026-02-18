@@ -57,5 +57,6 @@ export const householdInvite = pgTable('household_invite', {
   email: text().notNull(),
   status: statusEnum('status').notNull().default('pending'),
   token: text('token').notNull(),
+  sentAt: timestamp('sent_at').notNull().defaultNow(),
   expiresAt: timestamp('expires_at').notNull(),
 })

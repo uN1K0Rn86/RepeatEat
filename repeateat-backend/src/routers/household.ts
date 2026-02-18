@@ -5,6 +5,7 @@ import {
   existingHouseholdMember,
   getUserHouseholds,
   getUserRole,
+  inviteMember,
 } from '../services/household.service'
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
@@ -52,6 +53,18 @@ householdRouter.post(
     if (existingMember) {
       throw new AppError('errors:existing_member', 400)
     }
+
+    const newInvite = await inviteMember(householdId, user!.id, email)
+
+    return res.status(201).json({
+      message: 'notify:invite_success',
+      data: {
+        id: newInvite.id,
+        email: newInvite.email,
+        status: newInvite.status,
+        expiresAt: newInvite.expiresAt,
+      },
+    })
   },
 )
 

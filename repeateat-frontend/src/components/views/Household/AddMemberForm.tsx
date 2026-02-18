@@ -16,10 +16,8 @@ const AddMemberForm = ({ household }: InfoProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const result = inviteSchema.safeParse({ email: userSearch })
-    console.log('Invited')
 
     if (!result.success) {
-      console.log(result.error.issues, typeof result.error)
       const errorKey = result.error.issues[0].message
       setError(t(errorKey))
       return
@@ -27,12 +25,10 @@ const AddMemberForm = ({ household }: InfoProps) => {
 
     setError(null)
 
-    const newInvite = inviteMemberMutation.mutate({
+    inviteMemberMutation.mutate({
       householdId: household.householdId,
       email: userSearch,
     })
-
-    console.log('Response', newInvite)
   }
 
   return (

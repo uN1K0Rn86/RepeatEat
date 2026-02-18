@@ -1,0 +1,1 @@
+ALTER TABLE "household_invite" ADD COLUMN "sent_at" timestamp DEFAULT now() NOT NULL;

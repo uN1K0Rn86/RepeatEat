@@ -1,7 +1,7 @@
 import { User } from 'better-auth/types'
 
 import db from '../db'
-import { household, householdUser } from '../db/schema'
+import { household, householdInvite, householdUser } from '../db/schema'
 
 const createHousehold = async (name: string, user: User) => {
   return await db.transaction(async (tx) => {
@@ -80,9 +80,34 @@ const existingHouseholdMember = async (householdId: number, email: string) => {
   return existingMember
 }
 
+const inviteMember = async (
+  householdId: number,
+  userId: string,
+  email: string,
+) => {
+  const token = crypto.randomUUID()
+  const expiresAt = new Date()
+  expiresAt.setDate(expiresAt.getDate() + 7)
+
+  const [newInvite] = await db
+    .insert(householdInvite)
+    .values({
+      householdId,
+      invitedBy: userId,
+      email,
+      status: 'pending',
+      token,
+      expiresAt,
+    })
+    .returning()
+
+  return newInvite
+}
+
 export {
   createHousehold,
   getUserHouseholds,
   getUserRole,
   existingHouseholdMember,
+  inviteMember,
 }

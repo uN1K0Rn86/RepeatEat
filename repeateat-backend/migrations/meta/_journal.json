@@ -50,6 +50,13 @@
       "when": 1771412849175,
       "tag": "0006_20260218-01-add_household_invite_table",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1771431540814,
+      "tag": "0007_20260218-02-add_sentat_column_to_invites",
+      "breakpoints": true
     }
   ]
 }

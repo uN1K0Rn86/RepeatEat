@@ -4,5 +4,6 @@
   "update_recipe": "Recipe {{recipeName}} updated",
   "update_recipe_failed": "Failed to edit recipe",
   "recipe_deleted": "Recipe deleted",
-  "recipe_del_failed": "Failed to delete recipe"
+  "recipe_del_failed": "Failed to delete recipe",
+  "invite_success": "Invite sent successfully"
 }
