@@ -27,5 +27,17 @@ export const inviteSchema = z.object({
   email: z.email('errors:invalid_email'),
 })
 
+export const inviteResponseSchema = z.object({
+  message: z.string(),
+  data: z.object({
+    id: z.number(),
+    email: z.string().email(),
+    status: z.enum(['pending', 'accepted', 'declined']),
+    sentAt: z.iso.datetime(),
+    expiresAt: z.iso.datetime(),
+  }),
+})
+
 export type UserHousehold = z.infer<typeof userHouseholdSchema>
 export type HouseholdMember = z.infer<typeof householdMembersSchema>
+export type InviteResponse = z.infer<typeof inviteResponseSchema>

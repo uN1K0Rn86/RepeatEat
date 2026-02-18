@@ -20,4 +20,5 @@
 | 2026-02-11 | Refactor recipe router, move db logic to separate service, put route for recipes, make frontend more mobile friendly etc. | 7h   | 83h             |
 | 2026-02-12 | Refactor add recipe form, start on all recipes page. Fix bug where editing changed name of all recipes                    | 3h   | 86h             |
 | 2026-02-13 | Add recipe search, tests for recipe put route                                                                             | 4h   | 90h             |
-| 2026-02-17 | Add test for delete recipe route, PWA config, add household routes, work on household page in frontend                    | 6h   | 96h             |
+| 2026-02-17 | Add test for delete recipe route, PWA config, add household routes, work on household page in frontend                    | 7h   | 97h             |
+| 2026-02-18 | Start work on member invites                                                                                              | 1h   | 98h             |

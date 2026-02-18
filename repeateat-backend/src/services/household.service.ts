@@ -49,4 +49,16 @@ const getUserHouseholds = async (userId: string) => {
   return userHouseholds
 }
 
-export { createHousehold, getUserHouseholds }
+const getUserRole = async (householdId: number, userId: string) => {
+  const result = await db.query.householdUser.findFirst({
+    where: (hu, { and, eq }) =>
+      and(eq(hu.userId, userId), eq(hu.householdId, householdId)),
+    columns: {
+      role: true,
+    },
+  })
+
+  return result?.role
+}
+
+export { createHousehold, getUserHouseholds, getUserRole }

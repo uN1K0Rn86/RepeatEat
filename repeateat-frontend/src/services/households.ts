@@ -1,4 +1,4 @@
-import type { UserHousehold } from '@repeateat/shared'
+import { type InviteResponse, type UserHousehold } from '@repeateat/shared'
 import axios from 'axios'
 
 const baseUrl = '/api/household'
@@ -8,4 +8,15 @@ const getUserHouseholds = async (): Promise<UserHousehold[]> => {
   return response.data
 }
 
-export default { getUserHouseholds }
+const inviteHouseholdMember = async (
+  householdId: number,
+  email: string,
+): Promise<InviteResponse> => {
+  const response = await axios.post<InviteResponse>(
+    `${baseUrl}/${householdId}/invites`,
+    email,
+  )
+  return response.data
+}
+
+export default { getUserHouseholds, inviteHouseholdMember }

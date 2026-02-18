@@ -49,7 +49,9 @@ const HouseholdInfo = ({ household }: InfoProps) => {
                   </div>
                 )
               })}
-            {household.role === 'admin' && <AddMemberForm />}
+            {household.role === 'admin' && (
+              <AddMemberForm household={household} />
+            )}
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="recipes">
