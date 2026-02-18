@@ -16,6 +16,8 @@ const AddMemberForm = ({ household }: InfoProps) => {
   const inviteMemberMutation = useInviteMember()
   const searchedUsers = useUserSearch(debouncedSearch)
 
+  // TODO: Render searchedUsers for autocomplete
+
   const handleInputChange = (value: string) => {
     setUserSearch(value)
 

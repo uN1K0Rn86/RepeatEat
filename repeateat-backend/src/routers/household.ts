@@ -62,6 +62,7 @@ householdRouter.post(
         id: newInvite.id,
         email: newInvite.email,
         status: newInvite.status,
+        sentAt: newInvite.sentAt,
         expiresAt: newInvite.expiresAt,
       },
     })
