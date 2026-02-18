@@ -36,3 +36,13 @@ export const useInviteMember = () => {
     },
   })
 }
+
+export const useUserSearch = (debouncedSearch: string) => {
+  const { data } = useQuery({
+    queryKey: ['user-search', debouncedSearch],
+    queryFn: () => householdService.searchUser(debouncedSearch),
+    enabled: debouncedSearch.length > 2,
+  })
+
+  return data
+}

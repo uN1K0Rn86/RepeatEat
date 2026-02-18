@@ -5,13 +5,16 @@ import { inviteSchema } from '@repeateat/shared'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { InfoProps } from './HouseholdInfo'
-import { useInviteMember } from '@/hooks/useHousehold'
+import { useInviteMember, useUserSearch } from '@/hooks/useHousehold'
+import { useDebounce } from '@/hooks/useDebounce'
 
 const AddMemberForm = ({ household }: InfoProps) => {
   const { t } = useTranslation(['household', 'errors'])
   const [userSearch, setUserSearch] = useState<string>('')
+  const debouncedSearch = useDebounce(userSearch, 400)
   const [error, setError] = useState<string | null>(null)
   const inviteMemberMutation = useInviteMember()
+  const searchedUsers = useUserSearch(debouncedSearch)
 
   const handleInputChange = (value: string) => {
     setUserSearch(value)
@@ -46,6 +49,8 @@ const AddMemberForm = ({ household }: InfoProps) => {
       },
     )
   }
+
+  console.log(searchedUsers)
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2">

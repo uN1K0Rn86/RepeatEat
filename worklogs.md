@@ -21,4 +21,4 @@
 | 2026-02-12 | Refactor add recipe form, start on all recipes page. Fix bug where editing changed name of all recipes                    | 3h   | 86h             |
 | 2026-02-13 | Add recipe search, tests for recipe put route                                                                             | 4h   | 90h             |
 | 2026-02-17 | Add test for delete recipe route, PWA config, add household routes, work on household page in frontend                    | 7h   | 97h             |
-| 2026-02-18 | Start work on member invites; add functionality for sending invites                                                       | 2.5h | 99.5h           |
+| 2026-02-18 | Start work on member invites; add functionality for sending invites                                                       | 3h   | 100h            |

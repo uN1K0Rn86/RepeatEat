@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express'
 
 import { auth } from '../utils/auth'
+import { AuthRequest, isAuthenticated } from '../middleware/auth'
+import { AppError } from '../utils/errors'
+import { searchByEmail } from '../services/user.service'
 
 const userRouter = express.Router()
 
@@ -27,5 +30,19 @@ userRouter.get('/me', async (req: Request, res: Response) => {
 
   return res.json({ user: session.user })
 })
+
+userRouter.get(
+  '/search',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const query = req.query.q as string
+
+    if (!query || query.length < 3) throw new AppError('errors:too_short', 400)
+
+    const users = await searchByEmail(query)
+
+    return res.json(users)
+  },
+)
 
 export default userRouter

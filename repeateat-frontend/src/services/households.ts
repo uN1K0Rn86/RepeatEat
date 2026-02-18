@@ -22,4 +22,11 @@ const inviteHouseholdMember = async ({
   return response.data
 }
 
-export default { getUserHouseholds, inviteHouseholdMember }
+const searchUser = async (query: string): Promise<string[]> => {
+  const response = await axios.get<string[]>(`api/user/search?q=${query}`)
+  console.log(response.data)
+
+  return response.data
+}
+
+export default { getUserHouseholds, inviteHouseholdMember, searchUser }
