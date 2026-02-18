@@ -13,6 +13,17 @@ const AddMemberForm = ({ household }: InfoProps) => {
   const [error, setError] = useState<string | null>(null)
   const inviteMemberMutation = useInviteMember()
 
+  const handleInputChange = (value: string) => {
+    setUserSearch(value)
+
+    if (error) {
+      const result = inviteSchema.safeParse({ email: value })
+      if (result.success) {
+        setError(null)
+      }
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const result = inviteSchema.safeParse({ email: userSearch })
@@ -25,10 +36,15 @@ const AddMemberForm = ({ household }: InfoProps) => {
 
     setError(null)
 
-    inviteMemberMutation.mutate({
-      householdId: household.householdId,
-      email: userSearch,
-    })
+    inviteMemberMutation.mutate(
+      {
+        householdId: household.householdId,
+        email: userSearch,
+      },
+      {
+        onSuccess: () => setUserSearch(''),
+      },
+    )
   }
 
   return (
@@ -39,7 +55,7 @@ const AddMemberForm = ({ household }: InfoProps) => {
           <div>
             <Input
               value={userSearch}
-              onChange={(e) => setUserSearch(e.target.value)}
+              onChange={(e) => handleInputChange(e.target.value)}
               placeholder="email@email.com"
               aria-invalid={!!error}
             />
