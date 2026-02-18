@@ -43,6 +43,13 @@
       "when": 1771316692627,
       "tag": "0005_20260217-01-add_role_household_user_table",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1771412849175,
+      "tag": "0006_20260218-01-add_household_invite_table",
+      "breakpoints": true
     }
   ]
 }

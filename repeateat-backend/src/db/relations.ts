@@ -9,13 +9,19 @@ import {
   recipeStep,
   recipeCategory,
 } from './tables/recipe'
-import { household, householdRecipe, householdUser } from './tables/household'
+import {
+  household,
+  householdInvite,
+  householdRecipe,
+  householdUser,
+} from './tables/household'
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   households: many(householdUser),
   recipes: many(recipe),
+  invites: many(householdInvite),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -83,6 +89,7 @@ export const recipeCategoryRelations = relations(recipeCategory, ({ one }) => ({
 export const householdRelations = relations(household, ({ many }) => ({
   users: many(householdUser),
   recipes: many(householdRecipe),
+  invites: many(householdInvite),
 }))
 
 export const householdRecipeRelations = relations(
@@ -109,3 +116,17 @@ export const householdUserRelations = relations(householdUser, ({ one }) => ({
     references: [user.id],
   }),
 }))
+
+export const householdInviteRelations = relations(
+  householdInvite,
+  ({ one }) => ({
+    household: one(household, {
+      fields: [householdInvite.householdId],
+      references: [household.id],
+    }),
+    user: one(user, {
+      fields: [householdInvite.invitedBy],
+      references: [user.id],
+    }),
+  }),
+)

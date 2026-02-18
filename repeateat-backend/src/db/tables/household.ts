@@ -5,12 +5,14 @@ import {
   text,
   primaryKey,
   pgEnum,
+  timestamp,
 } from 'drizzle-orm/pg-core'
 
 import { user } from './auth'
 import { recipe } from './recipe'
 
 export const roleEnum = pgEnum('user_role', ['admin', 'member'])
+export const statusEnum = pgEnum('status', ['accepted', 'pending', 'declined'])
 
 export const household = pgTable('household', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -43,3 +45,17 @@ export const householdRecipe = pgTable(
   },
   (table) => [primaryKey({ columns: [table.householdId, table.recipeId] })],
 )
+
+export const householdInvite = pgTable('household_invite', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  householdId: integer('household_id')
+    .notNull()
+    .references(() => household.id, { onDelete: 'cascade' }),
+  invitedBy: text('invited_by')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  email: text().notNull(),
+  status: statusEnum('status').notNull().default('pending'),
+  token: text('token').notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
+})
