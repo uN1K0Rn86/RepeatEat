@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next'
 import UserDropdownMenu from './UserDropdownMenu'
 import { useTheme } from '@/hooks/useTheme'
 import { useMe } from '@/hooks/useUser'
+import UserInvites from '../views/UserProfile/UserInvites'
 
 const TopAppBar = () => {
   const { data: user } = useMe()
@@ -56,7 +57,12 @@ const TopAppBar = () => {
         <h1 className="font-bold">{t(`common:${pageTitle}`)}</h1>
 
         {user ? (
-          <UserDropdownMenu user={user} />
+          <div className="flex flex-row items-center gap-2">
+            {user.invites && user.invites.length > 0 && (
+              <UserInvites user={user} />
+            )}
+            <UserDropdownMenu user={user} />
+          </div>
         ) : (
           <div className="flex gap-2">
             <Button asChild variant="secondary" size="sm">

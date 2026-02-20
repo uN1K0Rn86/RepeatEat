@@ -36,8 +36,8 @@ export const useLogin = (setError: UseFormSetError<LoginInput>) => {
 
       return response.data
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(['user', 'me'], data.user)
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:login', { username: data.user.name }))
       void navigate('/')
     },
@@ -92,8 +92,8 @@ export const useRegister = (setError: UseFormSetError<RegisterInput>) => {
 
       return response.data
     },
-    onSuccess: (data) => {
-      queryClient.setQueryData(['user', 'me'], data.user)
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:register_success', { username: data.user.name }))
       void navigate('/')
     },

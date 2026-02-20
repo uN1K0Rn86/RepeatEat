@@ -6,5 +6,9 @@
   "kick": "Poista kotitaloudesta",
   "admin": "Valvoja",
   "invite": "Kutsu",
-  "invite_to_household": "Kutsu kotitalouteen"
+  "invite_to_household": "Kutsu kotitalouteen",
+  "household_invites": "Kutsut kotitalouksiin",
+  "household": "Kotitalous",
+  "accept": "Hyväksy",
+  "decline": "Hylkää"
 }

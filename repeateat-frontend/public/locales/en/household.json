@@ -6,5 +6,9 @@
   "kick": "Kick from household",
   "admin": "Admin",
   "invite": "Invite",
-  "invite_to_household": "Invite to household"
+  "invite_to_household": "Invite to household",
+  "household_invites": "Household invites",
+  "household": "Household",
+  "accept": "Accept",
+  "decline": "Decline"
 }

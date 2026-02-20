@@ -1,5 +1,3 @@
-import type { User } from 'better-auth'
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,9 +11,10 @@ import { Button } from '../ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLogout } from '@/hooks/useUser'
+import type { UserWithInvites } from '@/services/users'
 
-interface UserDropdownMenuProps {
-  user: User
+export interface UserDropdownMenuProps {
+  user: UserWithInvites
 }
 
 const UserDropdownMenu = ({ user }: UserDropdownMenuProps) => {
