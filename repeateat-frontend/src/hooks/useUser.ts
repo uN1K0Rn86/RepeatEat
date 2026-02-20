@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { authClient } from '@/utils/auth-client'
 import { notify } from '@/utils/notify'
 
-import type { LoginInput } from '@repeateat/shared'
+import type { LoginInput, RegisterInput } from '@repeateat/shared'
 import type { UseFormSetError } from 'react-hook-form'
 import type { User } from 'better-auth'
 
@@ -49,7 +49,7 @@ export const useLogin = (setError: UseFormSetError<LoginInput>) => {
   })
 }
 
-export const useLogout = (user: User) => {
+export const useLogout = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { t } = useTranslation(['notify'])
@@ -61,12 +61,46 @@ export const useLogout = (user: User) => {
       return response
     },
     onSuccess: () => {
-      queryClient.clear()
-      notify.success(t('notify:logout', { username: user.name }))
+      const user = queryClient.getQueryData<User>(['user', 'me'])
+      queryClient.setQueryData(['user', 'me'], null)
+      if (user) {
+        notify.success(t('notify:logout', { username: user.name }))
+      }
       void navigate('/')
     },
     onError: (error) => {
       notify.error(error.message || t('common:logout_failed'))
+    },
+  })
+}
+
+export const useRegister = (setError: UseFormSetError<RegisterInput>) => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const { t } = useTranslation(['notify', 'common'])
+
+  return useMutation({
+    mutationFn: async (registerData: RegisterInput) => {
+      const { email, password, name } = registerData
+      const response = await authClient.signUp.email({
+        email,
+        password,
+        name,
+      })
+
+      if (response.error) throw new Error(response.error.message)
+
+      return response.data
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(['user', 'me'], data.user)
+      notify.success(t('notify:register_success', { username: data.user.name }))
+      void navigate('/')
+    },
+    onError: (error) => {
+      setError('root', {
+        message: error.message || t('notify:register_fail'),
+      })
     },
   })
 }

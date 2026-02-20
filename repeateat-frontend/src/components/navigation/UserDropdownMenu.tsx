@@ -21,7 +21,7 @@ interface UserDropdownMenuProps {
 const UserDropdownMenu = ({ user }: UserDropdownMenuProps) => {
   const navigate = useNavigate()
   const { t } = useTranslation(['common'])
-  const { mutate: logout, isPending } = useLogout(user)
+  const { mutate: logout, isPending } = useLogout()
 
   return (
     <DropdownMenu>

@@ -5,5 +5,7 @@
   "update_recipe_failed": "Reseptin päivitys epäonnistui",
   "recipe_deleted": "Resepti poistettu",
   "recipe_del_failed": "Reseptin poisto epäonnistui",
-  "invite_success": "Kutsu lähetetty onnistuneesti"
+  "invite_success": "Kutsu lähetetty onnistuneesti",
+  "register_success": "Rekisteröinti onnistui. Tervetuloa {{username}}!",
+  "register_fail": "Rekisteröinti epäonnistui"
 }

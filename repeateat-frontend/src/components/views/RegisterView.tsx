@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 
-import { authClient } from '../../utils/auth-client'
 import { useBoundStore } from '@/store'
 import {
   Card,
@@ -16,12 +14,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { notify } from '@/utils/notify'
 import { useTranslation } from 'react-i18next'
+import { useRegister } from '@/hooks/useUser'
 
 const RegisterView = () => {
-  const { setPageTitle, setUser } = useBoundStore()
-  const navigate = useNavigate()
+  const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common'])
 
   useEffect(() => {
@@ -38,25 +35,10 @@ const RegisterView = () => {
     },
   })
 
-  const onSubmit = async (values: RegisterInput) => {
-    const { email, password, name } = values
-    const { data, error } = await authClient.signUp.email({
-      email,
-      password,
-      name,
-    })
+  const { mutate: register, isPending } = useRegister(form.setError)
 
-    if (error) {
-      form.setError('root', {
-        message: error.message || 'Registration failed',
-      })
-    }
-
-    if (data) {
-      setUser(data.user)
-      notify.success(`Registration successful. Welcome ${data.user.name}!`)
-      void navigate('/')
-    }
+  const onSubmit = (values: RegisterInput) => {
+    register(values)
   }
 
   return (
@@ -160,7 +142,7 @@ const RegisterView = () => {
         <CardFooter>
           <Field orientation="horizontal">
             <Button type="submit" form="register-form">
-              {t('common:register')}
+              {isPending ? t('common:registering') : t('common:register')}
             </Button>
           </Field>
         </CardFooter>

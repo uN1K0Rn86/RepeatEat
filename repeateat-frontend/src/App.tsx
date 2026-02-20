@@ -14,7 +14,9 @@ import HouseholdView from './components/views/Household'
 import { useMe } from './hooks/useUser'
 
 const App = () => {
-  const { data: user } = useMe()
+  const { data: user, isLoading } = useMe()
+
+  if (isLoading) return <div>Loading</div>
 
   return (
     <div className="flex h-screen flex-col">
@@ -24,7 +26,10 @@ const App = () => {
         <NotificationList />
 
         <Routes>
-          <Route path="/" element={user ? <HouseholdView /> : <HomeView />} />
+          <Route
+            path="/"
+            element={user?.id ? <HouseholdView /> : <HomeView />}
+          />
           <Route path="/recipe" element={<RecipeView />} />
           <Route path="/recipe/:id" element={<RecipeDetailsView />} />
           <Route path="/recipe/add" element={<AddRecipeForm />} />

@@ -5,5 +5,7 @@
   "update_recipe_failed": "Failed to edit recipe",
   "recipe_deleted": "Recipe deleted",
   "recipe_del_failed": "Failed to delete recipe",
-  "invite_success": "Invite sent successfully"
+  "invite_success": "Invite sent successfully",
+  "register_success": "Registration successful. Welcome {{username}}!",
+  "register_fail": "Registration failed"
 }

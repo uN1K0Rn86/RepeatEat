@@ -4,6 +4,7 @@ import { registerSW } from 'virtual:pwa-register'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import './i18n'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import { ThemeProvider } from './components/theme-provider.tsx'
 import queryClient from './utils/queryClient.ts'
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')!).render(
           <ThemeProvider>
             <App />
           </ThemeProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </Router>
     </Suspense>

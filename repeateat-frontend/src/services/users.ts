@@ -7,11 +7,16 @@ interface MeResponse {
 
 const baseUrl = '/api/user'
 
-const me = async (): Promise<User> => {
-  const response = await axios.get<MeResponse>(`${baseUrl}/me`)
-  const userInfo = response.data.user
-
-  return userInfo
+const me = async (): Promise<User | null> => {
+  try {
+    const response = await axios.get<MeResponse>(`${baseUrl}/me`)
+    return response.data.user
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      return null
+    }
+    throw error
+  }
 }
 
 export default { me }
