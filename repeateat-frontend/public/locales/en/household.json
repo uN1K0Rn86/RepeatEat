@@ -10,5 +10,6 @@
   "household_invites": "Household invites",
   "household": "Household",
   "accept": "Accept",
-  "decline": "Decline"
+  "decline": "Decline",
+  "invite_accepted": "Invite to household {{ household }} accepted"
 }

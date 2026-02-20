@@ -41,7 +41,9 @@ const HouseholdInfo = ({ household }: InfoProps) => {
                   <div key={m.id} className="flex flex-row justify-between">
                     <div className="flex items-center gap-2">
                       <span>{m.name}</span>
-                      <Badge>{t('household:admin')}</Badge>
+                      {m.role === 'admin' && (
+                        <Badge>{t('household:admin')}</Badge>
+                      )}
                     </div>
                     {household.role === 'admin' && (
                       <MemberDropdown self={self} member={m} />

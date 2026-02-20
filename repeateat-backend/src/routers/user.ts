@@ -28,8 +28,8 @@ userRouter.get('/me', async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'Not authenticated' })
   }
 
-  const invites = await pendingInvites(session.user)
-  console.log(invites)
+  const allInvites = await pendingInvites(session.user)
+  const invites = allInvites.filter((i) => i.status === 'pending')
 
   const user = { ...session.user, invites }
 

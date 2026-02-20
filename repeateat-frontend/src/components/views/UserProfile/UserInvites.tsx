@@ -9,12 +9,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ResponseButton from '@/components/ui/ResponseButton'
+import { useAcceptInvite } from '@/hooks/useInvite'
 import type { Invite } from '@repeateat/shared'
 import { Mail } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 const UserInvites = ({ user }: UserDropdownMenuProps) => {
-  const { t } = useTranslation(['household'])
+  const { t } = useTranslation(['household', 'common'])
+  const { mutate: acceptInvite, isPending } = useAcceptInvite()
+
+  const handleAccept = (invite: Invite) => {
+    acceptInvite(invite)
+  }
 
   return (
     <DropdownMenu>
@@ -39,8 +45,8 @@ const UserInvites = ({ user }: UserDropdownMenuProps) => {
               <div className="flex gap-2">
                 <ResponseButton
                   intent="positive"
-                  text={t('household:accept')}
-                  onClick={() => console.log('accepted')}
+                  text={isPending ? t('common:loading') : t('household:accept')}
+                  onClick={() => handleAccept(i)}
                 />
                 <ResponseButton
                   intent="negative"

@@ -5,7 +5,7 @@ import { notify } from '@/utils/notify'
 import { useTranslation } from 'react-i18next'
 import type { AxiosError } from 'axios'
 
-interface BackendError {
+export interface BackendError {
   error: string
 }
 

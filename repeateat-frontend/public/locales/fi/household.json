@@ -10,5 +10,6 @@
   "household_invites": "Kutsut kotitalouksiin",
   "household": "Kotitalous",
   "accept": "Hyväksy",
-  "decline": "Hylkää"
+  "decline": "Hylkää",
+  "invite_accepted": "Kutsu kotitalouteen {{ household }} hyväksytty"
 }
