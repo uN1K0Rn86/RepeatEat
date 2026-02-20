@@ -25,13 +25,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
+import { useMe } from '@/hooks/useUser'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, error } = useRecipe(id || '')
   const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify', 'recipe'])
-  const { user } = useBoundStore()
+  const { data: user } = useMe()
   const editRecipeMutation = useEditRecipe()
   const navigate = useNavigate()
 

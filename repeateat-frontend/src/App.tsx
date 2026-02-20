@@ -1,7 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
 
-import { useBoundStore } from './store'
 import NavBar from './components/navigation/NavBar'
 import HomeView from './components/views/HomeView'
 import LoginView from './components/views/LoginView'
@@ -13,12 +11,10 @@ import TopAppBar from './components/navigation/TopAppBar'
 import AddRecipeForm from './components/views/recipe/AddRecipe'
 import RecipeDetailsView from './components/views/recipe/RecipeDetailsView'
 import HouseholdView from './components/views/Household'
+import { useMe } from './hooks/useUser'
 
 const App = () => {
-  const { user } = useBoundStore()
-  useEffect(() => {
-    void useBoundStore.getState().checkAuth()
-  }, [])
+  const { data: user } = useMe()
 
   return (
     <div className="flex h-screen flex-col">

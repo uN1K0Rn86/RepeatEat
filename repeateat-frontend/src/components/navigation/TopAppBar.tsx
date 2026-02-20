@@ -17,9 +17,11 @@ import RecipeDropdownMenu from './RecipeDropdownMenu'
 import { useTranslation } from 'react-i18next'
 import UserDropdownMenu from './UserDropdownMenu'
 import { useTheme } from '@/hooks/useTheme'
+import { useMe } from '@/hooks/useUser'
 
 const TopAppBar = () => {
-  const { user, pageTitle } = useBoundStore()
+  const { data: user } = useMe()
+  const { pageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify'])
   const { setTheme } = useTheme()
 

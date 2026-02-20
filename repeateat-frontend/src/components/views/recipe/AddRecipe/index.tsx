@@ -21,9 +21,11 @@ import { useNavigate } from 'react-router-dom'
 import { notify } from '@/utils/notify'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useMe } from '@/hooks/useUser'
 
 const AddRecipeForm = () => {
-  const { user, setPageTitle } = useBoundStore()
+  const { data: user } = useMe()
+  const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'recipe'])
   const createRecipeMutation = useCreateRecipe()
   const navigate = useNavigate()

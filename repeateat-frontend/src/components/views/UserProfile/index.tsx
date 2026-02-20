@@ -3,9 +3,11 @@ import { useBoundStore } from '@/store'
 import { Button } from '../../ui/button'
 import LanguagePicker from './LanguagePicker'
 import { useTranslation } from 'react-i18next'
+import { useMe } from '@/hooks/useUser'
 
 const UserProfile = () => {
-  const { user, setPageTitle } = useBoundStore()
+  const { setPageTitle } = useBoundStore()
+  const { data: user } = useMe()
   const { t } = useTranslation(['nav', 'user', 'common'])
 
   useEffect(() => {

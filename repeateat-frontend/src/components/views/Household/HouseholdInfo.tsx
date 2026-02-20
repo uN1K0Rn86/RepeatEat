@@ -9,9 +9,9 @@ import MemberDropdown from './MemberDropdown'
 import type { HouseholdMember, UserHousehold } from '@repeateat/shared'
 import { Home } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useBoundStore } from '@/store'
 import { Badge } from '@/components/ui/badge'
 import AddMemberForm from './AddMemberForm'
+import { useMe } from '@/hooks/useUser'
 
 export interface InfoProps {
   household: UserHousehold
@@ -19,7 +19,7 @@ export interface InfoProps {
 
 const HouseholdInfo = ({ household }: InfoProps) => {
   const { t } = useTranslation(['household', 'common'])
-  const { user } = useBoundStore()
+  const { data: user } = useMe()
 
   return (
     <div>

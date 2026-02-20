@@ -1,11 +1,9 @@
 import { useEffect } from 'react'
-import { authClient } from '@/utils/auth-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 
 import { useBoundStore } from '../../store'
 import { loginSchema, type LoginInput } from '@repeateat/shared'
-import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardContent,
@@ -16,12 +14,11 @@ import {
 import { FieldGroup, Field, FieldLabel, FieldError } from '../ui/field'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { notify } from '@/utils/notify'
 import { useTranslation } from 'react-i18next'
+import { useLogin } from '@/hooks/useUser'
 
 const LoginView = () => {
-  const { setPageTitle, setUser } = useBoundStore()
-  const navigate = useNavigate()
+  const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify'])
 
   useEffect(() => {
@@ -35,25 +32,10 @@ const LoginView = () => {
       password: '',
     },
   })
+  const { mutate: login, isPending } = useLogin(form.setError)
 
-  const onSubmit = async (loginData: LoginInput) => {
-    const { data, error } = await authClient.signIn.email({
-      email: loginData.email,
-      password: loginData.password,
-      rememberMe: false,
-    })
-
-    if (error) {
-      form.setError('root', {
-        message: error.message || t('common:login_failed'),
-      })
-    }
-
-    if (data) {
-      setUser(data.user)
-      notify.success(t('notify:login', { username: data.user.name }))
-      void navigate('/')
-    }
+  const onSubmit = (loginData: LoginInput) => {
+    login(loginData)
   }
 
   return (
@@ -115,7 +97,7 @@ const LoginView = () => {
         </CardContent>
         <CardFooter>
           <Field orientation="horizontal">
-            <Button type="submit" form="login-form">
+            <Button type="submit" form="login-form" disabled={isPending}>
               {t('common:login')}
             </Button>
           </Field>
