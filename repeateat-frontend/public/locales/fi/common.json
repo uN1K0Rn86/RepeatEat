@@ -4,6 +4,8 @@
   "login_failed": "Kirjautuminen epäonnistui",
   "login": "Kirjaudu sisään",
   "logout": "Kirjaudu ulos",
+  "logging_out": "Kirjaudutaan ulos",
+  "logout_failed": "Uloskirjautuminen epäonnistui",
   "email": "Sähköposti",
   "password": "Salasana",
   "register": "Rekisteröidy",

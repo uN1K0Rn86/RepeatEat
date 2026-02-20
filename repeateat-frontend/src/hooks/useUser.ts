@@ -8,6 +8,7 @@ import { notify } from '@/utils/notify'
 
 import type { LoginInput } from '@repeateat/shared'
 import type { UseFormSetError } from 'react-hook-form'
+import type { User } from 'better-auth'
 
 export const useMe = () => {
   return useQuery({
@@ -44,6 +45,28 @@ export const useLogin = (setError: UseFormSetError<LoginInput>) => {
       setError('root', {
         message: error.message || t('common:login_failed'),
       })
+    },
+  })
+}
+
+export const useLogout = (user: User) => {
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
+  const { t } = useTranslation(['notify'])
+
+  return useMutation({
+    mutationFn: async () => {
+      const response = await authClient.signOut()
+      if (response.error) throw new Error(response.error.message)
+      return response
+    },
+    onSuccess: () => {
+      queryClient.clear()
+      notify.success(t('notify:logout', { username: user.name }))
+      void navigate('/')
+    },
+    onError: (error) => {
+      notify.error(error.message || t('common:logout_failed'))
     },
   })
 }

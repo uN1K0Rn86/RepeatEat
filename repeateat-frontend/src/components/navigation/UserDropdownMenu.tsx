@@ -12,7 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLogout } from '@/hooks/useLogout'
+import { useLogout } from '@/hooks/useUser'
 
 interface UserDropdownMenuProps {
   user: User
@@ -21,7 +21,7 @@ interface UserDropdownMenuProps {
 const UserDropdownMenu = ({ user }: UserDropdownMenuProps) => {
   const navigate = useNavigate()
   const { t } = useTranslation(['common'])
-  const { logout } = useLogout()
+  const { mutate: logout, isPending } = useLogout(user)
 
   return (
     <DropdownMenu>
@@ -52,7 +52,7 @@ const UserDropdownMenu = ({ user }: UserDropdownMenuProps) => {
           onClick={() => logout()}
           className="text-destructive focus:text-destructive"
         >
-          {t('common:logout')}
+          {isPending ? t('common:logging_out') : t('common:logout')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

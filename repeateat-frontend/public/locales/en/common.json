@@ -4,6 +4,8 @@
   "login_failed": "Login failed",
   "login": "Login",
   "logout": "Logout",
+  "logging_out": "Logging out",
+  "logout_failed": "Logout failed",
   "email": "Email",
   "password": "Password",
   "register": "Register",
