@@ -26,3 +26,23 @@ export const useAcceptInvite = () => {
     },
   })
 }
+
+export const useDeclineInvite = () => {
+  const queryClient = useQueryClient()
+  const { t } = useTranslation(['household', 'errors'])
+
+  return useMutation({
+    mutationFn: (invite: Invite) => inviteService.declineInvite(invite),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
+      notify.success(
+        t('household:invite_declined', { household: data.household.name }),
+      )
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      console.error(error)
+      const serverMessage = error.response?.data?.error || 'errors:wrong_invite'
+      notify.error(t(serverMessage))
+    },
+  })
+}

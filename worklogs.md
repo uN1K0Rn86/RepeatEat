@@ -22,4 +22,4 @@
 | 2026-02-13 | Add recipe search, tests for recipe put route                                                                             | 4h   | 90h             |
 | 2026-02-17 | Add test for delete recipe route, PWA config, add household routes, work on household page in frontend                    | 7h   | 97h             |
 | 2026-02-18 | Start work on member invites; add functionality for sending invites                                                       | 4h   | 101h            |
-| 2026-02-20 | Refactor user state to use tanstack query, add functionality for accepting invites                                        | 5h   | 106h            |
+| 2026-02-20 | Refactor user state to use tanstack query, add functionality for accepting and declining invites in-app                   | 5h   | 106h            |

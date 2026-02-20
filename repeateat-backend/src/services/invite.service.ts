@@ -22,4 +22,14 @@ const acceptInvite = async (invite: Invite, userId: string) => {
   return inviteToReturn
 }
 
-export { acceptInvite }
+const declineInvite = async (inviteId: number) => {
+  const declinedInvite = await db
+    .update(householdInvite)
+    .set({ status: 'declined' })
+    .where(eq(householdInvite.id, inviteId))
+    .returning()
+
+  return declinedInvite
+}
+
+export { acceptInvite, declineInvite }

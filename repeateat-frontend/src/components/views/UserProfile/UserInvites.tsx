@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import ResponseButton from '@/components/ui/ResponseButton'
-import { useAcceptInvite } from '@/hooks/useInvite'
+import { useAcceptInvite, useDeclineInvite } from '@/hooks/useInvite'
 import type { Invite } from '@repeateat/shared'
 import { Mail } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -17,9 +17,15 @@ import { useTranslation } from 'react-i18next'
 const UserInvites = ({ user }: UserDropdownMenuProps) => {
   const { t } = useTranslation(['household', 'common'])
   const { mutate: acceptInvite, isPending } = useAcceptInvite()
+  const { mutate: declineInvite, isPending: isPendingDecline } =
+    useDeclineInvite()
 
   const handleAccept = (invite: Invite) => {
     acceptInvite(invite)
+  }
+
+  const handleDecline = (invite: Invite) => {
+    declineInvite(invite)
   }
 
   return (
@@ -50,8 +56,12 @@ const UserInvites = ({ user }: UserDropdownMenuProps) => {
                 />
                 <ResponseButton
                   intent="negative"
-                  text={t('household:decline')}
-                  onClick={() => console.log('declined')}
+                  text={
+                    isPendingDecline
+                      ? t('common:loading')
+                      : t('household:decline')
+                  }
+                  onClick={() => handleDecline(i)}
                 />
               </div>
             </DropdownMenuItem>
