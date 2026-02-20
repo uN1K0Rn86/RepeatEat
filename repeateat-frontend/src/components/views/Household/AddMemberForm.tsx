@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { inviteSchema } from '@repeateat/shared'
+import { inviteBaseSchema } from '@repeateat/shared'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { InfoProps } from './HouseholdInfo'
@@ -22,7 +22,7 @@ const AddMemberForm = ({ household }: InfoProps) => {
     setUserSearch(value)
 
     if (error) {
-      const result = inviteSchema.safeParse({ email: value })
+      const result = inviteBaseSchema.safeParse({ email: value })
       if (result.success) {
         setError(null)
       }
@@ -31,7 +31,7 @@ const AddMemberForm = ({ household }: InfoProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const result = inviteSchema.safeParse({ email: userSearch })
+    const result = inviteBaseSchema.safeParse({ email: userSearch })
 
     if (!result.success) {
       const errorKey = result.error.issues[0].message

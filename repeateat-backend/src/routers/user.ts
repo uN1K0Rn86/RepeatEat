@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express'
 import { auth } from '../utils/auth'
 import { AuthRequest, isAuthenticated } from '../middleware/auth'
 import { AppError } from '../utils/errors'
-import { searchByEmail } from '../services/user.service'
+import { pendingInvites, searchByEmail } from '../services/user.service'
 
 const userRouter = express.Router()
 
@@ -28,7 +28,12 @@ userRouter.get('/me', async (req: Request, res: Response) => {
     return res.status(401).json({ error: 'Not authenticated' })
   }
 
-  return res.json({ user: session.user })
+  const invites = await pendingInvites(session.user)
+  console.log(invites)
+
+  const user = { ...session.user, invites }
+
+  return res.json({ user })
 })
 
 userRouter.get(

@@ -24,7 +24,6 @@ app.get('/health', (_req: Request, res: Response) => {
 })
 
 app.get('/api/hello', (_req: Request, res: Response) => {
-  console.log('Test')
   res.json({ message: 'Hello from backend again' })
 })
 

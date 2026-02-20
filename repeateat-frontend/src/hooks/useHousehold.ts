@@ -23,7 +23,6 @@ export const useInviteMember = () => {
   return useMutation({
     mutationFn: householdService.inviteHouseholdMember,
     onSuccess: (response: InviteResponse, variables) => {
-      console.log(response)
       notify.success(t(response.message))
       return queryClient.invalidateQueries({
         queryKey: ['households', variables.householdId],
