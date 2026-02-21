@@ -46,8 +46,7 @@ householdRouter.post(
 
     const userRole = await getUserRole(householdId, user!.id)
 
-    if (userRole !== 'admin')
-      throw new AppError('Only admins can invite new members', 403)
+    if (userRole !== 'admin') throw new AppError('errors:only_admin', 403)
 
     const existingMember = await existingHouseholdMember(householdId, email)
     if (existingMember) {

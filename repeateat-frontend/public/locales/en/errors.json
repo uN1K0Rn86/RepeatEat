@@ -3,5 +3,6 @@
   "something_wrong": "Something went wrong",
   "existing_member": "User is already a member of this household",
   "too_short": "The query is too short",
-  "wrong_invite": "This invite is not for you"
+  "wrong_invite": "This invite is not for you",
+  "only_admin": "Only admins can perform this function"
 }

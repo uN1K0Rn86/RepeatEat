@@ -25,8 +25,17 @@ export async function seed() {
     },
   })
 
+  const memberUser = await auth.api.signUpEmail({
+    body: {
+      email: 'member@google.com',
+      password: 'member123',
+      name: 'member',
+    },
+  })
+
   const seedUserId = seedUser.user.id
   const otherUserId = otherUser.user.id
+  const memberUserId = memberUser.user.id
 
   // Inser categories
   const categoryNames = [
@@ -130,6 +139,13 @@ export async function seed() {
       role: 'admin' as const,
     }))
     await tx.insert(schema.householdUser).values(householdUserValues)
+
+    const memberValues = insertedHouseholds.map((h) => ({
+      householdId: h.id,
+      userId: memberUserId,
+      role: 'member' as const,
+    }))
+    await tx.insert(schema.householdUser).values(memberValues)
   })
 
   // Insert households with other user
