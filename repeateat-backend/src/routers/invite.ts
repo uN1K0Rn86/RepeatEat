@@ -15,7 +15,6 @@ inviteRouter.post(
     const invite: Invite = req.body
 
     if (invite.email !== user!.email) {
-      console.log('invite: ', invite.email, 'user: ', user?.email)
       throw new AppError('errors:wrong_invite', 403)
     }
 
@@ -32,7 +31,6 @@ inviteRouter.post(
     const invite: Invite = req.body
 
     if (invite.email !== user!.email) {
-      console.log('invite: ', invite.email, 'user: ', user?.email)
       throw new AppError('errors:wrong_invite', 403)
     }
 

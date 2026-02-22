@@ -23,7 +23,7 @@ const acceptInvite = async (invite: Invite, userId: string) => {
 }
 
 const declineInvite = async (inviteId: number) => {
-  const declinedInvite = await db
+  const [declinedInvite] = await db
     .update(householdInvite)
     .set({ status: 'declined' })
     .where(eq(householdInvite.id, inviteId))

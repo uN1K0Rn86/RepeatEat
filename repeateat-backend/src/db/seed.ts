@@ -175,21 +175,21 @@ export async function seed() {
   // Insert invite
 
   await db.transaction(async (tx) => {
-    const household = await tx.query.household.findFirst({
-      where: (h, { eq }) => eq(h.name, 'Mekhar'),
-    })
+    const households = await tx.query.household.findMany({})
 
     const expiresAt = new Date()
     expiresAt.setDate(expiresAt.getDate() + 7)
 
-    await tx.insert(schema.householdInvite).values({
-      householdId: household!.id,
+    const householdInviteValues = households.map((h) => ({
+      householdId: h.id,
       invitedBy: seedUserId,
       email: invitedUser.user.email,
-      status: 'pending',
+      status: 'pending' as const,
       token: crypto.randomUUID(),
       expiresAt,
-    })
+    }))
+
+    await tx.insert(schema.householdInvite).values(householdInviteValues)
   })
 
   console.log('--- Seeding Completed Successfully ---')
