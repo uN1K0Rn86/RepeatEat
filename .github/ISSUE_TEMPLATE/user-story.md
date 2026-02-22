@@ -1,6 +1,6 @@
 ---
 name: User Story
-description: Define a new piece of functionality from the user perspective.
+about: Define a new piece of functionality from the user perspective.
 labels: ['user-story']
 body:
   - type: textarea
