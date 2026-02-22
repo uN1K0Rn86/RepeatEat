@@ -16,7 +16,7 @@ export async function seed() {
     },
   })
 
-  // Insert other user
+  // Insert other users
   const otherUser = await auth.api.signUpEmail({
     body: {
       email: 'other@google.com',
@@ -30,6 +30,14 @@ export async function seed() {
       email: 'member@google.com',
       password: 'member123',
       name: 'member',
+    },
+  })
+
+  const invitedUser = await auth.api.signUpEmail({
+    body: {
+      email: 'invited@google.com',
+      password: 'invited123',
+      name: 'invited',
     },
   })
 
@@ -162,6 +170,26 @@ export async function seed() {
       role: 'admin' as const,
     }))
     await tx.insert(schema.householdUser).values(householdUserValues)
+  })
+
+  // Insert invite
+
+  await db.transaction(async (tx) => {
+    const household = await tx.query.household.findFirst({
+      where: (h, { eq }) => eq(h.name, 'Mekhar'),
+    })
+
+    const expiresAt = new Date()
+    expiresAt.setDate(expiresAt.getDate() + 7)
+
+    await tx.insert(schema.householdInvite).values({
+      householdId: household!.id,
+      invitedBy: seedUserId,
+      email: invitedUser.user.email,
+      status: 'pending',
+      token: crypto.randomUUID(),
+      expiresAt,
+    })
   })
 
   console.log('--- Seeding Completed Successfully ---')
