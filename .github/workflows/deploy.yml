@@ -45,6 +45,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.BACKEND_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           script: |
             REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
@@ -69,6 +70,6 @@ jobs:
               -e BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" \
               -e BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}" \
               -e NODE_ENV="production" \
-              ghcr.io/${{ github.repository }}/backend:latest
+              $IMAGE
 
             docker image prune -f
