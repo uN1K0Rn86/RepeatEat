@@ -61,6 +61,7 @@ jobs:
           source: 'docker-compose.yml,default.conf'
           target: '~/repeateat'
           rm: true
+          strip_components: 0
 
       - name: Deploy to Hetzner via SSH
         uses: appleboy/ssh-action@v1.2.5
