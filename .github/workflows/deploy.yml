@@ -59,9 +59,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           source: 'docker-compose.yml,default.conf'
-          target: '~/repeateat'
-          rm: true
-          strip_components: 0
+          target: '~/'
 
       - name: Deploy to Hetzner via SSH
         uses: appleboy/ssh-action@v1.2.5
