@@ -59,7 +59,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           source: 'docker-compose.yml,default.conf'
-          target: '/'
+          target: '~/repeateat'
 
       - name: Deploy to Hetzner via SSH
         uses: appleboy/ssh-action@v1.2.5
@@ -70,6 +70,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           script: |
+            cd ~/repeateat
             REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
             IMAGE="ghcr.io/$REPO_LC/repeateat-backend:latest"
 
