@@ -41,6 +41,8 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: ${{ env.IMAGE_NAME }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     needs: build-and-push
