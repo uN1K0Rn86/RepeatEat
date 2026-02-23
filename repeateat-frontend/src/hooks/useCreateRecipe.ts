@@ -1,11 +1,11 @@
-import { useBoundStore } from '@/store'
 import { useMutation } from '@tanstack/react-query'
 
 import recipeService from '@/services/recipes'
 import type { AddRecipe } from '@repeateat/shared'
+import { useMe } from './useUser'
 
 export const useCreateRecipe = () => {
-  const { user } = useBoundStore()
+  const { data: user } = useMe()
 
   return useMutation({
     mutationFn: (newRecipe: AddRecipe) => {
