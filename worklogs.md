@@ -25,3 +25,4 @@
 | 2026-02-20 | Refactor user state to use tanstack query, add functionality for accepting and declining invites in-app                   | 5h   | 106h            |
 | 2026-02-21 | Add router tests for sending invites                                                                                      | 1h   | 107h            |
 | 2026-02-22 | Add tests for accepting and declining invites                                                                             | 1h   | 108h            |
+| 2026-02-23 | Deploy backend, frontend, and db. Work on connecting everything                                                           | 7h   | 115h            |

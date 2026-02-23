@@ -7,7 +7,7 @@ services:
       - repeateat-net
 
   nginx:
-    image: nginx-alpine
+    image: nginx:alpine
     restart: unless-stopped
     ports:
       - 80:80
