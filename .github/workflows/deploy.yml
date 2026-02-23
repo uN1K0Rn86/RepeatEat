@@ -30,7 +30,7 @@ jobs:
           context: .
           file: repeateat-backend/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/backend:latest
+          tags: ${{ env.IMAGE_NAME }}
 
   deploy:
     needs: build-and-push
