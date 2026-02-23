@@ -1,4 +1,4 @@
-FROM node:22-alpine AS build-stage
+FROM node:22-bookworm-slim AS build-stage
 
 WORKDIR /app
 
@@ -17,7 +17,7 @@ RUN npm run build
 WORKDIR /app/repeateat-backend
 RUN npm run build
 
-FROM node:22-alpine AS prod-stage
+FROM node:22-bookworm-slim AS prod-stage
 
 WORKDIR /app
 
