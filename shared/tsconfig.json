@@ -5,7 +5,9 @@
     "rootDir": "src",
     "outDir": "dist",
     "module": "commonjs",
-    "target": "ESNext"
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*"]
 }

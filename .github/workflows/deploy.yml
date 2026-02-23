@@ -1,0 +1,63 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login in to container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: repeateat-backend/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/backend:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Hetzner via SSH
+        uses: appleboy/ssh-action@v1.2.5
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.BACKEND_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # Login to GitHub Registry on the server
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+            # Pull the fresh image
+            docker pull ghcr.io/${{ github.repository }}/backend:latest
+
+            # Stop the old container
+            docker stop repeateat-backend || true
+            docker rm repeateat-backend || true
+
+            # Run the new container with Neon DB
+            docker run -d \
+              --name repeateat-backend \
+              -p 3000:3000 \
+              --restart unless-stopped \
+              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+              -e BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" \
+              -e BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}" \
+              -e NODE_ENV="production" \
+              ghcr.io/${{ github.repository }}/backend:latest
+
+            # Cleanup old images to save disk space on Hetzner
+            docker image prune -f

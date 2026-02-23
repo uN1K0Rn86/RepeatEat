@@ -25,7 +25,8 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@repeateat/shared": ["../shared/src/index.ts"]
     }
   },
   "include": ["src"]
