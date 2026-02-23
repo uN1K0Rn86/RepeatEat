@@ -41,8 +41,6 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: ${{ env.IMAGE_NAME }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   deploy:
     needs: build-and-push
@@ -59,7 +57,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           port: 22
           source: 'docker-compose.yml,default.conf'
-          target: '~/'
+          target: '~/repeateat'
 
       - name: Deploy to Hetzner via SSH
         uses: appleboy/ssh-action@v1.2.5
