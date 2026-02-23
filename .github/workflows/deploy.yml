@@ -71,5 +71,4 @@ jobs:
               -e NODE_ENV="production" \
               ghcr.io/${{ github.repository }}/backend:latest
 
-            # Cleanup old images to save disk space on Hetzner
             docker image prune -f
