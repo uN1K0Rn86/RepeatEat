@@ -13,9 +13,9 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./certs/certs.pem:/etc/letsencrypt/cert.pem:ro
-      - ./certs/key.pem:/etc/letsencrypt/key.pem:ro
+      - ./repeateat/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./repeateat/certs/cert.pem:/etc/letsencrypt/cert.pem:ro
+      - ./repeateat/certs/key.pem:/etc/letsencrypt/key.pem:ro
     depends_on:
       - backend
     networks:
