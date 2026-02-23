@@ -48,6 +48,17 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
+      - name: Copy Docker and Nginx files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.BACKEND_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: 22
+          source: 'docker-compose.yml,default.conf'
+          target: '/'
+
       - name: Deploy to Hetzner via SSH
         uses: appleboy/ssh-action@v1.2.5
         with:
@@ -60,30 +71,21 @@ jobs:
             REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
             IMAGE="ghcr.io/$REPO_LC/repeateat-backend:latest"
 
-            # Login to GitHub Registry on the server
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cat <<EOF > .env
+            DATABASE_URL="${{ secrets.DATABASE_URL }}"
+            BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}"
+            BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}"
+            VITE_API_URL="${{ secrets.VITE_API_URL }}"
+            NODE_ENV="production"
+            EOF
 
-            # Pull the fresh image
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull $IMAGE
 
-            # Run migrations from container
-            docker run --rm \
-              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-              $IMAGE npx drizzle-kit migrate
+            docker run --rm --env-file .env $IMAGE npx drizzle-kit migrate
 
-            # Stop the old container
-            docker stop repeateat-backend || true
-            docker rm repeateat-backend || true
+            docker compose up -d --remove-orphans
 
-            # Run the new container with Neon DB
-            docker run -d \
-              --name repeateat-backend \
-              -p 3000:3000 \
-              --restart unless-stopped \
-              -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
-              -e BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" \
-              -e BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}" \
-              -e NODE_ENV="production" \
-              $IMAGE
+            docker compose exec -d nginx nginx -s reload
 
             docker image prune -f

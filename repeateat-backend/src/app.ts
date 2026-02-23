@@ -11,7 +11,12 @@ import inviteRouter from './routers/invite'
 
 const app = express()
 
-app.use(cors())
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+)
 app.use('/api/auth/', toNodeHandler(auth))
 
 app.use(express.json())

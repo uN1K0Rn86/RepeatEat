@@ -8,7 +8,8 @@ export const auth = betterAuth({
   allowedOrigins: [
     'http://localhost:8080',
     'http://localhost:5173',
-    'https://e585df3bce64.ngrok-free.app',
+    'https://repeat-eat.com',
+    'https://repeateat-frontend.sami-heinimo.workers.dev/',
   ],
   baseURL: process.env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
