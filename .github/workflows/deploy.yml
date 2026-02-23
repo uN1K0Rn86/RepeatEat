@@ -7,9 +7,15 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/repeateat-backend:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Lowercase image name
+        run: |
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> ${GITHUB_ENV}
 
       - name: Login in to container registry
         uses: docker/login-action@v3
@@ -38,11 +44,14 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
+            REPO_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+            IMAGE="ghcr.io/$REPO_LC/repeateat-backend:latest"
+
             # Login to GitHub Registry on the server
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull the fresh image
-            docker pull ghcr.io/${{ github.repository }}/backend:latest
+            docker pull $IMAGE
 
             # Stop the old container
             docker stop repeateat-backend || true
