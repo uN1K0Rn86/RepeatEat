@@ -26,3 +26,4 @@
 | 2026-02-21 | Add router tests for sending invites                                                                                      | 1h   | 107h            |
 | 2026-02-22 | Add tests for accepting and declining invites                                                                             | 1h   | 108h            |
 | 2026-02-23 | Deploy backend, frontend, and db. Work on connecting everything                                                           | 9h   | 117h            |
+| 2026-02-24 | Tweak CI/CD workflows, protect main branch                                                                                | 2h   | 119h            |
