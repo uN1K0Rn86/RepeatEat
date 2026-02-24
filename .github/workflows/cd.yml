@@ -3,6 +3,12 @@ name: Deploy Backend
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'repeateat-frontend/**'
+      - '.gitignore'
+      - 'worklogs.md'
+      - 'README.md'
+      - 'LICENSE'
 
 jobs:
   build-and-push:
@@ -84,9 +90,6 @@ jobs:
 
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull $IMAGE
-
-            # TODO: Fix migration - backend node_modules exists twice inside the container
-            docker run --rm --env-file .env $IMAGE npx drizzle-kit migrate
 
             docker compose up -d --remove-orphans
 
