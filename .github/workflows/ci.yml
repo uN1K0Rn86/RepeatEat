@@ -1,4 +1,4 @@
-name: Deployment pipeline
+name: CI pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deployment_pipeline:
+  ci_pipeline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
