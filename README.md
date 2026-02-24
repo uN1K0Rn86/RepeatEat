@@ -54,3 +54,7 @@ The app is in production at [repeat-eat.com](https://repeat-eat.com)
 ## Project Architecture
 
 - Coming soon
+
+## License
+
+- Project licensed under POLYFORM NONCOMMERCIAL LICENSE 1.0.0 - see [LICENSE](LICENSE)
