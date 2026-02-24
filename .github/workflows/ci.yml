@@ -5,10 +5,18 @@ on:
     branches:
       - main
       - dev
+    paths-ignore:
+      - 'worklogs.md'
+      - 'README.md'
+      - 'LICENSE'
   pull_request:
     branches:
       - main
       - dev
+    paths-ignore:
+      - 'worklogs.md'
+      - 'README.md'
+      - 'LICENSE'
 
 jobs:
   ci_pipeline:
