@@ -25,6 +25,7 @@ const IngredientPicker = () => {
     <div>
       <FieldLegend>{t('recipe:ingredients')}</FieldLegend>
 
+      {/* Mobile View */}
       <div className="flex flex-col gap-2 sm:hidden">
         {fields.map((field, index) => (
           <div
@@ -79,6 +80,7 @@ const IngredientPicker = () => {
         ))}
       </div>
 
+      {/* Desktop view */}
       <div className="hidden sm:block">
         {fields.length > 0 && (
           <div>
