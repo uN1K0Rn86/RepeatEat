@@ -26,24 +26,17 @@ import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
 import { useMe } from '@/hooks/useUser'
-import { useAddHouseholdRecipe, useUserHouseholds } from '@/hooks/useHousehold'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu'
+import AddToHouseholdButton from '../AddToHouseholdButton'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
-  const { data, isLoading, error } = useRecipe(id || '')
+  const navigate = useNavigate()
   const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
+
   const { data: user } = useMe()
+  const { data, isLoading, error } = useRecipe(id || '')
   const editRecipeMutation = useEditRecipe()
-  const addHouseholdRecipeMutation = useAddHouseholdRecipe()
-  const navigate = useNavigate()
-  const { data: userHouseholds } = useUserHouseholds()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
     'ingredients',
@@ -91,15 +84,6 @@ const RecipeDetailsView = () => {
       notify.error(t('notify:recipe_del_failed'))
       console.error(err)
     }
-  }
-
-  const handleAddToHousehold = (householdId: number) => {
-    if (!id) return
-
-    addHouseholdRecipeMutation.mutate({
-      householdId,
-      recipeId: id,
-    })
   }
 
   return (
@@ -153,42 +137,7 @@ const RecipeDetailsView = () => {
 
           <CardFooter className="flex flex-row">
             {isEditable && <Button type="submit">{t('common:save')}</Button>}
-            {userHouseholds && userHouseholds.length > 0 && (
-              <div className="ml-auto">
-                {userHouseholds.length === 1 ? (
-                  <Button
-                    type="button"
-                    className="bg-green-300 hover:bg-green-400"
-                    onClick={() =>
-                      handleAddToHousehold(userHouseholds[0].householdId)
-                    }
-                  >
-                    {t('household:add_recipe')}
-                  </Button>
-                ) : (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        type="button"
-                        className="bg-green-300 hover:bg-green-400"
-                      >
-                        {t('household:add_recipe')}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      {userHouseholds.map((h) => (
-                        <DropdownMenuItem
-                          key={h.householdId}
-                          onClick={() => handleAddToHousehold(h.householdId)}
-                        >
-                          {h.name}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                )}
-              </div>
-            )}
+            {id && <AddToHouseholdButton recipeId={id} />}
           </CardFooter>
         </Card>
       </form>
