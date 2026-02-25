@@ -7,5 +7,6 @@
   "recipe_del_failed": "Reseptin poisto epäonnistui",
   "invite_success": "Kutsu lähetetty onnistuneesti",
   "register_success": "Rekisteröinti onnistui. Tervetuloa {{username}}!",
-  "register_fail": "Rekisteröinti epäonnistui"
+  "register_fail": "Rekisteröinti epäonnistui",
+  "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin"
 }

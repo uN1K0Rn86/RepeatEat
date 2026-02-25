@@ -4,5 +4,6 @@
   "existing_member": "Käyttäjä kuuluu jo tähän kotitalouteen",
   "too_short": "Kysely on liian lyhyt",
   "wrong_invite": "Tämä kutsu ei ole tarkoitettu sinulle",
-  "only_admin": "Vain valvojat voivat tehdä tämän toimenpiteen"
+  "only_admin": "Vain valvojat voivat tehdä tämän toimenpiteen",
+  "not_in_household": "Et kuulu tähän kotitalouteen"
 }

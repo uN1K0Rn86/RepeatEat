@@ -1,7 +1,12 @@
 import { User } from 'better-auth/types'
 
 import db from '../db'
-import { household, householdInvite, householdUser } from '../db/schema'
+import {
+  household,
+  householdInvite,
+  householdRecipe,
+  householdUser,
+} from '../db/schema'
 
 const createHousehold = async (name: string, user: User) => {
   return await db.transaction(async (tx) => {
@@ -16,6 +21,10 @@ const createHousehold = async (name: string, user: User) => {
 
     return newHousehold
   })
+}
+
+const getAllHouseholds = async () => {
+  return await db.query.household.findMany({})
 }
 
 const getUserHouseholds = async (userId: string) => {
@@ -77,7 +86,7 @@ const existingHouseholdMember = async (householdId: number, email: string) => {
       and(eq(hu.householdId, householdId), eq(hu.userId, userId)),
   })
 
-  return existingMember
+  return Boolean(existingMember)
 }
 
 const inviteMember = async (
@@ -104,10 +113,39 @@ const inviteMember = async (
   return newInvite
 }
 
+const isMember = async (householdId: number, userId: string) => {
+  const result = await db.query.householdUser.findFirst({
+    where: (hu, { and, eq }) =>
+      and(eq(hu.householdId, householdId), eq(hu.userId, userId)),
+  })
+
+  return Boolean(result)
+}
+
+const addHouseholdRecipe = async (
+  userId: string,
+  householdId: number,
+  recipeId: number,
+) => {
+  const [newHouseholdRecipe] = await db
+    .insert(householdRecipe)
+    .values({
+      householdId,
+      recipeId,
+      addedBy: userId,
+    })
+    .returning()
+
+  return newHouseholdRecipe
+}
+
 export {
   createHousehold,
+  getAllHouseholds,
   getUserHouseholds,
   getUserRole,
   existingHouseholdMember,
   inviteMember,
+  isMember,
+  addHouseholdRecipe,
 }
