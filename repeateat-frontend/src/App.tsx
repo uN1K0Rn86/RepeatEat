@@ -26,10 +26,7 @@ const App = () => {
         <NotificationList />
 
         <Routes>
-          <Route
-            path="/"
-            element={user?.id ? <HouseholdView /> : <HomeView />}
-          />
+          <Route path="/" element={user ? <HouseholdView /> : <HomeView />} />
           <Route path="/recipe" element={<RecipeView />} />
           <Route path="/recipe/:id" element={<RecipeDetailsView />} />
           <Route path="/recipe/add" element={<AddRecipeForm />} />

@@ -26,15 +26,17 @@ import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
 import { useMe } from '@/hooks/useUser'
+import AddToHouseholdButton from '../AddToHouseholdButton'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
-  const { data, isLoading, error } = useRecipe(id || '')
-  const { setPageTitle } = useBoundStore()
-  const { t } = useTranslation(['common', 'notify', 'recipe'])
-  const { data: user } = useMe()
-  const editRecipeMutation = useEditRecipe()
   const navigate = useNavigate()
+  const { setPageTitle } = useBoundStore()
+  const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
+
+  const { data: user } = useMe()
+  const { data, isLoading, error } = useRecipe(id || '')
+  const editRecipeMutation = useEditRecipe()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
     'ingredients',
@@ -91,7 +93,7 @@ const RecipeDetailsView = () => {
         className="flex min-h-screen flex-col items-center"
       >
         <Card className="w-full sm:max-w-md">
-          <CardHeader className="flex flex-row justify-between">
+          <CardHeader className="flex flex-row justify-between items-center">
             {isEditable ? (
               <CardTitle>
                 <Input
@@ -132,11 +134,11 @@ const RecipeDetailsView = () => {
               )}
             </div>
           </CardContent>
-          {isEditable && (
-            <CardFooter>
-              <Button type="submit">{t('common:save')}</Button>
-            </CardFooter>
-          )}
+
+          <CardFooter className="flex flex-row">
+            {isEditable && <Button type="submit">{t('common:save')}</Button>}
+            {id && <AddToHouseholdButton recipeId={id} source="view" />}
+          </CardFooter>
         </Card>
       </form>
     </FormProvider>

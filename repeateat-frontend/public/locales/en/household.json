@@ -12,5 +12,6 @@
   "accept": "Accept",
   "decline": "Decline",
   "invite_accepted": "Invite to household {{ household }} accepted",
-  "invite_declined": "Invite to household {{ household }} declined"
+  "invite_declined": "Invite to household {{ household }} declined",
+  "add_recipe": "Add to household"
 }

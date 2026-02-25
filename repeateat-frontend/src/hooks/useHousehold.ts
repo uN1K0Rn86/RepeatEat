@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import householdService from '@/services/households'
-import { type InviteResponse, type UserHousehold } from '@repeateat/shared'
+import {
+  type HouseholdRecipeResponse,
+  type InviteResponse,
+  type UserHousehold,
+} from '@repeateat/shared'
 import { notify } from '@/utils/notify'
 import { useTranslation } from 'react-i18next'
 import type { AxiosError } from 'axios'
@@ -44,4 +48,24 @@ export const useUserSearch = (debouncedSearch: string) => {
   })
 
   return data
+}
+
+export const useAddHouseholdRecipe = () => {
+  const { t } = useTranslation(['errors', 'notify'])
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: householdService.addRecipeToHousehold,
+    onSuccess: (response: HouseholdRecipeResponse, variables) => {
+      notify.success(t(response.message))
+      return queryClient.invalidateQueries({
+        queryKey: ['householdRecipes', variables.householdId],
+      })
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      const serverMessage =
+        error.response?.data?.error || 'errors:recipe_add_household_fail'
+      notify.error(t(serverMessage))
+    },
+  })
 }

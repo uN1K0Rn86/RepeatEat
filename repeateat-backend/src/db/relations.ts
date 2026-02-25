@@ -22,6 +22,7 @@ export const userRelations = relations(user, ({ many }) => ({
   households: many(householdUser),
   recipes: many(recipe),
   invites: many(householdInvite),
+  householdRecipes: many(householdRecipe),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -102,6 +103,10 @@ export const householdRecipeRelations = relations(
     recipe: one(recipe, {
       fields: [householdRecipe.recipeId],
       references: [recipe.id],
+    }),
+    user: one(user, {
+      fields: [householdRecipe.addedBy],
+      references: [user.id],
     }),
   }),
 )
