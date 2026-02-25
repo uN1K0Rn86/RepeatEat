@@ -1,0 +1,2 @@
+ALTER TABLE "household_recipe" ADD COLUMN "added_by" text;--> statement-breakpoint
+ALTER TABLE "household_recipe" ADD CONSTRAINT "household_recipe_added_by_user_id_fk" FOREIGN KEY ("added_by") REFERENCES "public"."user"("id") ON DELETE set null ON UPDATE no action;
