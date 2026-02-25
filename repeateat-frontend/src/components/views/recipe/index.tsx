@@ -12,6 +12,7 @@ import { ArrowRight, Search } from 'lucide-react'
 import { useAllRecipes } from '@/hooks/useRecipe'
 import type { FullRecipe } from '@repeateat/shared'
 import { Link } from 'react-router-dom'
+import AddToHouseholdButton from './AddToHouseholdButton'
 
 const RecipeView = () => {
   const { setPageTitle } = useBoundStore()
@@ -66,7 +67,8 @@ const RecipeView = () => {
                 </span>
               </div>
 
-              <div className="text-muted-foreground group-hover:translate-x-1 transition-transform">
+              <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
+                <AddToHouseholdButton recipeId={String(r.id)} source="list" />
                 <ArrowRight />
               </div>
             </Link>

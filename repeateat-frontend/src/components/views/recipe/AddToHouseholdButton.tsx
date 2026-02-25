@@ -4,15 +4,22 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
 import { useAddHouseholdRecipe, useUserHouseholds } from '@/hooks/useHousehold'
+import { Plus } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 interface AddToHouseholdButtonProps {
   recipeId: string
+  source: 'list' | 'view'
 }
 
-const AddToHouseholdButton = ({ recipeId }: AddToHouseholdButtonProps) => {
+const AddToHouseholdButton = ({
+  recipeId,
+  source,
+}: AddToHouseholdButtonProps) => {
   const { t } = useTranslation(['household'])
   const { data: userHouseholds } = useUserHouseholds()
   const addHouseholdRecipeMutation = useAddHouseholdRecipe()
@@ -45,10 +52,16 @@ const AddToHouseholdButton = ({ recipeId }: AddToHouseholdButtonProps) => {
                   type="button"
                   className="bg-green-300 hover:bg-green-400"
                 >
-                  {t('household:add_recipe')}
+                  {source === 'view' ? t('household:add_recipe') : <Plus />}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {source === 'list' && (
+                  <div>
+                    <DropdownMenuLabel>Add to household</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                  </div>
+                )}
                 {userHouseholds.map((h) => (
                   <DropdownMenuItem
                     key={h.householdId}

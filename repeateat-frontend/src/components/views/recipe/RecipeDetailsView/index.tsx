@@ -137,7 +137,7 @@ const RecipeDetailsView = () => {
 
           <CardFooter className="flex flex-row">
             {isEditable && <Button type="submit">{t('common:save')}</Button>}
-            {id && <AddToHouseholdButton recipeId={id} />}
+            {id && <AddToHouseholdButton recipeId={id} source="view" />}
           </CardFooter>
         </Card>
       </form>
