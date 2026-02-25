@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const householdBaseSchema = z.object({
-  name: z.string().min(2, 'Name is required'),
+  name: z.string().min(2, 'errors:name_required'),
 })
 
 export const householdResponseSchema = householdBaseSchema.extend({
@@ -58,6 +58,18 @@ const householdRecipeResponseSchema = z.object({
   }),
 })
 
+export const householdRecipeSchema = z.object({
+  recipeId: z.number(),
+  householdId: z.number(),
+  addedBy: z.string().nullable(),
+  recipe: z.object({
+    id: z.number(),
+    name: z.string(),
+    authorId: z.string().nullable(),
+    private: z.boolean(),
+  }),
+})
+
 export type UserHousehold = z.infer<typeof userHouseholdSchema>
 export type HouseholdMember = z.infer<typeof householdMembersSchema>
 export type InviteResponse = z.infer<typeof inviteResponseSchema>
@@ -65,3 +77,5 @@ export type Invite = z.infer<typeof inviteSchema>
 export type HouseholdRecipeResponse = z.infer<
   typeof householdRecipeResponseSchema
 >
+export type HouseholdRecipe = z.infer<typeof householdRecipeSchema>
+export type HouseholdResponse = z.infer<typeof householdResponseSchema>

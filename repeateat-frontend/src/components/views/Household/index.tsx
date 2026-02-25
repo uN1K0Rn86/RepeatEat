@@ -6,6 +6,7 @@ import HouseholdInfo from './HouseholdInfo'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useUserHouseholds } from '@/hooks/useHousehold'
 import type { UserHousehold } from '@repeateat/shared'
+import NewHouseholdForm from './NewHouseholdForm'
 
 const HouseholdView = () => {
   const { setPageTitle, activeHouseholdId } = useBoundStore()
@@ -25,8 +26,8 @@ const HouseholdView = () => {
     (h) => h.householdId === activeHouseholdId,
   )
 
-  return (
-    <Card>
+  return userHouseholds.length > 0 ? (
+    <Card className="w-full sm:max-w-md">
       <CardHeader>
         <HouseholdSelector userHouseholds={userHouseholds} />
       </CardHeader>
@@ -34,6 +35,8 @@ const HouseholdView = () => {
         {activeHousehold && <HouseholdInfo household={activeHousehold} />}
       </CardContent>
     </Card>
+  ) : (
+    <NewHouseholdForm />
   )
 }
 

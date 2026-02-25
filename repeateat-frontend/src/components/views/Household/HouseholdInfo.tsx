@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import {
   Accordion,
   AccordionContent,
@@ -12,14 +14,24 @@ import { useTranslation } from 'react-i18next'
 import { Badge } from '@/components/ui/badge'
 import AddMemberForm from './AddMemberForm'
 import { useMe } from '@/hooks/useUser'
+import { useHouseholdRecipes } from '@/hooks/useHousehold'
 
 export interface InfoProps {
   household: UserHousehold
 }
 
 const HouseholdInfo = ({ household }: InfoProps) => {
-  const { t } = useTranslation(['household', 'common'])
+  const { t } = useTranslation(['household', 'common', 'recipe'])
   const { data: user } = useMe()
+  const {
+    data: householdRecipes,
+    isLoading,
+    error,
+  } = useHouseholdRecipes(household.householdId)
+
+  if (isLoading) return <div>Loading recipes</div>
+  if (error) return <div>Couldn't load recipes</div>
+  console.log(householdRecipes)
 
   return (
     <div>
@@ -60,7 +72,29 @@ const HouseholdInfo = ({ household }: InfoProps) => {
           <AccordionTrigger className="font-bold">
             {t('common:recipes')}
           </AccordionTrigger>
-          <AccordionContent></AccordionContent>
+          <AccordionContent>
+            {householdRecipes?.map((r) => (
+              <Link
+                key={r.recipeId}
+                to={`/recipe/${r.recipeId}`}
+                className="flex items-center justify-between border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
+              >
+                <div className="flex flex-col gap-1">
+                  <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                    {r.recipe.name}
+                  </span>
+
+                  <span className="text-xs text-muted-foreground">
+                    {t('recipe:view_details')}
+                  </span>
+                </div>
+
+                <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
+                  <ArrowRight />
+                </div>
+              </Link>
+            ))}
+          </AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>
