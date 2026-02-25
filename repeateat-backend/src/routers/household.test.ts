@@ -192,4 +192,55 @@ describe('Household-related endpoints', () => {
       expect(householdRecipeResponse.body.error).toEqual('Unauthorized')
     })
   })
+
+  describe('GET /:id/recipe', () => {
+    it('succeeds when the user is part of the household', async () => {
+      const authCookie = await getAuthCookie('def@google.com', 'password123')
+
+      const householdResponse = await request(app)
+        .get('/api/household')
+        .set('Cookie', authCookie!)
+      const householdId = householdResponse.body[0].householdId
+
+      const householdRecipeResponse = await request(app)
+        .get(`/api/household/${householdId}/recipe`)
+        .set('Cookie', authCookie!)
+
+      const householdRecipes = householdRecipeResponse.body
+
+      expect(householdRecipes).toBeInstanceOf(Array)
+      expect(householdRecipes[0]).toHaveProperty('recipe')
+      expect(householdRecipes[0]).toHaveProperty('householdId')
+      expect(householdRecipes[0]).toHaveProperty('addedBy')
+      expect(householdRecipes[0]).toHaveProperty('recipeId')
+    })
+
+    it('fails when user is not part of the household', async () => {
+      const otherHousehold = await getOtherHousehold(
+        'def@google.com',
+        'password123',
+      )
+
+      const authCookie = await getAuthCookie('def@google.com', 'password123')
+
+      const householdRecipeResponse = await request(app)
+        .get(`/api/household/${otherHousehold.id}/recipe`)
+        .set('Cookie', authCookie!)
+
+      expect(householdRecipeResponse.body.error).toEqual(
+        'errors:not_in_household',
+      )
+    })
+
+    it('fails when user is not logged in', async () => {
+      const allHouseholds = await getAllHouseholds()
+      const householdId = allHouseholds[0].id
+
+      const householdRecipeResponse = await request(app).get(
+        `/api/household/${householdId}/recipe`,
+      )
+
+      expect(householdRecipeResponse.body.error).toEqual('Unauthorized')
+    })
+  })
 })

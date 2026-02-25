@@ -103,4 +103,21 @@ householdRouter.post(
   },
 )
 
+householdRouter.get(
+  '/:id/recipe',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
+    const householdId = Number(req.params.id)
+
+    const userInHousehold = await isMember(householdId, user!.id)
+    if (!user || !userInHousehold)
+      throw new AppError('errors:not_in_household', 403)
+
+    const householdRecipes = await getHouseholdRecipes(householdId)
+
+    res.status(200).json(householdRecipes)
+  },
+)
+
 export default householdRouter
