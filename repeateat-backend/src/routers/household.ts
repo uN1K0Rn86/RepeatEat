@@ -77,6 +77,7 @@ householdRouter.post(
     const user = req.user
     const householdId = Number(req.params.id)
     const recipeId = Number(req.body.recipeId)
+    console.log(user, householdId, recipeId)
 
     const userInHousehold = await isMember(householdId, user!.id)
     if (!userInHousehold) throw new AppError('errors:not_in_household', 403)

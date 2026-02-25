@@ -8,5 +8,6 @@
   "invite_success": "Kutsu lähetetty onnistuneesti",
   "register_success": "Rekisteröinti onnistui. Tervetuloa {{username}}!",
   "register_fail": "Rekisteröinti epäonnistui",
-  "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin"
+  "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin",
+  "recipe_add_household_fail": "Reseptin lisääminen kotitalouteen epäonnistui"
 }

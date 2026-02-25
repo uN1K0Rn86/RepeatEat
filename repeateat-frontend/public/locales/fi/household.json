@@ -12,5 +12,6 @@
   "accept": "Hyväksy",
   "decline": "Hylkää",
   "invite_accepted": "Kutsu kotitalouteen {{ household }} hyväksytty",
-  "invite_declined": "Kutsu kotitalouteen {{ household }} hylätty"
+  "invite_declined": "Kutsu kotitalouteen {{ household }} hylätty",
+  "add_recipe": "Lisää kotitalouteen"
 }

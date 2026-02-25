@@ -8,5 +8,6 @@
   "invite_success": "Invite sent successfully",
   "register_success": "Registration successful. Welcome {{username}}!",
   "register_fail": "Registration failed",
-  "household_recipe_added": "Recipe added to household favorites"
+  "household_recipe_added": "Recipe added to household favorites",
+  "recipe_add_household_fail": "Could not add recipe to household"
 }

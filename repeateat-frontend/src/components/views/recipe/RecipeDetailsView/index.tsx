@@ -25,16 +25,25 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
+import householdService from '@/services/households'
 import { useMe } from '@/hooks/useUser'
+import { useUserHouseholds } from '@/hooks/useHousehold'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, error } = useRecipe(id || '')
   const { setPageTitle } = useBoundStore()
-  const { t } = useTranslation(['common', 'notify', 'recipe'])
+  const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
   const { data: user } = useMe()
   const editRecipeMutation = useEditRecipe()
   const navigate = useNavigate()
+  const { data: userHouseholds } = useUserHouseholds()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
     'ingredients',
@@ -84,6 +93,20 @@ const RecipeDetailsView = () => {
     }
   }
 
+  const handleAddToHousehold = async (householdId: number) => {
+    try {
+      if (!id) return
+      const { message } = await householdService.addRecipeToHousehold(
+        householdId,
+        id,
+      )
+      notify.success(t(message))
+    } catch (err) {
+      notify.error(t('notify:recipe_add_household_fail'))
+      console.error(err)
+    }
+  }
+
   return (
     <FormProvider {...methods}>
       <form
@@ -91,7 +114,7 @@ const RecipeDetailsView = () => {
         className="flex min-h-screen flex-col items-center"
       >
         <Card className="w-full sm:max-w-md">
-          <CardHeader className="flex flex-row justify-between">
+          <CardHeader className="flex flex-row justify-between items-center">
             {isEditable ? (
               <CardTitle>
                 <Input
@@ -132,11 +155,46 @@ const RecipeDetailsView = () => {
               )}
             </div>
           </CardContent>
-          {isEditable && (
-            <CardFooter>
-              <Button type="submit">{t('common:save')}</Button>
-            </CardFooter>
-          )}
+
+          <CardFooter className="flex flex-row">
+            {isEditable && <Button type="submit">{t('common:save')}</Button>}
+            {userHouseholds && userHouseholds.length > 0 && (
+              <div className="ml-auto">
+                {userHouseholds.length === 1 ? (
+                  <Button
+                    type="button"
+                    className="bg-green-300 hover:bg-green-400"
+                    onClick={() =>
+                      handleAddToHousehold(userHouseholds[0].householdId)
+                    }
+                  >
+                    {t('household:add_recipe')}
+                  </Button>
+                ) : (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        type="button"
+                        className="bg-green-300 hover:bg-green-400"
+                      >
+                        {t('household:add_recipe')}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {userHouseholds.map((h) => (
+                        <DropdownMenuItem
+                          key={h.householdId}
+                          onClick={() => handleAddToHousehold(h.householdId)}
+                        >
+                          {h.name}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+              </div>
+            )}
+          </CardFooter>
         </Card>
       </form>
     </FormProvider>
