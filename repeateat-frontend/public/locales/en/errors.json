@@ -5,5 +5,7 @@
   "too_short": "The query is too short",
   "wrong_invite": "This invite is not for you",
   "only_admin": "Only admins can perform this function",
-  "not_in_household": "You are not a member of this household"
+  "not_in_household": "You are not a member of this household",
+  "recipe_in_household": "This recipe has already been added to this household",
+  "recipe_add_household_fail": "Could not add recipe to household"
 }

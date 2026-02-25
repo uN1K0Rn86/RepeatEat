@@ -32,10 +32,13 @@ const searchUser = async (query: string): Promise<string[]> => {
   return response.data
 }
 
-const addRecipeToHousehold = async (
-  householdId: number,
-  recipeId: string,
-): Promise<HouseholdRecipeResponse> => {
+const addRecipeToHousehold = async ({
+  householdId,
+  recipeId,
+}: {
+  householdId: number
+  recipeId: string
+}): Promise<HouseholdRecipeResponse> => {
   const response = await axios.post<HouseholdRecipeResponse>(
     `${baseUrl}/${householdId}/recipe`,
     { recipeId },

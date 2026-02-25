@@ -25,9 +25,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { notify } from '@/utils/notify'
 import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
-import householdService from '@/services/households'
 import { useMe } from '@/hooks/useUser'
-import { useUserHouseholds } from '@/hooks/useHousehold'
+import { useAddHouseholdRecipe, useUserHouseholds } from '@/hooks/useHousehold'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +41,7 @@ const RecipeDetailsView = () => {
   const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
   const { data: user } = useMe()
   const editRecipeMutation = useEditRecipe()
+  const addHouseholdRecipeMutation = useAddHouseholdRecipe()
   const navigate = useNavigate()
   const { data: userHouseholds } = useUserHouseholds()
 
@@ -93,18 +93,13 @@ const RecipeDetailsView = () => {
     }
   }
 
-  const handleAddToHousehold = async (householdId: number) => {
-    try {
-      if (!id) return
-      const { message } = await householdService.addRecipeToHousehold(
-        householdId,
-        id,
-      )
-      notify.success(t(message))
-    } catch (err) {
-      notify.error(t('notify:recipe_add_household_fail'))
-      console.error(err)
-    }
+  const handleAddToHousehold = (householdId: number) => {
+    if (!id) return
+
+    addHouseholdRecipeMutation.mutate({
+      householdId,
+      recipeId: id,
+    })
   }
 
   return (

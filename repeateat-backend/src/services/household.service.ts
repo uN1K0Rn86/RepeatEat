@@ -139,6 +139,17 @@ const addHouseholdRecipe = async (
   return newHouseholdRecipe
 }
 
+const getHouseholdRecipes = async (householdId: number) => {
+  const householdRecipes = await db.query.householdRecipe.findMany({
+    where: (hr, { eq }) => eq(hr.householdId, householdId),
+    with: {
+      recipe: true,
+    },
+  })
+
+  return householdRecipes
+}
+
 export {
   createHousehold,
   getAllHouseholds,
@@ -148,4 +159,5 @@ export {
   inviteMember,
   isMember,
   addHouseholdRecipe,
+  getHouseholdRecipes,
 }

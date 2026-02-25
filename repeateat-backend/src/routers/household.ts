@@ -4,6 +4,7 @@ import {
   addHouseholdRecipe,
   createHousehold,
   existingHouseholdMember,
+  getHouseholdRecipes,
   getUserHouseholds,
   getUserRole,
   inviteMember,
@@ -81,6 +82,12 @@ householdRouter.post(
 
     const userInHousehold = await isMember(householdId, user!.id)
     if (!userInHousehold) throw new AppError('errors:not_in_household', 403)
+
+    const existingRecipeIds = (await getHouseholdRecipes(householdId)).map(
+      (hr) => hr.recipeId,
+    )
+    if (existingRecipeIds.includes(recipeId))
+      throw new AppError('errors:recipe_in_household', 409)
 
     // Admins and members can add recipes
     const addedHouseholdRecipe = await addHouseholdRecipe(
