@@ -42,10 +42,19 @@ export const inviteResponseSchema = z.object({
   message: z.string(),
   data: z.object({
     id: z.number(),
-    email: z.string().email(),
+    email: z.email(),
     status: z.enum(['pending', 'accepted', 'declined']),
     sentAt: z.iso.datetime(),
     expiresAt: z.iso.datetime(),
+  }),
+})
+
+const householdRecipeResponseSchema = z.object({
+  message: z.string(),
+  data: z.object({
+    householdId: z.number(),
+    recipeId: z.number(),
+    addedBy: z.string(),
   }),
 })
 
@@ -53,3 +62,6 @@ export type UserHousehold = z.infer<typeof userHouseholdSchema>
 export type HouseholdMember = z.infer<typeof householdMembersSchema>
 export type InviteResponse = z.infer<typeof inviteResponseSchema>
 export type Invite = z.infer<typeof inviteSchema>
+export type HouseholdRecipeResponse = z.infer<
+  typeof householdRecipeResponseSchema
+>

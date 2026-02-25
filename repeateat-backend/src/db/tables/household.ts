@@ -42,6 +42,9 @@ export const householdRecipe = pgTable(
     recipeId: integer('recipe_id')
       .notNull()
       .references(() => recipe.id, { onDelete: 'cascade' }),
+    addedBy: text('added_by').references(() => user.id, {
+      onDelete: 'set null',
+    }),
   },
   (table) => [primaryKey({ columns: [table.householdId, table.recipeId] })],
 )

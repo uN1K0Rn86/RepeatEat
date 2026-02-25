@@ -63,6 +63,8 @@ export const useLogout = () => {
     onSuccess: () => {
       const user = queryClient.getQueryData<User>(['user', 'me'])
       queryClient.setQueryData(['user', 'me'], null)
+      queryClient.clear()
+
       if (user) {
         notify.success(t('notify:logout', { username: user.name }))
       }

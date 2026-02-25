@@ -57,6 +57,13 @@
       "when": 1771431540814,
       "tag": "0007_20260218-02-add_sentat_column_to_invites",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1772003947679,
+      "tag": "0008_20260225-01-add_addedBy_column_household_recipe",
+      "breakpoints": true
     }
   ]
 }

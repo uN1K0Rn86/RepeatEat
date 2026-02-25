@@ -1,11 +1,14 @@
 import express, { Response } from 'express'
 
 import {
+  addHouseholdRecipe,
   createHousehold,
   existingHouseholdMember,
+  getHouseholdRecipes,
   getUserHouseholds,
   getUserRole,
   inviteMember,
+  isMember,
 } from '../services/household.service'
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
@@ -64,6 +67,38 @@ householdRouter.post(
         sentAt: newInvite.sentAt,
         expiresAt: newInvite.expiresAt,
       },
+    })
+  },
+)
+
+householdRouter.post(
+  '/:id/recipe',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
+    const householdId = Number(req.params.id)
+    const recipeId = Number(req.body.recipeId)
+    console.log(user, householdId, recipeId)
+
+    const userInHousehold = await isMember(householdId, user!.id)
+    if (!userInHousehold) throw new AppError('errors:not_in_household', 403)
+
+    const existingRecipeIds = (await getHouseholdRecipes(householdId)).map(
+      (hr) => hr.recipeId,
+    )
+    if (existingRecipeIds.includes(recipeId))
+      throw new AppError('errors:recipe_in_household', 409)
+
+    // Admins and members can add recipes
+    const addedHouseholdRecipe = await addHouseholdRecipe(
+      user!.id,
+      householdId,
+      recipeId,
+    )
+
+    return res.status(201).json({
+      message: 'notify:household_recipe_added',
+      data: addedHouseholdRecipe,
     })
   },
 )
