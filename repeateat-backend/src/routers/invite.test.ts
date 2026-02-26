@@ -35,7 +35,7 @@ describe('Invite-related endpoints', () => {
         .post(`/api/invite/${inviteFromDb!.id}/accept`)
         .send(inviteToFail)
 
-      expect(acceptResponse.body.error).toEqual('Unauthorized')
+      expect(acceptResponse.body.error).toEqual('errors:must_login')
     })
 
     it('succeeds when invite and user are valid', async () => {
@@ -85,7 +85,7 @@ describe('Invite-related endpoints', () => {
         .post(`/api/invite/${inviteFromDb!.id}/decline`)
         .send(inviteToFail)
 
-      expect(acceptResponse.body.error).toEqual('Unauthorized')
+      expect(acceptResponse.body.error).toEqual('errors:must_login')
     })
 
     it('succeeds when invite and user are valid', async () => {

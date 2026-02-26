@@ -37,7 +37,7 @@ describe('Household-related endpoints', () => {
         .post('/api/household')
         .send(failedHousehold)
 
-      expect(response.body.error).toEqual('Unauthorized')
+      expect(response.body.error).toEqual('errors:must_login')
     })
   })
 
@@ -93,7 +93,7 @@ describe('Household-related endpoints', () => {
         .send({ email: emailToInvite })
 
       const failedInvite = inviteResponse.body
-      expect(failedInvite.error).toEqual('Unauthorized')
+      expect(failedInvite.error).toEqual('errors:must_login')
     })
 
     it('fails when user is a member, not admin of household', async () => {
@@ -189,7 +189,7 @@ describe('Household-related endpoints', () => {
         .post(`/api/household/${householdId}/recipe`)
         .send({ recipeId })
 
-      expect(householdRecipeResponse.body.error).toEqual('Unauthorized')
+      expect(householdRecipeResponse.body.error).toEqual('errors:must_login')
     })
   })
 
@@ -240,7 +240,7 @@ describe('Household-related endpoints', () => {
         `/api/household/${householdId}/recipe`,
       )
 
-      expect(householdRecipeResponse.body.error).toEqual('Unauthorized')
+      expect(householdRecipeResponse.body.error).toEqual('errors:must_login')
     })
   })
 })

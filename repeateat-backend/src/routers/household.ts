@@ -120,4 +120,12 @@ householdRouter.get(
   },
 )
 
+householdRouter.post(
+  '/:id/cooking-history',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const cookedBy = req.user!.id
+  },
+)
+
 export default householdRouter
