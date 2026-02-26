@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import householdService from '@/services/households'
 import {
+  type CookLogFromFrontend,
   type HouseholdRecipe,
   type HouseholdRecipeResponse,
   type InviteResponse,
@@ -75,6 +76,17 @@ export const useHouseholdRecipes = (householdId: number) => {
   return useQuery<HouseholdRecipe[]>({
     queryKey: ['householdRecipes', householdId],
     queryFn: () => householdService.getHouseholdRecipes(householdId),
+    select: (data) =>
+      data.map((r) => ({
+        ...r,
+        recipe: {
+          ...r.recipe,
+          cookingHistory: r.recipe.cookingHistory.map((log) => ({
+            ...log,
+            cookedAt: log.cookedAt ? new Date(log.cookedAt) : undefined,
+          })),
+        },
+      })),
   })
 }
 
@@ -87,6 +99,25 @@ export const useCreateHousehold = () => {
     onSuccess: () => {
       notify.success(t('notify:household_created'))
       return queryClient.invalidateQueries({ queryKey: ['userHouseholds'] })
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      const serverMessage =
+        error.response?.data?.error || 'errors:something_wrong'
+      notify.error(t(serverMessage))
+    },
+  })
+}
+
+export const useLogCook = () => {
+  const { t } = useTranslation(['errors', 'notify'])
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (data: CookLogFromFrontend) =>
+      householdService.createCookLog(data),
+    onSuccess: () => {
+      notify.success(t('notify:cooklog_created'))
+      return queryClient.invalidateQueries({ queryKey: ['householdRecipes'] })
     },
     onError: (error: AxiosError<BackendError>) => {
       const serverMessage =

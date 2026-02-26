@@ -58,6 +58,24 @@ const householdRecipeResponseSchema = z.object({
   }),
 })
 
+export const createCookLogSchema = z.object({
+  recipeId: z.number(),
+  notes: z.string().max(500).optional(),
+  cookedAt: z.coerce.date().optional(),
+})
+
+export const cookLogFromFrontendSchema = createCookLogSchema.extend({
+  householdId: z.number(),
+})
+
+const addCookLogInputSchema = cookLogFromFrontendSchema.extend({
+  cookedBy: z.string(),
+})
+
+const cookLogSchema = addCookLogInputSchema.extend({
+  id: z.number().positive(),
+})
+
 export const householdRecipeSchema = z.object({
   recipeId: z.number(),
   householdId: z.number(),
@@ -67,6 +85,7 @@ export const householdRecipeSchema = z.object({
     name: z.string(),
     authorId: z.string().nullable(),
     private: z.boolean(),
+    cookingHistory: cookLogSchema.array(),
   }),
 })
 
@@ -79,3 +98,7 @@ export type HouseholdRecipeResponse = z.infer<
 >
 export type HouseholdRecipe = z.infer<typeof householdRecipeSchema>
 export type HouseholdResponse = z.infer<typeof householdResponseSchema>
+export type CreateCookLog = z.infer<typeof createCookLogSchema>
+export type AddCookLogInput = z.infer<typeof addCookLogInputSchema>
+export type CookLogFromFrontend = z.infer<typeof cookLogFromFrontendSchema>
+export type CookLog = z.infer<typeof cookLogSchema>

@@ -8,5 +8,6 @@
   "not_in_household": "You are not a member of this household",
   "recipe_in_household": "This recipe has already been added to this household",
   "recipe_add_household_fail": "Could not add recipe to household",
-  "name_required": "Name is required"
+  "name_required": "Name is required",
+  "must_login": "You must login to perform this action"
 }

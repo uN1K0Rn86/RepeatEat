@@ -27,5 +27,12 @@
   "open_menu": "Open menu",
   "actions": "Actions",
   "loading": "Loading",
-  "create": "Create"
+  "create": "Create",
+  "never": "Never",
+  "pick_date": "Pick a date",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "notes": "Notes"
 }

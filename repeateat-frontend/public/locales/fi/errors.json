@@ -8,5 +8,6 @@
   "not_in_household": "Et kuulu tähän kotitalouteen",
   "recipe_in_household": "Tämä resepti on jo lisätty tähän kotitalouteen",
   "recipe_add_household_fail": "Reseptin lisääminen kotitalouteen epäonnistui",
-  "name_required": "Nimi vaaditaan"
+  "name_required": "Nimi vaaditaan",
+  "must_login": "Tämä toiminto vaatii sisäänkirjautumisen"
 }

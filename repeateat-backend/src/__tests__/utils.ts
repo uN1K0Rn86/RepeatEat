@@ -5,21 +5,18 @@ import app from '../app'
 import db from '../db'
 import { household, householdUser } from '../db/schema'
 
-export const getAuthCookie = async (email: string, password: string) => {
+export const loginUser = async (email: string, password: string) => {
   const loginResponse = await request(app)
     .post('/api/auth/sign-in/email')
     .send({ email, password })
 
-  return loginResponse.get('Set-Cookie')
+  const authCookie = loginResponse.get('Set-Cookie')
+  const user = loginResponse.body.user
+
+  return { user, authCookie }
 }
 
-export const getOtherHousehold = async (email: string, password: string) => {
-  const loginResponse = await request(app)
-    .post('/api/auth/sign-in/email')
-    .send({ email, password })
-
-  const userId = loginResponse.body.user.id
-
+export const getOtherHousehold = async (userId: string) => {
   const userHouseholdIds = db
     .select({ id: householdUser.householdId })
     .from(householdUser)

@@ -1,7 +1,9 @@
 import { User } from 'better-auth/types'
+import { AddCookLogInput } from '@repeateat/shared'
 
 import db from '../db'
 import {
+  cookingHistory,
   household,
   householdInvite,
   householdRecipe,
@@ -143,11 +145,26 @@ const getHouseholdRecipes = async (householdId: number) => {
   const householdRecipes = await db.query.householdRecipe.findMany({
     where: (hr, { eq }) => eq(hr.householdId, householdId),
     with: {
-      recipe: true,
+      recipe: {
+        with: {
+          cookingHistory: {
+            orderBy: (history, { desc }) => [desc(history.cookedAt)],
+          },
+        },
+      },
     },
   })
 
   return householdRecipes
+}
+
+const addCookingHistory = async (data: AddCookLogInput) => {
+  const [newCookingHistory] = await db
+    .insert(cookingHistory)
+    .values(data)
+    .returning()
+
+  return newCookingHistory
 }
 
 export {
@@ -160,4 +177,5 @@ export {
   isMember,
   addHouseholdRecipe,
   getHouseholdRecipes,
+  addCookingHistory,
 }

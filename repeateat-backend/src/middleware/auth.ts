@@ -19,7 +19,7 @@ export const isAuthenticated = async (
   })
 
   if (!session) {
-    throw new AppError('Unauthorized', 401)
+    throw new AppError('errors:must_login', 401)
   }
 
   req.user = session.user

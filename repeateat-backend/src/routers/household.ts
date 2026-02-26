@@ -1,6 +1,8 @@
 import express, { Response } from 'express'
+import { createCookLogSchema } from '@repeateat/shared'
 
 import {
+  addCookingHistory,
   addHouseholdRecipe,
   createHousehold,
   existingHouseholdMember,
@@ -117,6 +119,29 @@ householdRouter.get(
     const householdRecipes = await getHouseholdRecipes(householdId)
 
     res.status(200).json(householdRecipes)
+  },
+)
+
+householdRouter.post(
+  '/:id/cooking-history',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
+    const householdId = Number(req.params.id)
+    const validatedBody = createCookLogSchema.parse(req.body)
+    const data = {
+      ...validatedBody,
+      householdId,
+      cookedBy: user!.id,
+    }
+
+    const userInHousehold = await isMember(householdId, user!.id)
+    if (!user || !userInHousehold)
+      throw new AppError('errors:not_in_household', 403)
+
+    const newCookingHistory = await addCookingHistory(data)
+
+    res.status(201).json(newCookingHistory)
   },
 )
 

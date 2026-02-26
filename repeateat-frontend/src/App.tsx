@@ -22,7 +22,7 @@ const App = () => {
     <div className="flex h-screen flex-col">
       <TopAppBar />
 
-      <main className="flex-1 overflow-y-auto p-2 space-y-2 pb-24">
+      <main className="flex overflow-y-auto p-2 space-y-2 pb-24 justify-center">
         <NotificationList />
 
         <Routes>

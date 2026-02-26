@@ -33,6 +33,9 @@ jobs:
       - name: Backend lint
         working-directory: ./repeateat-backend
         run: npm run lint
+      - name: Build shared folder for types
+        working-directory: ./shared
+        run: npm run build
       - name: Initialize DB for tests
         run: docker compose -f docker-compose.citest.yml up -d
       - name: Backend tests

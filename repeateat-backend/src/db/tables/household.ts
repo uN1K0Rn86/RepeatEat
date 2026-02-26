@@ -63,3 +63,16 @@ export const householdInvite = pgTable('household_invite', {
   sentAt: timestamp('sent_at').notNull().defaultNow(),
   expiresAt: timestamp('expires_at').notNull(),
 })
+
+export const cookingHistory = pgTable('cooking_history', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  householdId: integer('household_id')
+    .notNull()
+    .references(() => household.id, { onDelete: 'cascade' }),
+  recipeId: integer('recipe_id')
+    .notNull()
+    .references(() => recipe.id, { onDelete: 'cascade' }),
+  cookedAt: timestamp('cooked_at').defaultNow().notNull(),
+  cookedBy: text('cooked_by').references(() => user.id),
+  notes: text('notes'),
+})

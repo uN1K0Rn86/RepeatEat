@@ -10,6 +10,7 @@ import {
   recipeCategory,
 } from './tables/recipe'
 import {
+  cookingHistory,
   household,
   householdInvite,
   householdRecipe,
@@ -23,6 +24,7 @@ export const userRelations = relations(user, ({ many }) => ({
   recipes: many(recipe),
   invites: many(householdInvite),
   householdRecipes: many(householdRecipe),
+  cookingHistory: many(cookingHistory),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -45,6 +47,7 @@ export const recipeRelations = relations(recipe, ({ one, many }) => ({
   steps: many(recipeStep),
   categories: many(recipeCategory),
   author: one(user, { fields: [recipe.authorId], references: [user.id] }),
+  cookingHistory: many(cookingHistory),
 }))
 
 export const ingredientRelations = relations(ingredient, ({ many }) => ({
@@ -91,6 +94,7 @@ export const householdRelations = relations(household, ({ many }) => ({
   users: many(householdUser),
   recipes: many(householdRecipe),
   invites: many(householdInvite),
+  cookingHistory: many(cookingHistory),
 }))
 
 export const householdRecipeRelations = relations(
@@ -135,3 +139,18 @@ export const householdInviteRelations = relations(
     }),
   }),
 )
+
+export const cookingHistoryRelations = relations(cookingHistory, ({ one }) => ({
+  household: one(household, {
+    fields: [cookingHistory.householdId],
+    references: [household.id],
+  }),
+  recipe: one(recipe, {
+    fields: [cookingHistory.recipeId],
+    references: [recipe.id],
+  }),
+  user: one(user, {
+    fields: [cookingHistory.cookedBy],
+    references: [user.id],
+  }),
+}))
