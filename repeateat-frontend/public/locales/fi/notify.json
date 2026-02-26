@@ -9,5 +9,6 @@
   "register_success": "Rekisteröinti onnistui. Tervetuloa {{username}}!",
   "register_fail": "Rekisteröinti epäonnistui",
   "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin",
-  "household_created": "Uusi kotitalous luotu"
+  "household_created": "Uusi kotitalous luotu",
+  "cooklog_created": "Resepti merkattu valmistetuksi"
 }

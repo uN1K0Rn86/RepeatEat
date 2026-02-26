@@ -28,19 +28,23 @@ const HouseholdView = () => {
   )
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md max-h-[85vh]">
       {userHouseholds.length > 0 && (
-        <>
-          <CardHeader>
-            <HouseholdSelector userHouseholds={userHouseholds} />
-          </CardHeader>
-          <CardContent>
-            {activeHousehold && <HouseholdInfo household={activeHousehold} />}
-          </CardContent>
-          <Separator />
-        </>
+        <CardHeader>
+          <HouseholdSelector userHouseholds={userHouseholds} />
+        </CardHeader>
       )}
-      <NewHouseholdForm />
+      <div className="flex flex-col flex-1 overflow-y-auto p-1 gap-4">
+        {userHouseholds.length > 0 && (
+          <>
+            <CardContent>
+              {activeHousehold && <HouseholdInfo household={activeHousehold} />}
+            </CardContent>
+            <Separator />
+          </>
+        )}
+        <NewHouseholdForm />
+      </div>
     </Card>
   )
 }

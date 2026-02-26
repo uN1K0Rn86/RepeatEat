@@ -1,4 +1,6 @@
 import {
+  type CookLog,
+  type CookLogFromFrontend,
   type HouseholdRecipe,
   type HouseholdRecipeResponse,
   type HouseholdResponse,
@@ -65,6 +67,16 @@ const createHousehold = async (name: string): Promise<HouseholdResponse> => {
   return response.data
 }
 
+const createCookLog = async (data: CookLogFromFrontend): Promise<CookLog> => {
+  console.log('here')
+  const response = await axios.post<CookLog>(
+    `${baseUrl}/${data.householdId}/cooking-history`,
+    data,
+  )
+
+  return response.data
+}
+
 export default {
   getUserHouseholds,
   inviteHouseholdMember,
@@ -72,4 +84,5 @@ export default {
   addRecipeToHousehold,
   getHouseholdRecipes,
   createHousehold,
+  createCookLog,
 }

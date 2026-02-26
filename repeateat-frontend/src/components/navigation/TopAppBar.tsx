@@ -37,16 +37,18 @@ const TopAppBar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="start" forceMount>
             <DropdownMenuSub>
-              <DropdownMenuSubTrigger>Theme</DropdownMenuSubTrigger>
+              <DropdownMenuSubTrigger>
+                {t('common:theme')}
+              </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
                 <DropdownMenuItem onClick={() => setTheme('light')}>
-                  Light
+                  {t('common:light')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('dark')}>
-                  Dark
+                  {t('common:dark')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme('system')}>
-                  System
+                  {t('common:system')}
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>

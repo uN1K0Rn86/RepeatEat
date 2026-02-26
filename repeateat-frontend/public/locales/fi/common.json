@@ -27,5 +27,12 @@
   "open_menu": "Avaa valikko",
   "actions": "Toiminnot",
   "loading": "Ladataan",
-  "create": "Luo"
+  "create": "Luo",
+  "never": "Ei koskaan",
+  "pick_date": "Valitse päiväys",
+  "theme": "Teema",
+  "light": "Vaalea",
+  "dark": "Tumma",
+  "system": "Oletus",
+  "notes": "Muistiinpanot"
 }

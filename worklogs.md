@@ -28,4 +28,4 @@
 | 2026-02-23 | Deploy backend, frontend, and db. Work on connecting everything                                                           | 9h   | 117h            |
 | 2026-02-24 | Tweak CI/CD workflows, protect main branch                                                                                | 2h   | 119h            |
 | 2026-02-25 | Add ability to add recipes to households, start on showing recipes in household view                                      | 7.5h | 126.5h          |
-| 2026-02-26 | Show household recipes, add create household form                                                                         | 1h   | 127.5h          |
+| 2026-02-26 | Show household recipes, add create household form, add ability to mark recipe as cooked                                   | 6.5h | 133h            |

@@ -9,5 +9,6 @@
   "register_success": "Registration successful. Welcome {{username}}!",
   "register_fail": "Registration failed",
   "household_recipe_added": "Recipe added to household favorites",
-  "household_created": "New household created"
+  "household_created": "New household created",
+  "cooklog_created": "Recipe marked as cooked"
 }

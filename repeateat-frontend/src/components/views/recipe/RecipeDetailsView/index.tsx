@@ -87,12 +87,12 @@ const RecipeDetailsView = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSave)}
-        className="flex min-h-screen flex-col items-center"
-      >
-        <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md">
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onSave)}
+          className="flex flex-col gap-2"
+        >
           <CardHeader className="flex flex-row justify-between items-center">
             {isEditable ? (
               <CardTitle>
@@ -139,9 +139,9 @@ const RecipeDetailsView = () => {
             {isEditable && <Button type="submit">{t('common:save')}</Button>}
             {id && <AddToHouseholdButton recipeId={id} source="view" />}
           </CardFooter>
-        </Card>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </Card>
   )
 }
 

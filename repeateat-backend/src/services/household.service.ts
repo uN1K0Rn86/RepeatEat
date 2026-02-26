@@ -1,4 +1,5 @@
 import { User } from 'better-auth/types'
+import { AddCookLogInput } from '@repeateat/shared'
 
 import db from '../db'
 import {
@@ -8,7 +9,6 @@ import {
   householdRecipe,
   householdUser,
 } from '../db/schema'
-import { AddCookLogInput } from '@repeateat/shared'
 
 const createHousehold = async (name: string, user: User) => {
   return await db.transaction(async (tx) => {
@@ -145,7 +145,13 @@ const getHouseholdRecipes = async (householdId: number) => {
   const householdRecipes = await db.query.householdRecipe.findMany({
     where: (hr, { eq }) => eq(hr.householdId, householdId),
     with: {
-      recipe: true,
+      recipe: {
+        with: {
+          cookingHistory: {
+            orderBy: (history, { desc }) => [desc(history.cookedAt)],
+          },
+        },
+      },
     },
   })
 

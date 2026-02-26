@@ -1,13 +1,17 @@
 import { useHouseholdRecipes } from '@/hooks/useHousehold'
 
 import {
+  Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@/components/ui/button'
+import CookLogForm from './CookLogForm'
+import { format } from 'date-fns'
 
 interface HouseholdRecipeListProps {
   householdId: number
@@ -19,7 +23,8 @@ const HouseholdRecipeList = ({ householdId }: HouseholdRecipeListProps) => {
     isLoading,
     error,
   } = useHouseholdRecipes(householdId)
-  const { t } = useTranslation(['recipe', 'common'])
+  const { t } = useTranslation(['recipe', 'common', 'household'])
+  const navigate = useNavigate()
 
   if (isLoading) return <div>Loading recipes</div>
   if (error) return <div>Couldn't load recipes</div>
@@ -30,27 +35,38 @@ const HouseholdRecipeList = ({ householdId }: HouseholdRecipeListProps) => {
         {t('common:recipes')}
       </AccordionTrigger>
       <AccordionContent>
-        {householdRecipes?.map((r) => (
-          <Link
-            key={r.recipeId}
-            to={`/recipe/${r.recipeId}`}
-            className="flex items-center justify-between border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
-          >
-            <div className="flex flex-col gap-1">
-              <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
-                {r.recipe.name}
-              </span>
-
-              <span className="text-xs text-muted-foreground">
-                {t('recipe:view_details')}
-              </span>
+        <Accordion type="single" collapsible className="flex flex-col gap-2">
+          {householdRecipes?.map((r) => (
+            <div key={r.recipeId}>
+              <AccordionItem
+                value={r.recipe.name}
+                className="border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
+              >
+                <AccordionTrigger>{r.recipe.name}</AccordionTrigger>
+                <AccordionContent className="flex flex-col p-2 gap-2 justify-between">
+                  <div className="flex flex-row p-2 gap-2 justify-between items-center">
+                    <div>
+                      {t('household:last_cooked')}:{' '}
+                      {r.recipe.cookingHistory.length > 0
+                        ? format(
+                            r.recipe.cookingHistory[0].cookedAt!,
+                            'yyyy-MM-dd',
+                          )
+                        : t('common:never')}
+                    </div>
+                    <Button
+                      onClick={() => void navigate(`/recipe/${r.recipeId}`)}
+                    >
+                      {t('recipe:view_details')}
+                      <ArrowRight />
+                    </Button>
+                  </div>
+                  <CookLogForm recipe={r} />
+                </AccordionContent>
+              </AccordionItem>
             </div>
-
-            <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
-              <ArrowRight />
-            </div>
-          </Link>
-        ))}
+          ))}
+        </Accordion>
       </AccordionContent>
     </AccordionItem>
   )
