@@ -10,6 +10,7 @@ import {
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLogCook } from '@/hooks/useHousehold'
+import type { Resolver } from 'react-hook-form'
 
 interface LogFormProps {
   recipe: HouseholdRecipe
@@ -18,7 +19,9 @@ interface LogFormProps {
 const CookLogForm = ({ recipe }: LogFormProps) => {
   const { t } = useTranslation(['common', 'household'])
   const methods = useForm<CookLogFromFrontend>({
-    resolver: zodResolver(cookLogFromFrontendSchema),
+    resolver: zodResolver(
+      cookLogFromFrontendSchema,
+    ) as Resolver<CookLogFromFrontend>,
     defaultValues: {
       householdId: recipe.householdId,
       recipeId: recipe.recipeId,

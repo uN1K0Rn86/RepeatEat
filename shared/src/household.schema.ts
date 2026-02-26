@@ -61,7 +61,7 @@ const householdRecipeResponseSchema = z.object({
 export const createCookLogSchema = z.object({
   recipeId: z.number(),
   notes: z.string().max(500).optional(),
-  cookedAt: z.date().optional(),
+  cookedAt: z.coerce.date().optional(),
 })
 
 export const cookLogFromFrontendSchema = createCookLogSchema.extend({
