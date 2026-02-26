@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import householdService from '@/services/households'
 import {
+  type HouseholdRecipe,
   type HouseholdRecipeResponse,
   type InviteResponse,
   type UserHousehold,
@@ -65,6 +66,31 @@ export const useAddHouseholdRecipe = () => {
     onError: (error: AxiosError<BackendError>) => {
       const serverMessage =
         error.response?.data?.error || 'errors:recipe_add_household_fail'
+      notify.error(t(serverMessage))
+    },
+  })
+}
+
+export const useHouseholdRecipes = (householdId: number) => {
+  return useQuery<HouseholdRecipe[]>({
+    queryKey: ['householdRecipes', householdId],
+    queryFn: () => householdService.getHouseholdRecipes(householdId),
+  })
+}
+
+export const useCreateHousehold = () => {
+  const { t } = useTranslation(['errors', 'notify'])
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (name: string) => householdService.createHousehold(name),
+    onSuccess: () => {
+      notify.success(t('notify:household_created'))
+      return queryClient.invalidateQueries({ queryKey: ['userHouseholds'] })
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      const serverMessage =
+        error.response?.data?.error || 'errors:something_wrong'
       notify.error(t(serverMessage))
     },
   })

@@ -26,5 +26,6 @@
   "delete": "Poista",
   "open_menu": "Avaa valikko",
   "actions": "Toiminnot",
-  "loading": "Ladataan"
+  "loading": "Ladataan",
+  "create": "Luo"
 }

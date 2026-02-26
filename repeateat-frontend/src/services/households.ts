@@ -1,5 +1,7 @@
 import {
+  type HouseholdRecipe,
   type HouseholdRecipeResponse,
+  type HouseholdResponse,
   type InviteResponse,
   type UserHousehold,
 } from '@repeateat/shared'
@@ -47,9 +49,27 @@ const addRecipeToHousehold = async ({
   return response.data
 }
 
+const getHouseholdRecipes = async (
+  householdId: number,
+): Promise<HouseholdRecipe[]> => {
+  const response = await axios.get<HouseholdRecipe[]>(
+    `${baseUrl}/${householdId}/recipe`,
+  )
+
+  return response.data
+}
+
+const createHousehold = async (name: string): Promise<HouseholdResponse> => {
+  const response = await axios.post<HouseholdResponse>(baseUrl, { name })
+
+  return response.data
+}
+
 export default {
   getUserHouseholds,
   inviteHouseholdMember,
   searchUser,
   addRecipeToHousehold,
+  getHouseholdRecipes,
+  createHousehold,
 }

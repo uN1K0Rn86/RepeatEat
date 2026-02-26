@@ -13,5 +13,7 @@
   "decline": "Hylkää",
   "invite_accepted": "Kutsu kotitalouteen {{ household }} hyväksytty",
   "invite_declined": "Kutsu kotitalouteen {{ household }} hylätty",
-  "add_recipe": "Lisää kotitalouteen"
+  "add_recipe": "Lisää kotitalouteen",
+  "create": "Luo uusi kotitalous",
+  "household_name": "Kotitalouden nimi"
 }

@@ -27,3 +27,4 @@
 | 2026-02-22 | Add tests for accepting and declining invites                                                                             | 1h   | 108h            |
 | 2026-02-23 | Deploy backend, frontend, and db. Work on connecting everything                                                           | 9h   | 117h            |
 | 2026-02-24 | Tweak CI/CD workflows, protect main branch                                                                                | 2h   | 119h            |
+| 2026-02-25 | Add ability to add recipes to households, start on showing recipes in household view                                      | 6.5h | 125.5h          |
