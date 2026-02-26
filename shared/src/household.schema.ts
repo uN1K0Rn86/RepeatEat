@@ -70,7 +70,7 @@ export const householdRecipeSchema = z.object({
   }),
 })
 
-const createCookLogSchema = z.object({
+export const createCookLogSchema = z.object({
   recipeId: z.number(),
   notes: z.string().max(500).optional(),
   cookedAt: z.coerce.date().optional(),

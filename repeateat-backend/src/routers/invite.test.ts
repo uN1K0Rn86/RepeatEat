@@ -2,13 +2,13 @@ import request from 'supertest'
 import { describe, it, expect } from 'vitest'
 
 import app from '../app'
-import { getAuthCookie } from '../__tests__/utils'
+import { loginUser } from '../__tests__/utils'
 import db from '../db'
 
 describe('Invite-related endpoints', () => {
   describe('POST /:id/accept', () => {
     it('fails when the invite is not for the user in question', async () => {
-      const authCookie = await getAuthCookie('member@google.com', 'member123')
+      const { authCookie } = await loginUser('member@google.com', 'member123')
 
       const inviteFromDb = await db.query.householdInvite.findFirst({})
       const household = await db.query.household.findFirst({
@@ -39,7 +39,7 @@ describe('Invite-related endpoints', () => {
     })
 
     it('succeeds when invite and user are valid', async () => {
-      const authCookie = await getAuthCookie('invited@google.com', 'invited123')
+      const { authCookie } = await loginUser('invited@google.com', 'invited123')
 
       const userResponse = await request(app)
         .get('/api/user/me')
@@ -58,7 +58,7 @@ describe('Invite-related endpoints', () => {
 
   describe('POST /:id/decline', () => {
     it('fails when the invite is not for the user in question', async () => {
-      const authCookie = await getAuthCookie('member@google.com', 'member123')
+      const { authCookie } = await loginUser('member@google.com', 'member123')
 
       const inviteFromDb = await db.query.householdInvite.findFirst({})
       const household = await db.query.household.findFirst({
@@ -89,7 +89,7 @@ describe('Invite-related endpoints', () => {
     })
 
     it('succeeds when invite and user are valid', async () => {
-      const authCookie = await getAuthCookie('invited@google.com', 'invited123')
+      const { authCookie } = await loginUser('invited@google.com', 'invited123')
 
       const userResponse = await request(app)
         .get('/api/user/me')

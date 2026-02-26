@@ -1,4 +1,5 @@
 import express, { Response } from 'express'
+import { createCookLogSchema } from '@repeateat/shared'
 
 import {
   addCookingHistory,
@@ -126,10 +127,13 @@ householdRouter.post(
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
     const user = req.user
-    const cookedBy = user!.id
     const householdId = Number(req.params.id)
-    const { recipeId, cookedAt, notes } = req.body
-    const data = { householdId, recipeId, cookedAt, cookedBy, notes }
+    const validatedBody = createCookLogSchema.parse(req.body)
+    const data = {
+      ...validatedBody,
+      householdId,
+      cookedBy: user!.id,
+    }
 
     const userInHousehold = await isMember(householdId, user!.id)
     if (!user || !userInHousehold)

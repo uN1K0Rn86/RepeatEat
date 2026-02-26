@@ -2,8 +2,13 @@ import request from 'supertest'
 import { describe, it, expect } from 'vitest'
 
 import app from '../app'
-import { getAuthCookie, getOtherHousehold } from '../__tests__/utils'
-import { getAllHouseholds } from '../services/household.service'
+import { getOtherHousehold, loginUser } from '../__tests__/utils'
+import {
+  getAllHouseholds,
+  getHouseholdRecipes,
+  getUserHouseholds,
+} from '../services/household.service'
+import { getAllRecipes } from '../services/recipe.service'
 
 describe('Household-related endpoints', () => {
   describe('POST /', () => {
@@ -43,7 +48,7 @@ describe('Household-related endpoints', () => {
 
   describe('GET /', () => {
     it('returns all household objects for the logged in user', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const userHouseholdsResponse = await request(app)
         .get('/api/household')
@@ -57,7 +62,7 @@ describe('Household-related endpoints', () => {
 
   describe('POST /:id/invites', () => {
     it('returns valid invite response when invite is valid', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -79,7 +84,7 @@ describe('Household-related endpoints', () => {
     })
 
     it('fails when user is not logged in', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -97,7 +102,7 @@ describe('Household-related endpoints', () => {
     })
 
     it('fails when user is a member, not admin of household', async () => {
-      const authCookie = await getAuthCookie('member@google.com', 'member123')
+      const { authCookie } = await loginUser('member@google.com', 'member123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -115,7 +120,7 @@ describe('Household-related endpoints', () => {
     })
 
     it('fails when invited user is already a member', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -135,7 +140,7 @@ describe('Household-related endpoints', () => {
 
   describe('POST /:id/recipe', () => {
     it('returns an object with correct message and data if user is in household and recipe exists', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -158,12 +163,11 @@ describe('Household-related endpoints', () => {
     })
 
     it('fails when user is not a member of household', async () => {
-      const otherHousehold = await getOtherHousehold(
+      const { user, authCookie } = await loginUser(
         'def@google.com',
         'password123',
       )
-
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const otherHousehold = await getOtherHousehold(user.id)
 
       const recipeResponse = await request(app).get('/api/recipe')
       const recipeId = recipeResponse.body[0].id
@@ -195,7 +199,7 @@ describe('Household-related endpoints', () => {
 
   describe('GET /:id/recipe', () => {
     it('succeeds when the user is part of the household', async () => {
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const { authCookie } = await loginUser('def@google.com', 'password123')
 
       const householdResponse = await request(app)
         .get('/api/household')
@@ -216,12 +220,11 @@ describe('Household-related endpoints', () => {
     })
 
     it('fails when user is not part of the household', async () => {
-      const otherHousehold = await getOtherHousehold(
+      const { user, authCookie } = await loginUser(
         'def@google.com',
         'password123',
       )
-
-      const authCookie = await getAuthCookie('def@google.com', 'password123')
+      const otherHousehold = await getOtherHousehold(user.id)
 
       const householdRecipeResponse = await request(app)
         .get(`/api/household/${otherHousehold.id}/recipe`)
@@ -241,6 +244,61 @@ describe('Household-related endpoints', () => {
       )
 
       expect(householdRecipeResponse.body.error).toEqual('errors:must_login')
+    })
+  })
+
+  describe('POST /:id/cooking-history', () => {
+    it('succeeds when all data is valid and user is part of household', async () => {
+      const { user, authCookie } = await loginUser(
+        'def@google.com',
+        'password123',
+      )
+
+      const userHouseholds = await getUserHouseholds(user.id)
+      const householdId = userHouseholds[0].householdId
+      const householdRecipes = await getHouseholdRecipes(householdId)
+      const recipeId = householdRecipes[0].recipeId
+      const cookedAt = new Date()
+      const cookedBy = user.id
+      const notes = 'This was fun!'
+      const data = { householdId, recipeId, cookedAt, cookedBy, notes }
+
+      const cookLogResponse = await request(app)
+        .post(`/api/household/${householdId}/cooking-history`)
+        .set('Cookie', authCookie!)
+        .send(data)
+
+      expect(cookLogResponse.body.householdId).toBe(householdId)
+      expect(cookLogResponse.body.recipeId).toBe(recipeId)
+      expect(cookLogResponse.body.cookedAt).toBe(cookedAt.toISOString())
+      expect(cookLogResponse.body.cookedBy).toBe(cookedBy)
+      expect(cookLogResponse.body).toHaveProperty('id')
+    })
+
+    it('fails when user is not in household', async () => {
+      const { user, authCookie } = await loginUser(
+        'def@google.com',
+        'password123',
+      )
+
+      const otherHousehold = await getOtherHousehold(user.id)
+      const recipes = await getAllRecipes()
+      const recipeId = recipes[0].id
+
+      const data = {
+        householdId: otherHousehold.id,
+        recipeId,
+        cookedAt: new Date(),
+        cookedBy: user.id,
+        notes: 'Im cheating',
+      }
+
+      const cookLogResponse = await request(app)
+        .post(`/api/household/${otherHousehold.id}/cooking-history`)
+        .set('Cookie', authCookie!)
+        .send(data)
+
+      expect(cookLogResponse.body.error).toEqual('errors:not_in_household')
     })
   })
 })
