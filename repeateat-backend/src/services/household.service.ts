@@ -2,11 +2,13 @@ import { User } from 'better-auth/types'
 
 import db from '../db'
 import {
+  cookingHistory,
   household,
   householdInvite,
   householdRecipe,
   householdUser,
 } from '../db/schema'
+import { AddCookLogInput } from '@repeateat/shared'
 
 const createHousehold = async (name: string, user: User) => {
   return await db.transaction(async (tx) => {
@@ -150,6 +152,15 @@ const getHouseholdRecipes = async (householdId: number) => {
   return householdRecipes
 }
 
+const addCookingHistory = async (data: AddCookLogInput) => {
+  const [newCookingHistory] = await db
+    .insert(cookingHistory)
+    .values(data)
+    .returning()
+
+  return newCookingHistory
+}
+
 export {
   createHousehold,
   getAllHouseholds,
@@ -160,4 +171,5 @@ export {
   isMember,
   addHouseholdRecipe,
   getHouseholdRecipes,
+  addCookingHistory,
 }

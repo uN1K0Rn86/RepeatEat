@@ -1,6 +1,7 @@
 import express, { Response } from 'express'
 
 import {
+  addCookingHistory,
   addHouseholdRecipe,
   createHousehold,
   existingHouseholdMember,
@@ -124,7 +125,19 @@ householdRouter.post(
   '/:id/cooking-history',
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
-    const cookedBy = req.user!.id
+    const user = req.user
+    const cookedBy = user!.id
+    const householdId = Number(req.params.id)
+    const { recipeId, cookedAt, notes } = req.body
+    const data = { householdId, recipeId, cookedAt, cookedBy, notes }
+
+    const userInHousehold = await isMember(householdId, user!.id)
+    if (!user || !userInHousehold)
+      throw new AppError('errors:not_in_household', 403)
+
+    const newCookingHistory = await addCookingHistory(data)
+
+    res.status(201).json(newCookingHistory)
   },
 )
 

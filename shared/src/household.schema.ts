@@ -70,6 +70,21 @@ export const householdRecipeSchema = z.object({
   }),
 })
 
+const createCookLogSchema = z.object({
+  recipeId: z.number(),
+  notes: z.string().max(500).optional(),
+  cookedAt: z.coerce.date().optional(),
+})
+
+const addCookLogInputSchema = createCookLogSchema.extend({
+  householdId: z.number(),
+  cookedBy: z.string(),
+})
+
+const cookLogSchema = addCookLogInputSchema.extend({
+  id: z.number().positive(),
+})
+
 export type UserHousehold = z.infer<typeof userHouseholdSchema>
 export type HouseholdMember = z.infer<typeof householdMembersSchema>
 export type InviteResponse = z.infer<typeof inviteResponseSchema>
@@ -79,3 +94,6 @@ export type HouseholdRecipeResponse = z.infer<
 >
 export type HouseholdRecipe = z.infer<typeof householdRecipeSchema>
 export type HouseholdResponse = z.infer<typeof householdResponseSchema>
+export type CreateCookLog = z.infer<typeof createCookLogSchema>
+export type AddCookLogInput = z.infer<typeof addCookLogInputSchema>
+export type CookLog = z.infer<typeof cookLogSchema>
