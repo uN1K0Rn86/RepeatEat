@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useUserHouseholds } from '@/hooks/useHousehold'
 import type { UserHousehold } from '@repeateat/shared'
 import NewHouseholdForm from './NewHouseholdForm'
+import { Separator } from '@/components/ui/separator'
 
 const HouseholdView = () => {
   const { setPageTitle, activeHouseholdId } = useBoundStore()
@@ -36,6 +37,7 @@ const HouseholdView = () => {
           <CardContent>
             {activeHousehold && <HouseholdInfo household={activeHousehold} />}
           </CardContent>
+          <Separator />
         </>
       )}
       <NewHouseholdForm />
