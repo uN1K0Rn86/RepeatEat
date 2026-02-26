@@ -64,6 +64,13 @@
       "when": 1772003947679,
       "tag": "0008_20260225-01-add_addedBy_column_household_recipe",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1772091770534,
+      "tag": "0009_20260226-01-add_cooking_history_table",
+      "breakpoints": true
     }
   ]
 }
