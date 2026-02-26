@@ -26,17 +26,20 @@ const HouseholdView = () => {
     (h) => h.householdId === activeHouseholdId,
   )
 
-  return userHouseholds.length > 0 ? (
+  return (
     <Card className="w-full sm:max-w-md">
-      <CardHeader>
-        <HouseholdSelector userHouseholds={userHouseholds} />
-      </CardHeader>
-      <CardContent>
-        {activeHousehold && <HouseholdInfo household={activeHousehold} />}
-      </CardContent>
+      {userHouseholds.length > 0 && (
+        <>
+          <CardHeader>
+            <HouseholdSelector userHouseholds={userHouseholds} />
+          </CardHeader>
+          <CardContent>
+            {activeHousehold && <HouseholdInfo household={activeHousehold} />}
+          </CardContent>
+        </>
+      )}
+      <NewHouseholdForm />
     </Card>
-  ) : (
-    <NewHouseholdForm />
   )
 }
 

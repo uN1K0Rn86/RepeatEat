@@ -39,7 +39,7 @@ const NewHouseholdForm = () => {
   }
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <>
       <CardHeader className="flex flex-col items-center gap-2">
         <CardTitle>{t('household:create')}</CardTitle>
       </CardHeader>
@@ -60,7 +60,7 @@ const NewHouseholdForm = () => {
           </Field>
         </form>
       </CardContent>
-    </Card>
+    </>
   )
 }
 
