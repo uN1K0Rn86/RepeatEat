@@ -33,6 +33,7 @@ const RecipeDetailsView = () => {
   const navigate = useNavigate()
   const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
+  const { activeHouseholdId } = useBoundStore()
 
   const { data: user } = useMe()
   const { data, isLoading, error } = useRecipe(id || '')
@@ -86,6 +87,7 @@ const RecipeDetailsView = () => {
       console.error(err)
     }
   }
+  console.log(activeHouseholdId)
 
   return (
     <Card className="w-full sm:max-w-md">

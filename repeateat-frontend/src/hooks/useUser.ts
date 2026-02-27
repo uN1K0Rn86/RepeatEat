@@ -9,6 +9,7 @@ import { notify } from '@/utils/notify'
 import type { LoginInput, RegisterInput } from '@repeateat/shared'
 import type { UseFormSetError } from 'react-hook-form'
 import type { User } from 'better-auth'
+import { useBoundStore } from '@/store'
 
 export const useMe = () => {
   return useQuery({
@@ -53,6 +54,7 @@ export const useLogout = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { t } = useTranslation(['notify'])
+  const { setActiveHouseholdId } = useBoundStore()
 
   return useMutation({
     mutationFn: async () => {
@@ -64,6 +66,7 @@ export const useLogout = () => {
       const user = queryClient.getQueryData<User>(['user', 'me'])
       queryClient.setQueryData(['user', 'me'], null)
       queryClient.clear()
+      setActiveHouseholdId(null)
 
       if (user) {
         notify.success(t('notify:logout', { username: user.name }))
