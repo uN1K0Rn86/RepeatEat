@@ -71,6 +71,20 @@
       "when": 1772091770534,
       "tag": "0009_20260226-01-add_cooking_history_table",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1772184791883,
+      "tag": "0010_20260227-01-add_default_household_id_column_user_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1772185639054,
+      "tag": "0011_20260227-02-rollback_previous_and_add_separate_user_profile_table_with_userid_defaulthouseholdid",
+      "breakpoints": true
     }
   ]
 }

@@ -2,7 +2,7 @@ import { ilike } from 'drizzle-orm'
 import { User } from 'better-auth/types'
 
 import db from '../db'
-import { user } from '../db/schema'
+import { profile, user } from '../db/schema'
 
 const searchByEmail = async (search: string) => {
   const result = await db
@@ -27,4 +27,22 @@ const pendingInvites = async (user: User) => {
   return result
 }
 
-export { searchByEmail, pendingInvites }
+const setDefaultHousehold = async (userId: string, newDefaultId: number) => {
+  const [result] = await db
+    .insert(profile)
+    .values({
+      userId,
+      defaultHouseholdId: newDefaultId,
+    })
+    .onConflictDoUpdate({
+      target: profile.userId,
+      set: {
+        defaultHouseholdId: newDefaultId,
+      },
+    })
+    .returning()
+
+  return result
+}
+
+export { searchByEmail, pendingInvites, setDefaultHousehold }
