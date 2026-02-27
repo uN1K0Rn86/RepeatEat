@@ -11,10 +11,10 @@ import { Button } from '../ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLogout } from '@/hooks/useUser'
-import type { UserWithInvites } from '@/services/users'
+import type { UserWithInfo } from '@/services/users'
 
 export interface UserDropdownMenuProps {
-  user: UserWithInvites
+  user: UserWithInfo
 }
 
 const UserDropdownMenu = ({ user }: UserDropdownMenuProps) => {

@@ -1,4 +1,4 @@
-import { ilike } from 'drizzle-orm'
+import { eq, ilike } from 'drizzle-orm'
 import { User } from 'better-auth/types'
 
 import db from '../db'
@@ -27,6 +27,15 @@ const pendingInvites = async (user: User) => {
   return result
 }
 
+const getDefaultHouseholdId = async (userId: string) => {
+  const [result] = await db
+    .select({ defaultHouseholdId: profile.defaultHouseholdId })
+    .from(profile)
+    .where(eq(profile.userId, userId))
+
+  return result
+}
+
 const setDefaultHousehold = async (userId: string, newDefaultId: number) => {
   const [result] = await db
     .insert(profile)
@@ -45,4 +54,9 @@ const setDefaultHousehold = async (userId: string, newDefaultId: number) => {
   return result
 }
 
-export { searchByEmail, pendingInvites, setDefaultHousehold }
+export {
+  searchByEmail,
+  pendingInvites,
+  getDefaultHouseholdId,
+  setDefaultHousehold,
+}
