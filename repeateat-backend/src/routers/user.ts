@@ -24,7 +24,6 @@ userRouter.get(
     const defaultHouseholdId = row?.defaultHouseholdId ?? null
 
     const userInfo = { ...user, invites, defaultHouseholdId }
-    console.log(userInfo)
 
     return res.json({ user: userInfo })
   },

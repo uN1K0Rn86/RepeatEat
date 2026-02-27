@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
 
 import NavBar from './components/navigation/NavBar'
 import HomeView from './components/views/HomeView'
@@ -12,9 +13,17 @@ import AddRecipeForm from './components/views/recipe/AddRecipe'
 import RecipeDetailsView from './components/views/recipe/RecipeDetailsView'
 import HouseholdView from './components/views/Household'
 import { useMe } from './hooks/useUser'
+import { useBoundStore } from './store'
 
 const App = () => {
   const { data: user, isLoading } = useMe()
+  const { activeHouseholdId, setActiveHouseholdId } = useBoundStore()
+
+  useEffect(() => {
+    if (user && !activeHouseholdId) {
+      setActiveHouseholdId(user.defaultHouseholdId)
+    }
+  }, [user, activeHouseholdId, setActiveHouseholdId])
 
   if (isLoading) return <div>Loading</div>
 
