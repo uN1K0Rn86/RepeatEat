@@ -36,6 +36,7 @@ const RecipeDetailsView = () => {
 
   const { data: user } = useMe()
   const { data, isLoading, error } = useRecipe(id || '')
+
   const editRecipeMutation = useEditRecipe()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(

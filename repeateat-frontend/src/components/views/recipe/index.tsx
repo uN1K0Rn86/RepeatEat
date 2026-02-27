@@ -34,48 +34,46 @@ const RecipeView = () => {
   )
 
   return (
-    <div className="flex min-h-screen flex-col items-center">
-      <Card className="w-full sm:max-w-md">
-        <CardHeader>
-          <InputGroup>
-            <InputGroupInput
-              placeholder={t('common:search')}
-              onChange={(e) => setSearchterm(e.target.value)}
-            />
-            <InputGroupAddon>
-              <Search />
-            </InputGroupAddon>
-            <InputGroupAddon align="inline-end">
-              {searchRecipes.length} results
-            </InputGroupAddon>
-          </InputGroup>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2">
-          {searchRecipes.map((r) => (
-            <Link
-              key={r.id}
-              to={`/recipe/${r.id}`}
-              className="flex items-center justify-between border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
-            >
-              <div className="flex flex-col gap-1">
-                <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
-                  {r.name}
-                </span>
+    <Card className="w-full sm:max-w-md">
+      <CardHeader>
+        <InputGroup>
+          <InputGroupInput
+            placeholder={t('common:search')}
+            onChange={(e) => setSearchterm(e.target.value)}
+          />
+          <InputGroupAddon>
+            <Search />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            {searchRecipes.length} results
+          </InputGroupAddon>
+        </InputGroup>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-2">
+        {searchRecipes.map((r) => (
+          <Link
+            key={r.id}
+            to={`/recipe/${r.id}`}
+            className="flex items-center justify-between border rounded-md p-2 hover:bg-muted/50 hover:border-accent-foreground/20"
+          >
+            <div className="flex flex-col gap-1">
+              <span className="font-semibold text-sm sm:text-base group-hover:text-primary transition-colors">
+                {r.name}
+              </span>
 
-                <span className="text-xs text-muted-foreground">
-                  {t('recipe:view_details')}
-                </span>
-              </div>
+              <span className="text-xs text-muted-foreground">
+                {t('recipe:view_details')}
+              </span>
+            </div>
 
-              <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
-                <AddToHouseholdButton recipeId={String(r.id)} source="list" />
-                <ArrowRight />
-              </div>
-            </Link>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
+            <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
+              <AddToHouseholdButton recipeId={String(r.id)} source="list" />
+              <ArrowRight />
+            </div>
+          </Link>
+        ))}
+      </CardContent>
+    </Card>
   )
 }
 
