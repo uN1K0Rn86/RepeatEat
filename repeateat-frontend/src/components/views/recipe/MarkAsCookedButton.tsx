@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -30,6 +30,13 @@ const MarkAsCookedButton = ({ recipeId, source }: FormProps) => {
     activeHouseholdId,
   )
   const [cookedAt, setCookedAt] = useState<Date>(() => new Date())
+
+  useEffect(() => {
+    if (selectedHouseholdId === null && userHouseholds?.length === 1) {
+      setSelectedHouseholdId(userHouseholds[0].householdId)
+    }
+  }, [userHouseholds, selectedHouseholdId, setSelectedHouseholdId])
+
   const cookLogMutation = useLogCook()
 
   const handleSubmit = () => {
