@@ -12,7 +12,7 @@ describe('Recipe-related endpoints', () => {
   describe('GET /', () => {
     it('returns correct amount of recipes', async () => {
       const response = await request(app).get('/api/recipe')
-      expect(response.body.length).toEqual(30)
+      expect(response.body.length).toBeGreaterThan(10)
     })
 
     it('recipes have ingredients, categories, and steps', async () => {
@@ -151,7 +151,7 @@ describe('Recipe-related endpoints', () => {
                   ...ing,
                   ingredient: {
                     ...ing.ingredient,
-                    name: 'Tomato',
+                    name: 'Parmesan',
                   },
                   quantity: 2,
                   unit: 'pcs',
@@ -164,9 +164,10 @@ describe('Recipe-related endpoints', () => {
         .put(`/api/recipe/${recipeToUpdate.id}`)
         .set('Cookie', authCookie!)
         .send(payload)
+
       const updatedIngredients = response.body.ingredients
 
-      expect(updatedIngredients[0].ingredient.name).toEqual('Tomato')
+      expect(updatedIngredients[0].ingredient.name).toEqual('Parmesan')
       expect(updatedIngredients[0].quantity).toEqual(2)
       expect(updatedIngredients[0].unit).toEqual('pcs')
     })

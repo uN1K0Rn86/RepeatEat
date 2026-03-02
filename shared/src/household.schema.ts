@@ -54,14 +54,14 @@ const householdRecipeResponseSchema = z.object({
   data: z.object({
     householdId: z.number(),
     recipeId: z.number(),
-    addedBy: z.string(),
+    addedBy: z.string().nullable(),
   }),
 })
 
 const removedHouseholdRecipeSchema = z.object({
   householdId: z.number(),
   recipeId: z.number(),
-  addedBy: z.string(),
+  addedBy: z.string().nullable(),
 })
 
 export const createCookLogSchema = z.object({

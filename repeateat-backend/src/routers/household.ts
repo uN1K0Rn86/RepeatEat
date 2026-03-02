@@ -158,7 +158,8 @@ householdRouter.delete(
     if (!user || !userInHousehold)
       throw new AppError('errors:not_in_household', 403)
 
-    if (userInHousehold.role === 'member') {
+    const userRole = await getUserRole(householdId, user!.id)
+    if (userRole === 'member') {
       throw new AppError('errors:only_admin', 403)
     }
 

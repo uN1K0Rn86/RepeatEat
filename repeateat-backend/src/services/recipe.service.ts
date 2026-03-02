@@ -88,12 +88,18 @@ const insertRecipeIngredients = async (
 }
 
 const createRecipe = async (recipeToAdd: AddRecipe, user: User) => {
-  const { name, ingredients, steps, categories } = recipeToAdd
+  const {
+    name,
+    private: isPrivate,
+    ingredients,
+    steps,
+    categories,
+  } = recipeToAdd
 
   const addedRecipe = await db.transaction(async (tx) => {
     const [newRecipe] = await tx
       .insert(recipe)
-      .values({ name, authorId: user.id })
+      .values({ name, private: isPrivate, authorId: user.id })
       .returning()
 
     if (ingredients?.length > 0) {

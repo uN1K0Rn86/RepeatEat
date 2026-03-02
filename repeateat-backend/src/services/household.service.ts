@@ -130,7 +130,7 @@ const isMember = async (householdId: number, userId: string) => {
       and(eq(hu.householdId, householdId), eq(hu.userId, userId)),
   })
 
-  return result
+  return Boolean(result)
 }
 
 const addHouseholdRecipe = async (
