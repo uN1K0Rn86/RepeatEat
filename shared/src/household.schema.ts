@@ -54,8 +54,14 @@ const householdRecipeResponseSchema = z.object({
   data: z.object({
     householdId: z.number(),
     recipeId: z.number(),
-    addedBy: z.string(),
+    addedBy: z.string().nullable(),
   }),
+})
+
+const removedHouseholdRecipeSchema = z.object({
+  householdId: z.number(),
+  recipeId: z.number(),
+  addedBy: z.string().nullable(),
 })
 
 export const createCookLogSchema = z.object({
@@ -95,6 +101,9 @@ export type InviteResponse = z.infer<typeof inviteResponseSchema>
 export type Invite = z.infer<typeof inviteSchema>
 export type HouseholdRecipeResponse = z.infer<
   typeof householdRecipeResponseSchema
+>
+export type RemovedHouseholdRecipe = z.infer<
+  typeof removedHouseholdRecipeSchema
 >
 export type HouseholdRecipe = z.infer<typeof householdRecipeSchema>
 export type HouseholdResponse = z.infer<typeof householdResponseSchema>

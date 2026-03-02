@@ -1,4 +1,7 @@
-import { useHouseholdRecipes } from '@/hooks/useHousehold'
+import {
+  useHouseholdRecipes,
+  useRemoveHouseholdRecipe,
+} from '@/hooks/useHousehold'
 
 import {
   Accordion,
@@ -23,11 +26,20 @@ const HouseholdRecipeList = ({ householdId }: HouseholdRecipeListProps) => {
     isLoading,
     error,
   } = useHouseholdRecipes(householdId)
+  const removeRecipeMutation = useRemoveHouseholdRecipe()
   const { t } = useTranslation(['recipe', 'common', 'household'])
   const navigate = useNavigate()
 
   if (isLoading) return <div>Loading recipes</div>
   if (error) return <div>Couldn't load recipes</div>
+
+  const handleClick = (householdId: number, recipeId: number) => {
+    if (!window.confirm(t('household:confirm_remove'))) return
+    removeRecipeMutation.mutate({
+      householdId,
+      recipeId,
+    })
+  }
 
   return (
     <AccordionItem value="recipes">
@@ -62,6 +74,13 @@ const HouseholdRecipeList = ({ householdId }: HouseholdRecipeListProps) => {
                     </Button>
                   </div>
                   <CookLogForm recipe={r} />
+                  <Button
+                    variant="destructive"
+                    type="button"
+                    onClick={() => handleClick(householdId, r.recipeId)}
+                  >
+                    {t('household:remove_recipe')}
+                  </Button>
                 </AccordionContent>
               </AccordionItem>
             </div>

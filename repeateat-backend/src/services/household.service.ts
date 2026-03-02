@@ -1,5 +1,6 @@
 import { User } from 'better-auth/types'
 import { AddCookLogInput } from '@repeateat/shared'
+import { and, eq } from 'drizzle-orm'
 
 import db from '../db'
 import {
@@ -175,6 +176,20 @@ const addCookingHistory = async (data: AddCookLogInput) => {
   return newCookingHistory
 }
 
+const removeRecipe = async (householdId: number, recipeId: number) => {
+  const [deleted] = await db
+    .delete(householdRecipe)
+    .where(
+      and(
+        eq(householdRecipe.householdId, householdId),
+        eq(householdRecipe.recipeId, recipeId),
+      ),
+    )
+    .returning()
+
+  return deleted
+}
+
 export {
   createHousehold,
   getAllHouseholds,
@@ -186,4 +201,5 @@ export {
   addHouseholdRecipe,
   getHouseholdRecipes,
   addCookingHistory,
+  removeRecipe,
 }

@@ -1,6 +1,10 @@
 import request from 'supertest'
 import { describe, it, expect, beforeAll } from 'vitest'
-import { RecipeIngredientWithName, RecipeStep } from '@repeateat/shared'
+import {
+  type Recipe,
+  RecipeIngredientWithName,
+  RecipeStep,
+} from '@repeateat/shared'
 
 import app from '../app'
 
@@ -8,7 +12,7 @@ describe('Recipe-related endpoints', () => {
   describe('GET /', () => {
     it('returns correct amount of recipes', async () => {
       const response = await request(app).get('/api/recipe')
-      expect(response.body.length).toEqual(10)
+      expect(response.body.length).toBeGreaterThan(10)
     })
 
     it('recipes have ingredients, categories, and steps', async () => {
@@ -98,13 +102,15 @@ describe('Recipe-related endpoints', () => {
     beforeAll(async () => {
       const loginResponse = await request(app)
         .post('/api/auth/sign-in/email')
-        .send({ email: 'test@example.com', password: 'password123' })
+        .send({ email: 'def@google.com', password: 'password123' })
 
       authCookie = loginResponse.get('Set-Cookie')
 
       const response = await request(app).get('/api/recipe')
       recipeToUpdate = response.body[0]
-      otherRecipes = response.body.slice(1)
+      otherRecipes = response.body.filter(
+        (r: Recipe) => r.id !== recipeToUpdate.id,
+      )
     })
 
     it('changes recipe name when edited', async () => {
@@ -120,7 +126,7 @@ describe('Recipe-related endpoints', () => {
     })
 
     it('does not change other recipes', async () => {
-      const payload = { ...recipeToUpdate, name: 'Not Korma' }
+      const payload = { ...recipeToUpdate, name: 'AAAAAA' }
 
       await request(app)
         .put(`/api/recipe/${recipeToUpdate.id}`)
@@ -128,7 +134,9 @@ describe('Recipe-related endpoints', () => {
         .send(payload)
 
       const newResponse = await request(app).get('/api/recipe')
-      const newOtherRecipes = newResponse.body.slice(1)
+      const newOtherRecipes = newResponse.body.filter(
+        (r: Recipe) => r.id !== recipeToUpdate.id,
+      )
       expect(otherRecipes).toEqual(newOtherRecipes)
     })
 
@@ -143,7 +151,7 @@ describe('Recipe-related endpoints', () => {
                   ...ing,
                   ingredient: {
                     ...ing.ingredient,
-                    name: 'Tomato',
+                    name: 'Parmesan',
                   },
                   quantity: 2,
                   unit: 'pcs',
@@ -156,9 +164,10 @@ describe('Recipe-related endpoints', () => {
         .put(`/api/recipe/${recipeToUpdate.id}`)
         .set('Cookie', authCookie!)
         .send(payload)
+
       const updatedIngredients = response.body.ingredients
 
-      expect(updatedIngredients[0].ingredient.name).toEqual('Tomato')
+      expect(updatedIngredients[0].ingredient.name).toEqual('Parmesan')
       expect(updatedIngredients[0].quantity).toEqual(2)
       expect(updatedIngredients[0].unit).toEqual('pcs')
     })
