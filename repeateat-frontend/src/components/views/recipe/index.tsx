@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { ArrowRight, Search } from 'lucide-react'
 import { useAllRecipes } from '@/hooks/useRecipe'
 import type { FullRecipe } from '@repeateat/shared'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AddToHouseholdButton from './AddToHouseholdButton'
 
 const RecipeView = () => {
@@ -19,6 +19,7 @@ const RecipeView = () => {
   const { t } = useTranslation(['common'])
   const { data, isLoading, error } = useAllRecipes()
   const [searchTerm, setSearchterm] = useState<string>('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     setPageTitle('recipes')
