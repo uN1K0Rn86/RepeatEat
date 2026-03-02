@@ -312,6 +312,10 @@ describe('Household-related endpoints', () => {
 
       const userHouseholds = await getUserHouseholds(user.id)
       const householdId = userHouseholds[0].householdId
+      const allRecipes = await getAllRecipes()
+      const recipeToAddId = allRecipes[1].id
+      await addHouseholdRecipe(user.id, householdId, recipeToAddId)
+
       const householdRecipes = await getHouseholdRecipes(householdId)
       const recipeToDeleteId = householdRecipes[0].recipeId
 
