@@ -19,5 +19,6 @@
   "last_cooked": "Viimeksi valmistettu",
   "log_cook": "Merkkaa valmistus",
   "set_default_household": "Valitse oletuskotitalous",
-  "set_as_default": "Aseta oletukseksi"
+  "set_as_default": "Aseta oletukseksi",
+  "log": "Merkkaa"
 }

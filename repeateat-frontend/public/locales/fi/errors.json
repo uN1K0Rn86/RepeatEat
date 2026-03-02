@@ -10,5 +10,6 @@
   "recipe_add_household_fail": "Reseptin lisääminen kotitalouteen epäonnistui",
   "name_required": "Nimi vaaditaan",
   "must_login": "Tämä toiminto vaatii sisäänkirjautumisen",
-  "default_household_fail": "Oletuskotitalouden asettaminen epäonnistui"
+  "default_household_fail": "Oletuskotitalouden asettaminen epäonnistui",
+  "choose_household": "Valitse kotitalous"
 }

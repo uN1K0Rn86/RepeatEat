@@ -148,7 +148,7 @@ const RecipeDetailsView = () => {
             {id &&
               householdRecipeIds &&
               (householdRecipeIds?.includes(Number(id)) ? (
-                <MarkAsCookedButton />
+                <MarkAsCookedButton recipeId={id} source={'view'} />
               ) : (
                 <AddToHouseholdButton recipeId={id} source="view" />
               ))}

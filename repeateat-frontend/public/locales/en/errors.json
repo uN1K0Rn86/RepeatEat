@@ -10,5 +10,6 @@
   "recipe_add_household_fail": "Could not add recipe to household",
   "name_required": "Name is required",
   "must_login": "You must login to perform this action",
-  "default_household_fail": "Could not set default household"
+  "default_household_fail": "Could not set default household",
+  "choose_household": "Please choose a household"
 }
