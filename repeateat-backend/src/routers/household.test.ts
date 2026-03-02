@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest'
 import app from '../app'
 import { getOtherHousehold, loginUser } from '../__tests__/utils'
 import {
+  addHouseholdRecipe,
   getAllHouseholds,
   getHouseholdRecipes,
   getUserHouseholds,
@@ -299,6 +300,61 @@ describe('Household-related endpoints', () => {
         .send(data)
 
       expect(cookLogResponse.body.error).toEqual('errors:not_in_household')
+    })
+  })
+
+  describe('DELETE /:householdId/recipes/:recipeId', () => {
+    it('succeeds when user is part of household', async () => {
+      const { user, authCookie } = await loginUser(
+        'def@google.com',
+        'password123',
+      )
+
+      const userHouseholds = await getUserHouseholds(user.id)
+      const householdId = userHouseholds[0].householdId
+      const householdRecipes = await getHouseholdRecipes(householdId)
+      const recipeToDeleteId = householdRecipes[0].recipeId
+
+      const deleteResponse = await request(app)
+        .delete(`/api/household/${householdId}/recipes/${recipeToDeleteId}`)
+        .set('Cookie', authCookie!)
+
+      expect(deleteResponse.status).toEqual(204)
+    })
+
+    it('fails when user is not in household', async () => {
+      const addUser = await loginUser('def@google.com', 'password123')
+      const addUserHouseholds = await getUserHouseholds(addUser.user.id)
+      const addedHouseholdId = addUserHouseholds[0].householdId
+      const allRecipes = await getAllRecipes()
+      const addedRecipeId = allRecipes[0].id
+      await addHouseholdRecipe(addUser.user.id, addedHouseholdId, addedRecipeId)
+
+      const { authCookie } = await loginUser('other@google.com', 'password123')
+
+      const failedResponse = await request(app)
+        .delete(`/api/household/${addedHouseholdId}/recipes/${addedRecipeId}`)
+        .set('Cookie', authCookie!)
+
+      expect(failedResponse.body.error).toEqual('errors:not_in_household')
+    })
+
+    it('fails when user is a member, not admin', async () => {
+      const { user, authCookie } = await loginUser(
+        'member@google.com',
+        'member123',
+      )
+
+      const userHouseholds = await getUserHouseholds(user.id)
+      const householdId = userHouseholds[0].householdId
+      const householdRecipes = await getHouseholdRecipes(householdId)
+      const recipeToDeleteId = householdRecipes[0].recipeId
+
+      const failedResponse = await request(app)
+        .delete(`/api/household/${householdId}/recipes/${recipeToDeleteId}`)
+        .set('Cookie', authCookie!)
+
+      expect(failedResponse.body.error).toEqual('errors:only_admin')
     })
   })
 })

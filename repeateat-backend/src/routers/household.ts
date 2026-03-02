@@ -11,6 +11,7 @@ import {
   getUserRole,
   inviteMember,
   isMember,
+  removeRecipe,
 } from '../services/household.service'
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
@@ -142,6 +143,29 @@ householdRouter.post(
     const newCookingHistory = await addCookingHistory(data)
 
     res.status(201).json(newCookingHistory)
+  },
+)
+
+householdRouter.delete(
+  '/:householdId/recipes/:recipeId',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
+    const householdId = Number(req.params.householdId)
+    const recipeId = Number(req.params.recipeId)
+
+    const userInHousehold = await isMember(householdId, user!.id)
+    if (!user || !userInHousehold)
+      throw new AppError('errors:not_in_household', 403)
+
+    if (userInHousehold.role === 'member') {
+      throw new AppError('errors:only_admin', 403)
+    }
+
+    const deleted = await removeRecipe(householdId, recipeId)
+    if (!deleted) throw new AppError('errors:recipe_not_in_household', 404)
+
+    res.status(204).send()
   },
 )
 
