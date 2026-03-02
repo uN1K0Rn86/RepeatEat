@@ -17,5 +17,6 @@
   "create": "Luo uusi kotitalous",
   "household_name": "Kotitalouden nimi",
   "last_cooked": "Viimeksi valmistettu",
-  "log_cook": "Merkkaa valmistus"
+  "log_cook": "Merkkaa valmistus",
+  "set_default_household": "Valitse oletuskotitalous"
 }

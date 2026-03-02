@@ -1,8 +1,12 @@
 import { eq, ilike } from 'drizzle-orm'
+import type {
+  NodePgTransaction,
+  NodePgDatabase,
+} from 'drizzle-orm/node-postgres'
 import { User } from 'better-auth/types'
 
 import db from '../db'
-import { profile, user } from '../db/schema'
+import { profile, user, household } from '../db/schema'
 
 const searchByEmail = async (search: string) => {
   const result = await db
@@ -36,8 +40,14 @@ const getDefaultHouseholdId = async (userId: string) => {
   return result
 }
 
-const setDefaultHousehold = async (userId: string, newDefaultId: number) => {
-  const [result] = await db
+type DbOrTx = NodePgDatabase<any> | NodePgTransaction<any, any>
+
+const setDefaultHousehold = async (
+  userId: string,
+  newDefaultId: number,
+  trx: DbOrTx = db,
+) => {
+  await trx
     .insert(profile)
     .values({
       userId,
@@ -50,6 +60,16 @@ const setDefaultHousehold = async (userId: string, newDefaultId: number) => {
       },
     })
     .returning()
+
+  const [result] = await trx
+    .select({
+      userId: profile.userId,
+      defaultHouseholdId: profile.defaultHouseholdId,
+      householdName: household.name,
+    })
+    .from(profile)
+    .leftJoin(household, eq(profile.defaultHouseholdId, household.id))
+    .where(eq(profile.userId, userId))
 
   return result
 }

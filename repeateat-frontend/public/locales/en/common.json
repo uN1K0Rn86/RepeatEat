@@ -34,5 +34,7 @@
   "light": "Light",
   "dark": "Dark",
   "system": "System",
-  "notes": "Notes"
+  "notes": "Notes",
+  "user_info": "User information",
+  "change_language": "Change language"
 }

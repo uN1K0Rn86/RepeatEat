@@ -19,4 +19,11 @@ export const registerSchema = z
     path: ['confirmPassword'],
   })
 
+export const userProfileSchema = z.object({
+  userId: z.string(),
+  defaultHouseholdId: z.number().optional(),
+  householdName: z.string().optional(),
+})
+
 export type RegisterInput = z.infer<typeof registerSchema>
+export type UserProfile = z.infer<typeof userProfileSchema>

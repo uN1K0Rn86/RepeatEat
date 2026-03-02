@@ -10,5 +10,6 @@
   "register_fail": "Rekisteröinti epäonnistui",
   "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin",
   "household_created": "Uusi kotitalous luotu",
-  "cooklog_created": "Resepti merkattu valmistetuksi"
+  "cooklog_created": "Resepti merkattu valmistetuksi",
+  "default_household": "{{ householdName }} asetettu oletuskotitaloudeksi"
 }
