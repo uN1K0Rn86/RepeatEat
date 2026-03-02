@@ -17,5 +17,8 @@
   "create": "Create new household",
   "household_name": "Household name",
   "last_cooked": "Last cooked",
-  "log_cook": "Log preparation"
+  "log_cook": "Log preparation",
+  "set_default_household": "Set default household",
+  "set_as_default": "Set as default",
+  "log": "Log"
 }

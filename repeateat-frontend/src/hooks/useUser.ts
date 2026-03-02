@@ -9,6 +9,9 @@ import { notify } from '@/utils/notify'
 import type { LoginInput, RegisterInput } from '@repeateat/shared'
 import type { UseFormSetError } from 'react-hook-form'
 import type { User } from 'better-auth'
+import type { AxiosError } from 'axios'
+import type { BackendError } from './useHousehold'
+import { useBoundStore } from '@/store'
 
 export const useMe = () => {
   return useQuery({
@@ -16,6 +19,29 @@ export const useMe = () => {
     queryFn: userService.me,
     staleTime: Infinity,
     retry: false,
+  })
+}
+
+export const useSetDefaultHousehold = () => {
+  const queryClient = useQueryClient()
+  const { t } = useTranslation(['notify', 'common'])
+
+  return useMutation({
+    mutationFn: (householdId: number) =>
+      userService.setDefaultHousehold(householdId),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
+      if (data.householdName) {
+        notify.success(
+          t('notify:default_household', { householdName: data.householdName }),
+        )
+      }
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      const serverMessage =
+        error.response?.data?.error || 'errors:default_household_fail'
+      notify.error(t(serverMessage))
+    },
   })
 }
 
@@ -53,6 +79,7 @@ export const useLogout = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { t } = useTranslation(['notify'])
+  const { setActiveHouseholdId } = useBoundStore()
 
   return useMutation({
     mutationFn: async () => {
@@ -64,6 +91,7 @@ export const useLogout = () => {
       const user = queryClient.getQueryData<User>(['user', 'me'])
       queryClient.setQueryData(['user', 'me'], null)
       queryClient.clear()
+      setActiveHouseholdId(null)
 
       if (user) {
         notify.success(t('notify:logout', { username: user.name }))

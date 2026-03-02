@@ -1,40 +1,33 @@
-import express, { Request, Response } from 'express'
+import express, { Response } from 'express'
 
-import { auth } from '../utils/auth'
 import { AuthRequest, isAuthenticated } from '../middleware/auth'
 import { AppError } from '../utils/errors'
-import { pendingInvites, searchByEmail } from '../services/user.service'
+import {
+  getDefaultHouseholdId,
+  pendingInvites,
+  searchByEmail,
+  setDefaultHousehold,
+} from '../services/user.service'
+import { getUserHouseholds } from '../services/household.service'
 
 const userRouter = express.Router()
 
-userRouter.get('/me', async (req: Request, res: Response) => {
-  // Convert Express headers to Fetch API Headers
-  const fetchHeaders = new Headers()
-  for (const [key, value] of Object.entries(req.headers)) {
-    if (typeof value === 'string') {
-      fetchHeaders.append(key, value)
-    } else if (Array.isArray(value)) {
-      for (const v of value) {
-        fetchHeaders.append(key, v)
-      }
-    }
-  }
+userRouter.get(
+  '/me',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const user = req.user
 
-  const session = await auth.api.getSession({
-    headers: fetchHeaders,
-  })
+    const allInvites = await pendingInvites(user!)
+    const invites = allInvites.filter((i) => i.status === 'pending')
+    const row = await getDefaultHouseholdId(user!.id)
+    const defaultHouseholdId = row?.defaultHouseholdId ?? null
 
-  if (!session?.user) {
-    return res.status(401).json({ error: 'Not authenticated' })
-  }
+    const userInfo = { ...user, invites, defaultHouseholdId }
 
-  const allInvites = await pendingInvites(session.user)
-  const invites = allInvites.filter((i) => i.status === 'pending')
-
-  const user = { ...session.user, invites }
-
-  return res.json({ user })
-})
+    return res.json({ user: userInfo })
+  },
+)
 
 userRouter.get(
   '/search',
@@ -47,6 +40,25 @@ userRouter.get(
     const users = await searchByEmail(query)
 
     return res.json(users)
+  },
+)
+
+userRouter.put(
+  '/profile/default-household',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const { newDefaultId } = req.body
+    const userId = req.user!.id
+
+    const userHouseholds = await getUserHouseholds(userId)
+    const userHouseholdIds = userHouseholds.map((h) => h.householdId)
+
+    if (!userHouseholdIds.includes(newDefaultId))
+      throw new AppError('errors:not_in_household', 403)
+
+    const updatedProfile = await setDefaultHousehold(userId, newDefaultId)
+
+    res.status(200).json(updatedProfile)
   },
 )
 

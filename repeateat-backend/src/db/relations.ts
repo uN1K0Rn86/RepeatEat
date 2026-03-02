@@ -1,6 +1,6 @@
 import { relations } from 'drizzle-orm'
 
-import { user, session, account } from './tables/auth'
+import { user, session, account, profile } from './tables/auth'
 import {
   recipe,
   ingredient,
@@ -17,7 +17,7 @@ import {
   householdUser,
 } from './tables/household'
 
-export const userRelations = relations(user, ({ many }) => ({
+export const userRelations = relations(user, ({ one, many }) => ({
   sessions: many(session),
   accounts: many(account),
   households: many(householdUser),
@@ -25,6 +25,7 @@ export const userRelations = relations(user, ({ many }) => ({
   invites: many(householdInvite),
   householdRecipes: many(householdRecipe),
   cookingHistory: many(cookingHistory),
+  profile: one(profile, { fields: [user.id], references: [profile.userId] }),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -95,6 +96,7 @@ export const householdRelations = relations(household, ({ many }) => ({
   recipes: many(householdRecipe),
   invites: many(householdInvite),
   cookingHistory: many(cookingHistory),
+  isDefault: many(profile),
 }))
 
 export const householdRecipeRelations = relations(
@@ -152,5 +154,16 @@ export const cookingHistoryRelations = relations(cookingHistory, ({ one }) => ({
   user: one(user, {
     fields: [cookingHistory.cookedBy],
     references: [user.id],
+  }),
+}))
+
+export const profileRelations = relations(profile, ({ one }) => ({
+  user: one(user, {
+    fields: [profile.userId],
+    references: [user.id],
+  }),
+  defaultHousehold: one(household, {
+    fields: [profile.defaultHouseholdId],
+    references: [household.id],
   }),
 }))

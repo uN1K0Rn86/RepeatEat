@@ -10,5 +10,6 @@
   "register_fail": "Registration failed",
   "household_recipe_added": "Recipe added to household favorites",
   "household_created": "New household created",
-  "cooklog_created": "Recipe marked as cooked"
+  "cooklog_created": "Recipe marked as cooked",
+  "default_household": "{{ householdName }} set as the default household"
 }

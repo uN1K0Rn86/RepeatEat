@@ -24,7 +24,12 @@ const AddToHouseholdButton = ({
   const { data: userHouseholds } = useUserHouseholds()
   const addHouseholdRecipeMutation = useAddHouseholdRecipe()
 
-  const handleAddToHousehold = (householdId: number) => {
+  const handleAddToHousehold = (
+    e: React.MouseEvent<HTMLElement>,
+    householdId: number,
+  ) => {
+    e.preventDefault()
+    e.stopPropagation()
     addHouseholdRecipeMutation.mutate({
       householdId,
       recipeId,
@@ -39,11 +44,11 @@ const AddToHouseholdButton = ({
             <Button
               type="button"
               className="bg-green-300 hover:bg-green-400"
-              onClick={() =>
-                handleAddToHousehold(userHouseholds[0].householdId)
+              onClick={(e) =>
+                handleAddToHousehold(e, userHouseholds[0].householdId)
               }
             >
-              {t('household:add_recipe')}
+              {source === 'view' ? t('household:add_recipe') : <Plus />}
             </Button>
           ) : (
             <DropdownMenu>
@@ -65,7 +70,9 @@ const AddToHouseholdButton = ({
                 {userHouseholds.map((h) => (
                   <DropdownMenuItem
                     key={h.householdId}
-                    onClick={() => handleAddToHousehold(h.householdId)}
+                    onClick={(e: React.MouseEvent<HTMLElement>) =>
+                      handleAddToHousehold(e, h.householdId)
+                    }
                   >
                     {h.name}
                   </DropdownMenuItem>

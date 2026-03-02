@@ -10,7 +10,11 @@ import {
   householdUser,
 } from '../db/schema'
 
+import { setDefaultHousehold } from './user.service'
+
 const createHousehold = async (name: string, user: User) => {
+  const userHouseholds = await getUserHouseholds(user.id)
+
   return await db.transaction(async (tx) => {
     const [newHousehold] = await tx
       .insert(household)
@@ -20,6 +24,10 @@ const createHousehold = async (name: string, user: User) => {
     await tx
       .insert(householdUser)
       .values({ householdId: newHousehold.id, userId: user.id, role: 'admin' })
+
+    if (userHouseholds.length === 0) {
+      await setDefaultHousehold(user.id, newHousehold.id, tx)
+    }
 
     return newHousehold
   })

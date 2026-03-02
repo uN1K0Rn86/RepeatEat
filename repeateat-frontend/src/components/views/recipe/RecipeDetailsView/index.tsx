@@ -27,15 +27,21 @@ import { useEditRecipe } from '@/hooks/useEditRecipe'
 import recipeService from '@/services/recipes'
 import { useMe } from '@/hooks/useUser'
 import AddToHouseholdButton from '../AddToHouseholdButton'
+import { useHouseholdRecipes } from '@/hooks/useHousehold'
+import MarkAsCookedButton from '../MarkAsCookedButton'
 
 const RecipeDetailsView = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const { setPageTitle } = useBoundStore()
+  const { setPageTitle, activeHouseholdId } = useBoundStore()
   const { t } = useTranslation(['common', 'notify', 'recipe', 'household'])
 
   const { data: user } = useMe()
   const { data, isLoading, error } = useRecipe(id || '')
+  const { data: householdRecipes } = useHouseholdRecipes(
+    activeHouseholdId ?? user?.defaultHouseholdId ?? null,
+  )
+
   const editRecipeMutation = useEditRecipe()
 
   const [activeView, setActiveView] = useState<'ingredients' | 'preparation'>(
@@ -85,6 +91,8 @@ const RecipeDetailsView = () => {
       console.error(err)
     }
   }
+
+  const householdRecipeIds = householdRecipes?.map((hr) => hr.recipeId)
 
   return (
     <Card className="w-full sm:max-w-md">
@@ -137,7 +145,13 @@ const RecipeDetailsView = () => {
 
           <CardFooter className="flex flex-row">
             {isEditable && <Button type="submit">{t('common:save')}</Button>}
-            {id && <AddToHouseholdButton recipeId={id} source="view" />}
+            {id &&
+              householdRecipeIds &&
+              (householdRecipeIds?.includes(Number(id)) ? (
+                <MarkAsCookedButton recipeId={id} source={'view'} />
+              ) : (
+                <AddToHouseholdButton recipeId={id} source="view" />
+              ))}
           </CardFooter>
         </form>
       </FormProvider>

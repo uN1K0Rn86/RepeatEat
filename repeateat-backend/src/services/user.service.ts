@@ -1,8 +1,12 @@
-import { ilike } from 'drizzle-orm'
+import { eq, ilike } from 'drizzle-orm'
+import type {
+  NodePgTransaction,
+  NodePgDatabase,
+} from 'drizzle-orm/node-postgres'
 import { User } from 'better-auth/types'
 
 import db from '../db'
-import { user } from '../db/schema'
+import { profile, user, household } from '../db/schema'
 
 const searchByEmail = async (search: string) => {
   const result = await db
@@ -27,4 +31,52 @@ const pendingInvites = async (user: User) => {
   return result
 }
 
-export { searchByEmail, pendingInvites }
+const getDefaultHouseholdId = async (userId: string) => {
+  const [result] = await db
+    .select({ defaultHouseholdId: profile.defaultHouseholdId })
+    .from(profile)
+    .where(eq(profile.userId, userId))
+
+  return result
+}
+
+type DbOrTx = NodePgDatabase<any> | NodePgTransaction<any, any>
+
+const setDefaultHousehold = async (
+  userId: string,
+  newDefaultId: number,
+  trx: DbOrTx = db,
+) => {
+  await trx
+    .insert(profile)
+    .values({
+      userId,
+      defaultHouseholdId: newDefaultId,
+    })
+    .onConflictDoUpdate({
+      target: profile.userId,
+      set: {
+        defaultHouseholdId: newDefaultId,
+      },
+    })
+    .returning()
+
+  const [result] = await trx
+    .select({
+      userId: profile.userId,
+      defaultHouseholdId: profile.defaultHouseholdId,
+      householdName: household.name,
+    })
+    .from(profile)
+    .leftJoin(household, eq(profile.defaultHouseholdId, household.id))
+    .where(eq(profile.userId, userId))
+
+  return result
+}
+
+export {
+  searchByEmail,
+  pendingInvites,
+  getDefaultHouseholdId,
+  setDefaultHousehold,
+}

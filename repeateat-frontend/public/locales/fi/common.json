@@ -34,5 +34,7 @@
   "light": "Vaalea",
   "dark": "Tumma",
   "system": "Oletus",
-  "notes": "Muistiinpanot"
+  "notes": "Muistiinpanot",
+  "user_info": "Käyttäjän tiedot",
+  "change_language": "Vaihda kieltä"
 }

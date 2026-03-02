@@ -72,10 +72,11 @@ export const useAddHouseholdRecipe = () => {
   })
 }
 
-export const useHouseholdRecipes = (householdId: number) => {
+export const useHouseholdRecipes = (householdId: number | null | undefined) => {
   return useQuery<HouseholdRecipe[]>({
     queryKey: ['householdRecipes', householdId],
-    queryFn: () => householdService.getHouseholdRecipes(householdId),
+    queryFn: () => householdService.getHouseholdRecipes(householdId!),
+    enabled: typeof householdId === 'number',
     select: (data) =>
       data.map((r) => ({
         ...r,
