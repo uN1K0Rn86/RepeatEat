@@ -60,7 +60,7 @@ const removeRecipeFromHousehold = async ({
   recipeId: number
 }): Promise<RemovedHouseholdRecipe> => {
   const response = await axios.delete<RemovedHouseholdRecipe>(
-    `${baseUrl}/${householdId}/recipes/${recipeId}`,
+    `${baseUrl}/${householdId}/recipe/${recipeId}`,
   )
 
   return response.data

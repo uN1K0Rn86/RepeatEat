@@ -147,11 +147,11 @@ householdRouter.post(
 )
 
 householdRouter.delete(
-  '/:householdId/recipes/:recipeId',
+  '/:id/recipe/:recipeId',
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
     const user = req.user
-    const householdId = Number(req.params.householdId)
+    const householdId = Number(req.params.id)
     const recipeId = Number(req.params.recipeId)
 
     const userInHousehold = await isMember(householdId, user!.id)

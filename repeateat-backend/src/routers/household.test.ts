@@ -316,7 +316,7 @@ describe('Household-related endpoints', () => {
       const recipeToDeleteId = householdRecipes[0].recipeId
 
       const deleteResponse = await request(app)
-        .delete(`/api/household/${householdId}/recipes/${recipeToDeleteId}`)
+        .delete(`/api/household/${householdId}/recipe/${recipeToDeleteId}`)
         .set('Cookie', authCookie!)
 
       expect(deleteResponse.status).toEqual(200)
@@ -336,7 +336,7 @@ describe('Household-related endpoints', () => {
       const { authCookie } = await loginUser('other@google.com', 'password123')
 
       const failedResponse = await request(app)
-        .delete(`/api/household/${addedHouseholdId}/recipes/${addedRecipeId}`)
+        .delete(`/api/household/${addedHouseholdId}/recipe/${addedRecipeId}`)
         .set('Cookie', authCookie!)
 
       expect(failedResponse.body.error).toEqual('errors:not_in_household')
@@ -354,7 +354,7 @@ describe('Household-related endpoints', () => {
       const recipeToDeleteId = householdRecipes[0].recipeId
 
       const failedResponse = await request(app)
-        .delete(`/api/household/${householdId}/recipes/${recipeToDeleteId}`)
+        .delete(`/api/household/${householdId}/recipe/${recipeToDeleteId}`)
         .set('Cookie', authCookie!)
 
       expect(failedResponse.body.error).toEqual('errors:only_admin')
