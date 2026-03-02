@@ -319,7 +319,10 @@ describe('Household-related endpoints', () => {
         .delete(`/api/household/${householdId}/recipes/${recipeToDeleteId}`)
         .set('Cookie', authCookie!)
 
-      expect(deleteResponse.status).toEqual(204)
+      expect(deleteResponse.status).toEqual(200)
+      expect(deleteResponse.body.householdId).toEqual(householdId)
+      expect(deleteResponse.body.recipeId).toEqual(recipeToDeleteId)
+      expect(deleteResponse.body.addedBy).toEqual(user.id)
     })
 
     it('fails when user is not in household', async () => {

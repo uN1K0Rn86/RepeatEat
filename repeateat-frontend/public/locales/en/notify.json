@@ -11,5 +11,6 @@
   "household_recipe_added": "Recipe added to household favorites",
   "household_created": "New household created",
   "cooklog_created": "Recipe marked as cooked",
-  "default_household": "{{ householdName }} set as the default household"
+  "default_household": "{{ householdName }} set as the default household",
+  "removed_household_recipe": "Recipe removed from household"
 }

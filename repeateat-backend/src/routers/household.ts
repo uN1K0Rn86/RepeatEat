@@ -165,7 +165,7 @@ householdRouter.delete(
     const deleted = await removeRecipe(householdId, recipeId)
     if (!deleted) throw new AppError('errors:recipe_not_in_household', 404)
 
-    res.status(204).send()
+    res.status(200).json(deleted)
   },
 )
 

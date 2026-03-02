@@ -11,5 +11,6 @@
   "name_required": "Name is required",
   "must_login": "You must login to perform this action",
   "default_household_fail": "Could not set default household",
-  "choose_household": "Please choose a household"
+  "choose_household": "Please choose a household",
+  "recipe_remove_household_fail": "Removing recipe from household failed"
 }

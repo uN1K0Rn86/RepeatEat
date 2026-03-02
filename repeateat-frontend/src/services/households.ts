@@ -5,6 +5,7 @@ import {
   type HouseholdRecipeResponse,
   type HouseholdResponse,
   type InviteResponse,
+  type RemovedHouseholdRecipe,
   type UserHousehold,
 } from '@repeateat/shared'
 import axios from 'axios'
@@ -51,6 +52,20 @@ const addRecipeToHousehold = async ({
   return response.data
 }
 
+const removeRecipeFromHousehold = async ({
+  householdId,
+  recipeId,
+}: {
+  householdId: number
+  recipeId: number
+}): Promise<RemovedHouseholdRecipe> => {
+  const response = await axios.delete<RemovedHouseholdRecipe>(
+    `${baseUrl}/${householdId}/recipes/${recipeId}`,
+  )
+
+  return response.data
+}
+
 const getHouseholdRecipes = async (
   householdId: number,
 ): Promise<HouseholdRecipe[]> => {
@@ -82,6 +97,7 @@ export default {
   inviteHouseholdMember,
   searchUser,
   addRecipeToHousehold,
+  removeRecipeFromHousehold,
   getHouseholdRecipes,
   createHousehold,
   createCookLog,

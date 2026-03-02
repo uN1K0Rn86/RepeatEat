@@ -20,5 +20,7 @@
   "log_cook": "Log preparation",
   "set_default_household": "Set default household",
   "set_as_default": "Set as default",
-  "log": "Log"
+  "log": "Log",
+  "remove_recipe": "Remove from household",
+  "confirm_remove": "Are you sure you want to remove this recipe from the household view?"
 }

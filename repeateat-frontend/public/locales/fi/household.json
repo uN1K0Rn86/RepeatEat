@@ -20,5 +20,7 @@
   "log_cook": "Merkkaa valmistus",
   "set_default_household": "Valitse oletuskotitalous",
   "set_as_default": "Aseta oletukseksi",
-  "log": "Merkkaa"
+  "log": "Merkkaa",
+  "remove_recipe": "Poista kotitaloudesta",
+  "confirm_remove": "Oletko varma että haluat poistaa tämän reseptin kotitalouden näkymästä?"
 }

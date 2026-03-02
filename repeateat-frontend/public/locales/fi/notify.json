@@ -11,5 +11,6 @@
   "household_recipe_added": "Resepti lisätty kotitalouden suosikkeihin",
   "household_created": "Uusi kotitalous luotu",
   "cooklog_created": "Resepti merkattu valmistetuksi",
-  "default_household": "{{ householdName }} asetettu oletuskotitaloudeksi"
+  "default_household": "{{ householdName }} asetettu oletuskotitaloudeksi",
+  "removed_household_recipe": "Resepti poistettu kotitalouden suosikeista"
 }

@@ -11,5 +11,6 @@
   "name_required": "Nimi vaaditaan",
   "must_login": "Tämä toiminto vaatii sisäänkirjautumisen",
   "default_household_fail": "Oletuskotitalouden asettaminen epäonnistui",
-  "choose_household": "Valitse kotitalous"
+  "choose_household": "Valitse kotitalous",
+  "recipe_remove_household_fail": "Reseptin poistaminen kotitaloudesta epäonnistui"
 }

@@ -5,6 +5,7 @@ import {
   type HouseholdRecipe,
   type HouseholdRecipeResponse,
   type InviteResponse,
+  type RemovedHouseholdRecipe,
   type UserHousehold,
 } from '@repeateat/shared'
 import { notify } from '@/utils/notify'
@@ -67,6 +68,26 @@ export const useAddHouseholdRecipe = () => {
     onError: (error: AxiosError<BackendError>) => {
       const serverMessage =
         error.response?.data?.error || 'errors:recipe_add_household_fail'
+      notify.error(t(serverMessage))
+    },
+  })
+}
+
+export const useRemoveHouseholdRecipe = () => {
+  const { t } = useTranslation(['errors', 'notify'])
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: householdService.removeRecipeFromHousehold,
+    onSuccess: (_response: RemovedHouseholdRecipe, variables) => {
+      notify.success(t('notify:removed_household_recipe'))
+      return queryClient.invalidateQueries({
+        queryKey: ['householdRecipes', variables.householdId],
+      })
+    },
+    onError: (error: AxiosError<BackendError>) => {
+      const serverMessage =
+        error.response?.data?.error || 'errors:recipe_remove_household_fail'
       notify.error(t(serverMessage))
     },
   })
