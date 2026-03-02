@@ -20,7 +20,7 @@ const App = () => {
   const { activeHouseholdId, setActiveHouseholdId } = useBoundStore()
 
   useEffect(() => {
-    if (user && !activeHouseholdId) {
+    if (user && !activeHouseholdId && user.defaultHouseholdId !== null) {
       setActiveHouseholdId(user.defaultHouseholdId)
     }
   }, [user, activeHouseholdId, setActiveHouseholdId])

@@ -85,7 +85,10 @@ export const profile = pgTable('profile', {
   userId: text('user_id')
     .primaryKey()
     .references(() => user.id, { onDelete: 'cascade' }),
-  defaultHouseholdId: integer().references(() => household.id, {
-    onDelete: 'cascade',
-  }),
+  defaultHouseholdId: integer('default_household_id').references(
+    () => household.id,
+    {
+      onDelete: 'set null',
+    },
+  ),
 })

@@ -11,8 +11,13 @@ const DefaultHouseholdPicker = () => {
   const defaultHouseholdMutation = useSetDefaultHousehold()
 
   const handleClick = (householdId: number) => {
+    const previousActiveHouseholdId = activeHouseholdId
     setActiveHouseholdId(householdId)
-    defaultHouseholdMutation.mutate(householdId)
+    defaultHouseholdMutation.mutate(householdId, {
+      onError: () => {
+        setActiveHouseholdId(previousActiveHouseholdId)
+      },
+    })
   }
 
   return (

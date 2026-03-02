@@ -32,15 +32,19 @@ const MarkAsCookedButton = ({ recipeId, source }: FormProps) => {
   const [cookedAt, setCookedAt] = useState<Date>(() => new Date())
   const cookLogMutation = useLogCook()
 
+  const effectiveHouseholdId =
+    selectedHouseholdId ??
+    (userHouseholds?.length === 1 ? userHouseholds[0].householdId : null)
+
   const handleSubmit = () => {
-    if (!selectedHouseholdId) {
+    if (!effectiveHouseholdId) {
       notify.error(t('errors:choose_household'))
       return
     }
     cookLogMutation.mutate(
       {
         recipeId: Number(recipeId),
-        householdId: selectedHouseholdId,
+        householdId: effectiveHouseholdId,
         notes: '',
         cookedAt,
       },
