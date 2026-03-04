@@ -37,7 +37,7 @@ jobs:
         working-directory: ./shared
         run: npm run build
       - name: Initialize DB for tests
-        run: docker compose -f docker-compose.citest.yml up -d
+        run: docker compose -f docker-compose.citest.yml up postgres-test -d
       - name: Backend tests
         working-directory: ./repeateat-backend
         run: npm run test
@@ -53,3 +53,26 @@ jobs:
       - name: Frontend lint
         working-directory: ./repeateat-frontend
         run: npm run lint
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build containerized app
+        run: docker compose -f docker-compose.citest.yml up -d
+      - name: Install frontend deps
+        working-directory: repeateat-frontend
+        run: npm ci
+      - name: Install Playwright browsers
+        working-directory: repeateat-frontend
+        run: npx playwright install --with-deps
+      - name: Run Playwright
+        working-directory: repeateat-frontend
+        run: npx playwright test
+      - name: Stop stack
+        if: always()
+        run: docker compose down -v
