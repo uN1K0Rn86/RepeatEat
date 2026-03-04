@@ -31,3 +31,4 @@
 | 2026-02-26 | Show household recipes, add create household form, add ability to mark recipe as cooked                                   | 6.5h | 133h            |
 | 2026-02-27 | Marking recipes as cooked, start on setting the default household                                                         | 3h   | 136h            |
 | 2026-03-02 | Set default household, remove recipe from household view                                                                  | 6h   | 142h            |
+| 2026-03-04 | Fix layout, start work on e2e tests                                                                                       | 7h   | 149h            |

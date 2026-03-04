@@ -17,6 +17,7 @@ dist-ssr
 .prettierrc
 tsconfig.tsbuildinfo
 test-results
+playwright-report
 
 # Editor directories and files
 .vscode/*

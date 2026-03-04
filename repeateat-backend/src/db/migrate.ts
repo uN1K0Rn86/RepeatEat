@@ -8,7 +8,7 @@ const migrationsPath = path.resolve(__dirname, '../../migrations')
 
 const runMigration = async () => {
   const connectionString = process.env.DATABASE_URL
-
+  console.log(process.env.DATABASE_URL)
   if (!connectionString) {
     throw new Error('DATABASE_URL is not defined. Check your .env file.')
   }

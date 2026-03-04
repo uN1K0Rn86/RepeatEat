@@ -7,9 +7,11 @@ import * as schema from '../db/schema'
 export const auth = betterAuth({
   allowedOrigins: [
     'http://localhost:8080',
+    'http://localhost:4173',
+    'http://localhost:9323',
     'http://localhost:5173',
     'https://repeat-eat.com',
-    'https://repeateat-frontend.sami-heinimo.workers.dev/',
+    'https://repeateat-frontend.sami-heinimo.workers.dev',
   ],
   baseURL: process.env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {

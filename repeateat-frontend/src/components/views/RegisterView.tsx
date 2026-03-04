@@ -65,6 +65,7 @@ const RegisterView = () => {
                   <Input
                     {...field}
                     id="email-input"
+                    data-testid="email-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Write your email here"
                   />
@@ -85,6 +86,7 @@ const RegisterView = () => {
                   <Input
                     {...field}
                     id="password-input"
+                    data-testid="password-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Password must be at least 8 characters"
                     type="password"
@@ -106,6 +108,7 @@ const RegisterView = () => {
                   <Input
                     {...field}
                     id="confirmpassword-input"
+                    data-testid="confirmpassword-input"
                     aria-invalid={fieldState.invalid}
                     type="password"
                   />
@@ -126,6 +129,7 @@ const RegisterView = () => {
                   <Input
                     {...field}
                     id="username-input"
+                    data-testid="username-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Select your username"
                   />
