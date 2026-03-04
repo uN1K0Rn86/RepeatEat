@@ -36,5 +36,8 @@
   "system": "System",
   "notes": "Notes",
   "user_info": "User information",
-  "change_language": "Change language"
+  "change_language": "Change language",
+  "hero_title": "Your Kitchen, Synchronized.",
+  "hero_description": "Store your favorite recipes, create shared family meal plans, and generate automated shopping lists—all in one place. Stop the 'what's for dinner?' struggle and get back to enjoying home-cooked meals together.",
+  "get_started": "Get started"
 }

@@ -63,7 +63,9 @@ const AddToHouseholdButton = ({
               <DropdownMenuContent align="end">
                 {source === 'list' && (
                   <div>
-                    <DropdownMenuLabel>Add to household</DropdownMenuLabel>
+                    <DropdownMenuLabel>
+                      {t('household:add_recipe')}
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                   </div>
                 )}

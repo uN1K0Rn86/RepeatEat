@@ -2,7 +2,7 @@
   "name": "Nimi",
   "modify": "Muokkaa",
   "login_failed": "Kirjautuminen epäonnistui",
-  "login": "Kirjaudu sisään",
+  "login": "Kirjaudu",
   "logout": "Kirjaudu ulos",
   "logging_out": "Kirjaudutaan ulos",
   "logout_failed": "Uloskirjautuminen epäonnistui",
@@ -36,5 +36,8 @@
   "system": "Oletus",
   "notes": "Muistiinpanot",
   "user_info": "Käyttäjän tiedot",
-  "change_language": "Vaihda kieltä"
+  "change_language": "Vaihda kieltä",
+  "hero_title": "Keittiösi, synkronoituna.",
+  "hero_description": "Tallenna suosikkireseptisi, luo yhteisiä ateriasuunnitelmia perheesi kanssa ja generoi automaattisia kauppalistoja – kaikki yhdessä paikassa. Lopeta ikuinen 'mitä tänään syötäisiin?' -pähkäily ja nauti yhteisistä aterioista ilman stressiä.",
+  "get_started": "Aloita"
 }

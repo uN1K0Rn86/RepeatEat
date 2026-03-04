@@ -20,6 +20,7 @@ export const useUserHouseholds = () => {
   return useQuery<UserHousehold[]>({
     queryKey: ['userHouseholds'],
     queryFn: householdService.getUserHouseholds,
+    retry: false,
   })
 }
 

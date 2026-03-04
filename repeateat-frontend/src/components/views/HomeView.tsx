@@ -1,38 +1,33 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useEffect } from 'react'
 
 import { useBoundStore } from '@/store'
 import { Button } from '../ui/button'
 import { useTranslation } from 'react-i18next'
-
-interface HelloResponse {
-  message: string
-}
+import { useNavigate } from 'react-router-dom'
 
 const HomeView = () => {
-  const [message, setMessage] = useState<string>('')
   const setPageTitle = useBoundStore((state) => state.setPageTitle)
   const { t } = useTranslation(['common'])
+  const navigate = useNavigate()
 
   useEffect(() => {
     setPageTitle('home')
   }, [t, setPageTitle])
 
-  useEffect(() => {
-    const fetchHello = async () => {
-      try {
-        const res = await axios.get<HelloResponse>('/api/hello')
-        setMessage(res.data.message)
-      } catch (err) {
-        console.error(err)
-      }
-    }
-    void fetchHello()
-  }, [])
   return (
-    <div className="flex flex-col items-center p-5">
-      <p>{t('welcome_message')}</p>
-      <Button onClick={() => alert(message)}>{t('common:say_hello')}</Button>
+    <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center">
+      <h1 className="text-4xl font-bold">{t('common:hero_title')}</h1>
+      <p className="text-muted-foreground max-w-sm">
+        {t('common:hero_description')}
+      </p>
+      <div className="flex gap-4">
+        <Button onClick={() => navigate('/register')}>
+          {t('common:get_started')}
+        </Button>
+        <Button variant="outline" onClick={() => navigate('/login')}>
+          {t('common:login')}
+        </Button>
+      </div>
     </div>
   )
 }
