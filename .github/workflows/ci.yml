@@ -62,7 +62,30 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Build containerized app
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image (cached)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./repeateat-backend/Dockerfile
+          tags: repeateat-backend:ci
+          load: true
+          cache-from: type=gha,scope=repeateat-backend
+          cache-to: type=gha,scope=repeateat-backend,mode=max
+
+      - name: Build frontend image (cached)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./repeateat-frontend/ci.Dockerfile
+          tags: repeateat-frontend:ci
+          load: true
+          cache-from: type=gha,scope=repeateat-frontend
+          cache-to: type=gha,scope=repeateat-frontend,mode=max
+
+      - name: Start containerized app
         run: docker compose -f docker-compose.citest.yml up -d
       - name: Install frontend deps
         working-directory: repeateat-frontend
