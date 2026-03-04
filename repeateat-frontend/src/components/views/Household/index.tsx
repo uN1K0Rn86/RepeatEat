@@ -15,7 +15,7 @@ const HouseholdView = () => {
   const { data, isLoading, error } = useUserHouseholds()
 
   useEffect(() => {
-    setPageTitle('home')
+    setPageTitle('household')
   }, [t, setPageTitle])
 
   if (isLoading) return <div>Loading households</div>
