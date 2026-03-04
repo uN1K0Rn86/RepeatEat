@@ -15,4 +15,4 @@ WORKDIR /usr/src/app/repeateat-frontend
 
 EXPOSE 4173
 
-CMD ["npm", "run", "build", "&&", "npm", "run", "preview"]
+CMD ["sh", "-c", "npm run build && npm run preview -- --host 0.0.0.0"]
