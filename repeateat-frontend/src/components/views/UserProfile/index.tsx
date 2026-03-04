@@ -43,18 +43,15 @@ const UserProfile = () => {
           </div>
           <LanguagePicker />
           <DefaultHouseholdPicker />
-          {canInstall && (os === 'IOS' || os === 'android') && (
+          {canInstall && os === 'android' && (
             <div className="flex flex-col font-bold">
               {t('common:install_title')}
-              {os === 'android' ? (
-                <Button type="button" onClick={install}>
-                  {t('common:install')}
-                </Button>
-              ) : (
-                <InstallPopover />
-              )}
+              <Button type="button" onClick={install}>
+                {t('common:install')}
+              </Button>
             </div>
           )}
+          {os === 'IOS' && <InstallPopover />}
         </div>
       </CardContent>
     </Card>

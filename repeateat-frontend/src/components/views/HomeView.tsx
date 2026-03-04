@@ -22,7 +22,7 @@ const HomeView = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6 text-center">
       <h1 className="text-4xl font-bold">{t('common:hero_title')}</h1>
-      <img src="/favicon-96x96.png" />
+      <img src="/favicon-96x96.png" alt="icon" />
       <p className="text-muted-foreground max-w-sm">
         {t('common:hero_description')}
       </p>
@@ -44,7 +44,7 @@ const HomeView = () => {
           {t('common:install')}
         </Button>
       )}
-      {canInstall && os === 'IOS' && <InstallPopover />}
+      {os === 'IOS' && <InstallPopover />}
     </div>
   )
 }
