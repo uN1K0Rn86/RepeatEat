@@ -75,4 +75,4 @@ jobs:
         run: npx playwright test
       - name: Stop stack
         if: always()
-        run: docker compose down -v
+        run: docker compose -f docker-compose.citest.yml down -v
