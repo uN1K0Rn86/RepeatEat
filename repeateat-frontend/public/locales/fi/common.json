@@ -40,5 +40,8 @@
   "hero_title": "Keittiösi, synkronoituna.",
   "hero_description": "Tallenna suosikkireseptisi, luo yhteisiä ateriasuunnitelmia perheesi kanssa ja generoi automaattisia kauppalistoja – kaikki yhdessä paikassa. Lopeta ikuinen 'mitä tänään syötäisiin?' -pähkäily ja nauti yhteisistä aterioista ilman stressiä.",
   "get_started": "Aloita",
-  "household": "Kotitalous"
+  "household": "Kotitalous",
+  "install_description": "Asenna sovellus laitteellesi, niin saat nopeamman ja saumattomamman käyttökokemuksen. Sovellus toimii myös offline-tilassa ja tuntuu aivan tavalliselta sovellukselta – erillistä latausta sovelluskaupasta ei tarvita.",
+  "install": "Asenna",
+  "install_prompt": "Napauta Jaa (Share) → Lisää kotivalikkoon (Add to Home Screen) asentaaksesi RepeatEatin."
 }
