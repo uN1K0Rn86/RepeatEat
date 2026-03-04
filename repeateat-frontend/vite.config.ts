@@ -23,7 +23,7 @@ export default defineConfig({
       ],
       manifest: {
         name: 'RepeatEat',
-        short_name: 'RepeatEat',
+        short_name: 'RE',
         description: 'Track recipes, cooking history, and shopping lists',
         theme_color: '#ffffff',
         background_color: '#ffffff',
@@ -48,6 +48,21 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
+          },
+        ],
+        screenshots: [
+          {
+            src: 'screenshots/desktop-wide.png',
+            sizes: '1852x961',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Home screen on desktop',
+          },
+          {
+            src: 'screenshots/mobile-home.png',
+            sizes: '399x875',
+            type: 'image/png',
+            label: 'Home screen on mobile',
           },
         ],
       },

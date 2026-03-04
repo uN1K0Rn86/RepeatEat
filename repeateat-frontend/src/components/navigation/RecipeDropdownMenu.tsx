@@ -8,12 +8,12 @@ import { useTranslation } from 'react-i18next'
 
 const RecipeDropdownMenu = () => {
   const navigate = useNavigate()
-  const { t } = useTranslation(['recipe'])
+  const { t } = useTranslation(['recipe', 'common'])
 
   return (
     <>
       <DropdownMenuLabel className="text-sm font-bold leading-none">
-        Recipes
+        {t('common:recipes')}
       </DropdownMenuLabel>
       <DropdownMenuItem onClick={() => void navigate('/recipe')}>
         {t('recipe:browse')}

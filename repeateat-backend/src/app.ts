@@ -30,10 +30,6 @@ app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'Ok' })
 })
 
-app.get('/api/hello', (_req: Request, res: Response) => {
-  res.json({ message: 'Hello from backend again' })
-})
-
 app.use(errorHandler)
 
 export default app

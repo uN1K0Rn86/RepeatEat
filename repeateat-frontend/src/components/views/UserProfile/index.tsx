@@ -7,11 +7,16 @@ import { useMe } from '@/hooks/useUser'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import DefaultHouseholdPicker from './DefaultHouseholdPicker'
+import { useInstallPrompt } from '@/hooks/useInstallPrompt'
+import { usePlatform } from '@/hooks/usePlatform'
+import InstallPopover from '../InstallPopover'
 
 const UserProfile = () => {
   const { setPageTitle } = useBoundStore()
   const { data: user } = useMe()
   const { t } = useTranslation(['nav', 'user', 'common'])
+  const { canInstall, install } = useInstallPrompt()
+  const os = usePlatform()
 
   useEffect(() => {
     setPageTitle('profile')
@@ -38,6 +43,15 @@ const UserProfile = () => {
           </div>
           <LanguagePicker />
           <DefaultHouseholdPicker />
+          {canInstall && os === 'android' && (
+            <div className="flex flex-col font-bold">
+              {t('common:install_title')}
+              <Button type="button" onClick={install}>
+                {t('common:install')}
+              </Button>
+            </div>
+          )}
+          {os === 'IOS' && <InstallPopover />}
         </div>
       </CardContent>
     </Card>

@@ -16,10 +16,12 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useTranslation } from 'react-i18next'
 import { useLogin } from '@/hooks/useUser'
+import { useNavigate } from 'react-router-dom'
 
 const LoginView = () => {
   const { setPageTitle } = useBoundStore()
   const { t } = useTranslation(['common', 'notify'])
+  const navigate = useNavigate()
 
   useEffect(() => {
     setPageTitle('login')
@@ -95,9 +97,19 @@ const LoginView = () => {
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="horizontal">
+        <Field
+          orientation="horizontal"
+          className="flex flex-row justify-between"
+        >
           <Button type="submit" form="login-form" disabled={isPending}>
             {t('common:login')}
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => void navigate('/register')}
+          >
+            {t('common:register')}
           </Button>
         </Field>
       </CardFooter>

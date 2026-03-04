@@ -78,11 +78,12 @@ const RecipeView = () => {
             </div>
 
             <div className="flex flex-row gap-2 text-muted-foreground group-hover:translate-x-1 transition-transform items-center">
-              {householdRecipeIds && householdRecipeIds.includes(r.id) ? (
-                <MarkAsCookedButton recipeId={String(r.id)} source="list" />
-              ) : (
-                <AddToHouseholdButton recipeId={String(r.id)} source="list" />
-              )}
+              {user &&
+                (householdRecipeIds && householdRecipeIds.includes(r.id) ? (
+                  <MarkAsCookedButton recipeId={String(r.id)} source="list" />
+                ) : (
+                  <AddToHouseholdButton recipeId={String(r.id)} source="list" />
+                ))}
               <ArrowRight />
             </div>
           </div>
