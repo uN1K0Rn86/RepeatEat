@@ -22,7 +22,9 @@ test('Registration is successful with valid inputs', async ({ page }) => {
       page.getByRole('button', { name: 'Register' }).click(),
     ])
   } catch (err) {
-    await page.screenshot({ path: 'debug-screenshot.png' })
+    await page.screenshot({
+      path: `debug-register-screenshot-${Date.now()}.png`,
+    })
     console.log('Current URL:', page.url())
     throw err
   }
