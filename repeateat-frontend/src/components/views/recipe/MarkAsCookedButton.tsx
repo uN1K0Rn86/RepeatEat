@@ -23,7 +23,7 @@ interface FormProps {
 }
 
 const MarkAsCookedButton = ({ recipeId, source }: FormProps) => {
-  const { t } = useTranslation(['household', 'errors'])
+  const { t } = useTranslation(['household', 'errors', 'recipe'])
   const { data: userHouseholds } = useUserHouseholds()
   const { activeHouseholdId } = useBoundStore()
   const [selectedHouseholdId, setSelectedHouseholdId] = useState<number | null>(
@@ -92,13 +92,13 @@ const MarkAsCookedButton = ({ recipeId, source }: FormProps) => {
               <DropdownMenuSeparator />
             </>
           )}
-          <div
-            className="flex flex-col gap-1 px-2 py-1 text-sm"
-            onClick={stopPropagation}
-          >
-            {t('recipe:prep_date')}:
-            <DatePicker date={cookedAt} setDate={setCookedAt} />
-          </div>
+          <DropdownMenuItem onSelect={(e: Event) => e.preventDefault()} asChild>
+            <div className="flex flex-col gap-1">
+              {t('recipe:prep_date')}:
+              <DatePicker date={cookedAt} setDate={setCookedAt} />
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem className="flex flex-row justify-center">
             <Button type="button" onClick={handleSubmit}>
               {t('household:log')}
