@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { execSync } from 'node:child_process'
 
 test('register page loads', async ({ page }) => {
   await page.goto('/register')
@@ -28,4 +29,11 @@ test('registration is successful with valid inputs', async ({ page }) => {
   }
 
   await expect(page.getByTestId('create-household')).toBeVisible()
+})
+
+test.afterAll(() => {
+  execSync('npm --prefix ../repeateat-backend run db:cleanup:dev', {
+    stdio: 'inherit',
+    env: { ...process.env },
+  })
 })
