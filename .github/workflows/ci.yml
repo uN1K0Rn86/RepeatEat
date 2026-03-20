@@ -87,11 +87,7 @@ jobs:
 
       - name: Start containerized app
         run: docker compose -f docker-compose.citest.yml up -d --wait
-      - name: Install frontend deps
-        working-directory: repeateat-frontend
-        run: npm ci --include=dev
-      - name: Install backend deps
-        working-directory: ./repeateat-backend
+      - name: Install all workspace deps
         run: npm ci
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -104,8 +100,7 @@ jobs:
         working-directory: repeateat-frontend
         run: npx playwright install chromium
       - name: Run Playwright
-        working-directory: repeateat-frontend
-        run: npm run test:e2e
+        run: npm run test:e2e -w repeateat-frontend
       - name: Stop stack
         if: always()
         run: docker compose -f docker-compose.citest.yml down -v
