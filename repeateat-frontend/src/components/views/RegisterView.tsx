@@ -113,7 +113,10 @@ const RegisterView = () => {
                     type="password"
                   />
                   {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
+                    <FieldError
+                      errors={[fieldState.error]}
+                      data-testid="confirm-error"
+                    />
                   )}
                 </Field>
               )}

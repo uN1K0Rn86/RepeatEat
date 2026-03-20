@@ -1,14 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { execSync } from 'node:child_process'
 
-test('register page loads', async ({ page }) => {
+test('Register page loads', async ({ page }) => {
   await page.goto('/register')
 
   await expect(page).toHaveURL(/\/register/)
   await expect(page.locator('body')).toBeVisible()
 })
 
-test('registration is successful with valid inputs', async ({ page }) => {
+test('Registration is successful with valid inputs', async ({ page }) => {
   const uniqueEmail = `playwright_${Date.now()}@test.example.com`
   await page.goto('/register')
 
@@ -31,9 +30,16 @@ test('registration is successful with valid inputs', async ({ page }) => {
   await expect(page.getByTestId('create-household')).toBeVisible()
 })
 
-test.afterAll(() => {
-  execSync('npm --prefix ../repeateat-backend run db:cleanup:dev', {
-    stdio: 'inherit',
-    env: { ...process.env },
-  })
+test('Registration fails with invalid inputs', async ({ page }) => {
+  const uniqueEmail = `playwright_${Date.now()}@test.example.com`
+  await page.goto('/register')
+
+  await page.getByTestId('email-input').fill(uniqueEmail)
+  await page.getByTestId('password-input').fill('password123')
+  await page.getByTestId('confirmpassword-input').fill('password124')
+  await page.getByTestId('username-input').fill('playwright')
+
+  await page.getByRole('button', { name: 'Register' }).click()
+
+  await expect(page.getByTestId('confirm-error')).toBeVisible()
 })
