@@ -2,9 +2,8 @@ import { execSync } from 'node:child_process'
 
 export default function globalSetup() {
   const isCI = process.env.CI === 'true'
-  const migrateScript = isCI ? 'db:migrate:ci' : 'db:migrate:dev'
 
-  execSync(`npm --prefix ../repeateat-backend run ${migrateScript}`, {
+  execSync('npm --prefix ../repeateat-backend run db:migrate:dev', {
     stdio: 'inherit',
     env: {
       ...process.env,
