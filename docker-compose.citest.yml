@@ -21,6 +21,7 @@ services:
     environment:
       - NODE_ENV=test
       - TEST_DATABASE_URL=postgresql://postgres:testpass@postgres-test:5432/repeateat_test
+      - DATABASE_URL=postgresql://postgres:testpass@postgres-test:5432/repeateat_test
     depends_on:
       postgres-test:
         condition: service_healthy
