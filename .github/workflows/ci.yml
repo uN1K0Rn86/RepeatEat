@@ -100,7 +100,8 @@ jobs:
         working-directory: repeateat-frontend
         run: npx playwright install chromium
       - name: Run Playwright
-        run: npm run test:e2e -w repeateat-frontend
+        working-directory: repeateat-frontend
+        run: npm run test:e2e
       - name: Stop stack
         if: always()
         run: docker compose -f docker-compose.citest.yml down -v

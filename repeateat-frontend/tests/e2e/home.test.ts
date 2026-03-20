@@ -11,7 +11,7 @@ test('Navbar link to recipe page works', async ({ page }) => {
   await page.goto('/')
 
   await page.getByRole('button', { name: 'Recipes' }).click()
-  const searchBar = page.getByPlaceholder('search')
+  const searchBar = page.getByTestId('recipe-search')
   await expect(searchBar).toBeVisible()
 })
 

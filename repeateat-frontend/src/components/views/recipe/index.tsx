@@ -51,6 +51,7 @@ const RecipeView = () => {
           <InputGroupInput
             placeholder={t('common:search')}
             onChange={(e) => setSearchterm(e.target.value)}
+            data-testid="recipe-search"
           />
           <InputGroupAddon>
             <Search />
