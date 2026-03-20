@@ -14,6 +14,7 @@ import {
   household,
   householdUser,
   householdRecipe,
+  householdInvite,
 } from '../db/tables/household'
 
 beforeAll(async () => {
@@ -37,6 +38,7 @@ afterAll(async () => {
     await db.delete(session)
     await db.delete(verification)
     await db.delete(user)
+    await db.delete(householdInvite)
     console.log('Database reset after test')
   } catch (error) {
     console.error('Error resetting database:', error)

@@ -10,6 +10,7 @@ import DefaultHouseholdPicker from './DefaultHouseholdPicker'
 import { useInstallPrompt } from '@/hooks/useInstallPrompt'
 import { usePlatform } from '@/hooks/usePlatform'
 import InstallPopover from '../InstallPopover'
+import { useUserHouseholds } from '@/hooks/useHousehold'
 
 const UserProfile = () => {
   const { setPageTitle } = useBoundStore()
@@ -17,6 +18,7 @@ const UserProfile = () => {
   const { t } = useTranslation(['nav', 'user', 'common'])
   const { canInstall, install } = useInstallPrompt()
   const os = usePlatform()
+  const { data: userHouseholds } = useUserHouseholds()
 
   useEffect(() => {
     setPageTitle('profile')
@@ -42,7 +44,9 @@ const UserProfile = () => {
             </Button>
           </div>
           <LanguagePicker />
-          <DefaultHouseholdPicker />
+          {userHouseholds && userHouseholds?.length > 0 && (
+            <DefaultHouseholdPicker />
+          )}
           {canInstall && os === 'android' && (
             <div className="flex flex-col font-bold">
               {t('common:install_title')}

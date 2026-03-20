@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seed:e2e": "npm --prefix ../repeateat-backend run seed",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "NODE_ENV=test playwright test --headed",
+    "test:e2e:ui": "NODE_ENV=test playwright test --ui"
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
@@ -44,6 +48,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.58.2",
     "@tanstack/eslint-plugin-query": "^5.91.3",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@types/node": "^24.10.1",

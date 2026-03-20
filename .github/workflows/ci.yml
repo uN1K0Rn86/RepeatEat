@@ -22,10 +22,10 @@ jobs:
   ci_pipeline:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '22'
 
       - name: Install backend dependencies
         working-directory: ./repeateat-backend
@@ -37,7 +37,7 @@ jobs:
         working-directory: ./shared
         run: npm run build
       - name: Initialize DB for tests
-        run: docker compose -f docker-compose.citest.yml up -d
+        run: docker compose -f docker-compose.citest.yml up postgres-test -d
       - name: Backend tests
         working-directory: ./repeateat-backend
         run: npm run test
@@ -53,3 +53,55 @@ jobs:
       - name: Frontend lint
         working-directory: ./repeateat-frontend
         run: npm run lint
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image (cached)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./repeateat-backend/Dockerfile
+          tags: repeateat-backend:ci
+          load: true
+          cache-from: type=gha,scope=repeateat-backend
+          cache-to: type=gha,scope=repeateat-backend,mode=max
+
+      - name: Build frontend image (cached)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./repeateat-frontend/ci.Dockerfile
+          tags: repeateat-frontend:ci
+          load: true
+          cache-from: type=gha,scope=repeateat-frontend
+          cache-to: type=gha,scope=repeateat-frontend,mode=max
+
+      - name: Start containerized app
+        run: docker compose -f docker-compose.citest.yml up -d --wait
+      - name: Install all workspace deps
+        run: npm ci
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('repeateat-frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright browsers
+        working-directory: repeateat-frontend
+        run: npx playwright install chromium
+      - name: Run Playwright
+        working-directory: repeateat-frontend
+        run: npm run test:e2e
+      - name: Stop stack
+        if: always()
+        run: docker compose -f docker-compose.citest.yml down -v

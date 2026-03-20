@@ -16,6 +16,8 @@ dist-ssr
 .dockerignore
 .prettierrc
 tsconfig.tsbuildinfo
+test-results
+playwright-report
 
 # Editor directories and files
 .vscode/*

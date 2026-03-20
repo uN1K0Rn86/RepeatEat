@@ -48,7 +48,10 @@ const LoginView = () => {
       <CardContent>
         <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
           {form.formState.errors.root && (
-            <div className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md mb-4">
+            <div
+              className="bg-destructive/15 text-destructive text-sm font-medium p-3 rounded-md mb-4"
+              data-testid="login-error"
+            >
               {form.formState.errors.root.message}
             </div>
           )}
@@ -64,6 +67,7 @@ const LoginView = () => {
                   <Input
                     {...field}
                     id="email-input"
+                    data-testid="email-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Write your email here"
                   />
@@ -84,6 +88,7 @@ const LoginView = () => {
                   <Input
                     {...field}
                     id="password-input"
+                    data-testid="password-input"
                     aria-invalid={fieldState.invalid}
                     type="password"
                   />

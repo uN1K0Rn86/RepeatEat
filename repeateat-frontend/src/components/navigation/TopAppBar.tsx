@@ -67,7 +67,7 @@ const TopAppBar = () => {
           </div>
         ) : (
           <div className="flex gap-2">
-            <Button asChild variant="secondary">
+            <Button asChild variant="secondary" data-testid="login-nav">
               <Link to="/login">{t('common:login')}</Link>
             </Button>
           </div>

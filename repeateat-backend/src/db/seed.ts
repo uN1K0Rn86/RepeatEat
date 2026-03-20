@@ -1,5 +1,6 @@
-import { inArray } from 'drizzle-orm'
+import { and, eq, inArray } from 'drizzle-orm'
 import type { AddRecipe } from '@repeateat/shared'
+import { User } from 'better-auth/types'
 
 import { auth } from '../utils/auth'
 import { createRecipe } from '../services/recipe.service'
@@ -11,43 +12,58 @@ import db from '.'
 export async function seed() {
   console.log('--- Seeding Database ---')
 
+  const getOrCreateUser = async (input: {
+    email: string
+    password: string
+    name: string
+  }) => {
+    const existing = await db.query.user.findFirst({
+      where: eq(schema.user.email, input.email),
+    })
+    if (existing) return { ...existing }
+
+    const created = await auth.api.signUpEmail({
+      body: {
+        email: input.email,
+        password: input.password,
+        name: input.name,
+      },
+    })
+
+    return created.user
+  }
+
   // Insert seeduser
-  const seedUser = await auth.api.signUpEmail({
-    body: {
-      email: 'def@google.com',
-      password: 'password123',
-      name: 'default',
-    },
+  const seedUser = await getOrCreateUser({
+    email: 'def@google.com',
+    password: 'password123',
+    name: 'default',
   })
 
   // Insert other users
-  const otherUser = await auth.api.signUpEmail({
-    body: {
-      email: 'other@google.com',
-      password: 'password123',
-      name: 'other',
-    },
+  const otherUser = await getOrCreateUser({
+    email: 'other@google.com',
+    password: 'password123',
+    name: 'other',
   })
 
-  const memberUser = await auth.api.signUpEmail({
-    body: {
-      email: 'member@google.com',
-      password: 'member123',
-      name: 'member',
-    },
+  const memberUser = await getOrCreateUser({
+    email: 'member@google.com',
+    password: 'member123',
+    name: 'member',
   })
 
-  const invitedUser = await auth.api.signUpEmail({
-    body: {
-      email: 'invited@google.com',
-      password: 'invited123',
-      name: 'invited',
-    },
+  const otherMemberUser = await getOrCreateUser({
+    email: 'othermember@google.com',
+    password: 'member123',
+    name: 'othermember',
   })
 
-  const seedUserId = seedUser.user.id
-  const otherUserId = otherUser.user.id
-  const memberUserId = memberUser.user.id
+  const invitedUser = await getOrCreateUser({
+    email: 'invited@google.com',
+    password: 'invited123',
+    name: 'invited',
+  })
 
   // Insert categories
   const categoryNames = [
@@ -59,10 +75,22 @@ export async function seed() {
     'Quick & Easy',
   ]
 
-  await db
-    .insert(schema.category)
-    .values(categoryNames.map((name) => ({ name })))
-    .onConflictDoNothing()
+  const existingCategories = await db
+    .select({ name: schema.category.name })
+    .from(schema.category)
+    .where(inArray(schema.category.name, categoryNames))
+
+  const existingCategoryNameSet = new Set(existingCategories.map((c) => c.name))
+  const missingCategoryNames = categoryNames.filter(
+    (name) => !existingCategoryNameSet.has(name),
+  )
+
+  if (missingCategoryNames.length > 0) {
+    await db
+      .insert(schema.category)
+      .values(missingCategoryNames.map((name) => ({ name })))
+      .onConflictDoNothing()
+  }
 
   const categories = await db
     .select({ id: schema.category.id, name: schema.category.name })
@@ -447,76 +475,106 @@ export async function seed() {
 
   const addedRecipeIds: number[] = []
 
+  const recipeNames = recipeSeedObjects.map((r) => r.name)
+  const existingRecipes = await db
+    .select({ name: schema.recipe.name })
+    .from(schema.recipe)
+    .where(inArray(schema.recipe.name, recipeNames))
+
+  const existingRecipeNameSet = new Set(existingRecipes.map((r) => r.name))
+
   for (const recipeToAdd of recipeSeedObjects) {
-    const addedRecipe = await createRecipe(recipeToAdd, seedUser.user)
+    if (existingRecipeNameSet.has(recipeToAdd.name)) continue
+    const addedRecipe = await createRecipe(recipeToAdd, seedUser)
     addedRecipeIds.push(addedRecipe.id)
   }
 
-  // Insert households with seeduser
-  const householdsWithUser = [{ name: 'Mekhar' }, { name: 'Kellanved' }]
-  await db.transaction(async (tx) => {
-    const insertedHouseholds = await tx
-      .insert(schema.household)
-      .values(householdsWithUser)
-      .returning()
+  // Insert households function
 
-    const householdUserValues = insertedHouseholds.map((h) => ({
-      householdId: h.id,
-      userId: seedUserId,
-      role: 'admin' as const,
-    }))
-    await tx.insert(schema.householdUser).values(householdUserValues)
+  const insertHouseholds = async (
+    householdNames: string[],
+    adminUser: User,
+    memberUser: User,
+    invitedUser: User,
+  ) => {
+    await db.transaction(async (tx) => {
+      const existing = await tx
+        .select({ id: schema.household.id, name: schema.household.name })
+        .from(schema.household)
+        .where(inArray(schema.household.name, householdNames))
 
-    const memberValues = insertedHouseholds.map((h) => ({
-      householdId: h.id,
-      userId: memberUserId,
-      role: 'member' as const,
-    }))
-    await tx.insert(schema.householdUser).values(memberValues)
-  })
+      const existingNameSet = new Set(existing.map((h) => h.name))
+      const missingNames = householdNames.filter((n) => !existingNameSet.has(n))
 
-  // Insert households with other user
-  const householdsWithOtherUser = [{ name: 'Fiddler' }, { name: 'Hedge' }]
-  await db.transaction(async (tx) => {
-    const insertedHouseholds = await tx
-      .insert(schema.household)
-      .values(householdsWithOtherUser)
-      .returning()
+      if (missingNames.length > 0) {
+        const insertedHouseholds = await tx
+          .insert(schema.household)
+          .values(missingNames.map((name) => ({ name })))
+          .returning()
 
-    const householdUserValues = insertedHouseholds.map((h) => ({
-      householdId: h.id,
-      userId: otherUserId,
-      role: 'admin' as const,
-    }))
-    await tx.insert(schema.householdUser).values(householdUserValues)
-  })
+        const householdUserValues = insertedHouseholds.map((h) => ({
+          householdId: h.id,
+          userId: adminUser.id,
+          role: 'admin' as const,
+        }))
+        await tx.insert(schema.householdUser).values(householdUserValues)
 
-  // Insert invite
+        const memberValues = insertedHouseholds.map((h) => ({
+          householdId: h.id,
+          userId: memberUser.id,
+          role: 'member' as const,
+        }))
+        await tx.insert(schema.householdUser).values(memberValues)
 
-  await db.transaction(async (tx) => {
-    const households = await tx.query.household.findMany({})
+        for (const h of insertedHouseholds) {
+          const existingInvite = await tx.query.householdInvite.findFirst({
+            where: and(
+              eq(schema.householdInvite.householdId, h.id),
+              eq(schema.householdInvite.email, invitedUser.email),
+              eq(schema.householdInvite.status, 'pending'),
+              eq(schema.householdInvite.invitedBy, adminUser.id),
+            ),
+          })
 
-    const expiresAt = new Date()
-    expiresAt.setDate(expiresAt.getDate() + 7)
+          if (existingInvite) continue
 
-    const householdInviteValues = households.map((h) => ({
-      householdId: h.id,
-      invitedBy: seedUserId,
-      email: invitedUser.user.email,
-      status: 'pending' as const,
-      token: crypto.randomUUID(),
-      expiresAt,
-    }))
+          const expiresAt = new Date()
+          expiresAt.setDate(expiresAt.getDate() + 7)
 
-    await tx.insert(schema.householdInvite).values(householdInviteValues)
-  })
+          await tx.insert(schema.householdInvite).values({
+            householdId: h.id,
+            invitedBy: adminUser.id,
+            email: invitedUser.email,
+            status: 'pending',
+            token: crypto.randomUUID(),
+            expiresAt,
+          })
+        }
+      }
+    })
+  }
+
+  // Insert households and invites with seeduser and otheruser
+
+  await insertHouseholds(
+    ['Mekhar', 'Kellanved'],
+    seedUser,
+    memberUser,
+    invitedUser,
+  )
+  await insertHouseholds(
+    ['Fiddler', 'Hedge'],
+    otherUser,
+    otherMemberUser,
+    invitedUser,
+  )
 
   console.log('--- Seeding Completed Successfully ---')
 }
 
 if (require.main === module) {
   seed()
-    .then(process.exit(0))
+    .then(() => process.exit(0))
     .catch((err) => {
       console.error('Seeding failed:', err)
       process.exit(1)

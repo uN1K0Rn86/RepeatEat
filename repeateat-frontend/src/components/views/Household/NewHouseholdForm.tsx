@@ -41,7 +41,9 @@ const NewHouseholdForm = () => {
   return (
     <>
       <CardHeader className="flex flex-col items-center gap-2">
-        <CardTitle>{t('household:create')}</CardTitle>
+        <CardTitle data-testid="create-household">
+          {t('household:create')}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>

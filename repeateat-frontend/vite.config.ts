@@ -23,7 +23,7 @@ export default defineConfig({
       ],
       manifest: {
         name: 'RepeatEat',
-        short_name: 'RE',
+        short_name: 'RepeatEat',
         description: 'Track recipes, cooking history, and shopping lists',
         theme_color: '#ffffff',
         background_color: '#ffffff',

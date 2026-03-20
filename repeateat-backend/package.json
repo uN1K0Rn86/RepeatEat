@@ -13,7 +13,12 @@
     "lint": "eslint .",
     "seed": "tsx src/db/seed.ts",
     "seed:test": "NODE_ENV=test tsx src/db/seed.ts",
-    "db:migrate:prod": "dotenv -e .env.prod tsx src/db/migrate.ts"
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:migrate:prod": "dotenv -e .env.prod tsx src/db/migrate.ts",
+    "db:migrate:test": "dotenv -e .env.test tsx src/db/migrate.ts",
+    "db:migrate:dev": "node --env-file=.env --import tsx src/db/migrate.ts",
+    "db:cleanup": "tsx src/db/testCleanup.ts",
+    "db:cleanup:dev": "node --env-file=.env --import tsx src/db/testCleanup.ts"
   },
   "dependencies": {
     "@repeateat/shared": "*",
