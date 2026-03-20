@@ -32,4 +32,4 @@
 | 2026-02-27 | Marking recipes as cooked, start on setting the default household                                                         | 3h   | 136h            |
 | 2026-03-02 | Set default household, remove recipe from household view                                                                  | 6h   | 142h            |
 | 2026-03-04 | Fix layout, start work on e2e tests                                                                                       | 7h   | 149h            |
-| 2026-03-20 | Work on e2e tests                                                                                                         | 3.5h | 152.5h          |
+| 2026-03-20 | Work on e2e tests                                                                                                         | 7h   | 156h            |

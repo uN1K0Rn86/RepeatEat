@@ -14,5 +14,6 @@
   "unit": "Yksikkö",
   "private_recipe": "Yksityinen resepti",
   "view_details": "Näytä tiedot",
-  "confirm_del": "Oletko varma että haluat poistaa tämän reseptin?"
+  "confirm_del": "Oletko varma että haluat poistaa tämän reseptin?",
+  "prep_date": "Valmistuspäivä"
 }
