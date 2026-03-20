@@ -92,9 +92,13 @@ const MarkAsCookedButton = ({ recipeId, source }: FormProps) => {
               <DropdownMenuSeparator />
             </>
           )}
-          <DropdownMenuItem onSelect={(e: Event) => e.preventDefault()}>
+          <div
+            className="flex flex-col gap-1 px-2 py-1 text-sm"
+            onClick={stopPropagation}
+          >
+            {t('recipe:prep_date')}:
             <DatePicker date={cookedAt} setDate={setCookedAt} />
-          </DropdownMenuItem>
+          </div>
           <DropdownMenuItem className="flex flex-row justify-center">
             <Button type="button" onClick={handleSubmit}>
               {t('household:log')}
