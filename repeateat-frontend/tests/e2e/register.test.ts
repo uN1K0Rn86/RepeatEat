@@ -8,14 +8,24 @@ test('register page loads', async ({ page }) => {
 })
 
 test('registration is successful with valid inputs', async ({ page }) => {
+  const uniqueEmail = `playwright_${Date.now()}@test.example.com`
   await page.goto('/register')
 
-  await page.getByTestId('email-input').fill('playwright@test.example.com')
+  await page.getByTestId('email-input').fill(uniqueEmail)
   await page.getByTestId('password-input').fill('password123')
   await page.getByTestId('confirmpassword-input').fill('password123')
   await page.getByTestId('username-input').fill('playwright')
 
-  await page.getByRole('button', { name: 'Register' }).click()
+  try {
+    await Promise.all([
+      page.waitForURL((url) => url.pathname === '/', { timeout: 15000 }),
+      page.getByRole('button', { name: 'Register' }).click(),
+    ])
+  } catch (err) {
+    await page.screenshot({ path: 'debug-screenshot.png' })
+    console.log('Current URL:', page.url())
+    throw err
+  }
 
-  await expect(page.getByText('Create new household')).toBeVisible()
+  await expect(page.getByTestId('create-household')).toBeVisible()
 })
