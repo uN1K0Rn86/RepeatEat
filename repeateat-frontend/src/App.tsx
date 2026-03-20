@@ -31,7 +31,7 @@ const App = () => {
     <div className="flex h-screen flex-col">
       <TopAppBar />
 
-      <main className="flex overflow-y-auto p-2 space-y-2 pb-24 justify-center">
+      <main className="flex flex-1 min-h-0 overflow-y-auto p-2 space-y-2 pb-24 justify-center">
         <NotificationList />
 
         <Routes>

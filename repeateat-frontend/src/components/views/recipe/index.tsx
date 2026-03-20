@@ -45,7 +45,7 @@ const RecipeView = () => {
   const householdRecipeIds = householdRecipes?.map((hr) => hr.recipeId)
 
   return (
-    <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md overflow-y-auto">
       <CardHeader>
         <InputGroup>
           <InputGroupInput
