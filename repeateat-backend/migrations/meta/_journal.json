@@ -99,6 +99,13 @@
       "when": 1772444567161,
       "tag": "0013_20260302-02-set_defaulthouseholdid_to_ondelete_setnull",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1774012841443,
+      "tag": "0014_2026-03-20-add_mealplan_tables",
+      "breakpoints": true
     }
   ]
 }
