@@ -16,7 +16,7 @@
     "db:migrate:prod": "dotenv -e .env.prod tsx src/db/migrate.ts",
     "db:migrate:test": "dotenv -e .env.test tsx src/db/migrate.ts",
     "db:migrate:dev": "node --env-file=.env --import tsx src/db/migrate.ts",
-    "db:migrate:ci": "DATABASE_URL=postgresql://postgres:testpass@postgres-test:5432/repeateat_test TSX src/db/migrate.ts",
+    "db:migrate:ci": "DATABASE_URL=postgresql://postgres:testpass@postgres-test:5432/repeateat_test tsx src/db/migrate.ts",
     "db:cleanup:dev": "node --env-file=.env --import tsx src/db/testCleanup.ts",
     "db:cleanup:ci": "DATABASE_URL=postgresql://postgres:testpass@postgres-test:5432/repeateat_test tsx src/db/testCleanup.ts"
   },

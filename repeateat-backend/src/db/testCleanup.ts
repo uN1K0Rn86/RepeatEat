@@ -9,11 +9,11 @@ export async function cleanup() {
 
   try {
     await db.delete(user).where(like(user.email, 'playwright%'))
+
+    console.log('--- Cleanup successful ---')
   } catch (err) {
     console.log(err)
   }
-
-  console.log('--- Cleanup successful ---')
 }
 
 if (require.main === module) {

@@ -6,6 +6,11 @@ export default function globalTeardown() {
 
   execSync(`npm --prefix ../repeateat-backend run ${cleanupScript}`, {
     stdio: 'inherit',
-    env: { ...process.env },
+    env: {
+      ...process.env,
+      DATABASE_URL: isCI
+        ? 'postgresql://postgres:testpass@localhost:5435/repeateat_test'
+        : process.env.DATABASE_URL,
+    },
   })
 }

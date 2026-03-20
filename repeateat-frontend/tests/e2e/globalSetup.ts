@@ -6,10 +6,20 @@ export default function globalSetup() {
 
   execSync(`npm --prefix ../repeateat-backend run ${migrateScript}`, {
     stdio: 'inherit',
-    env: { ...process.env },
+    env: {
+      ...process.env,
+      DATABASE_URL: isCI
+        ? 'postgresql://postgres:testpass@localhost:5435/repeateat_test'
+        : process.env.DATABASE_URL,
+    },
   })
   execSync('npm run seed:e2e', {
     stdio: 'inherit',
-    env: { ...process.env },
+    env: {
+      ...process.env,
+      DATABASE_URL: isCI
+        ? 'postgresql://postgres:testpass@localhost:5435/repeateat_test'
+        : process.env.DATABASE_URL,
+    },
   })
 }
