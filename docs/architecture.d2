@@ -1,0 +1,165 @@
+direction: down
+
+User: {
+  label: "User"
+  shape: person
+  style: {
+    fill: "#0B6E99"
+    stroke: "#0B6E99"
+    font-color: "#ffffff"
+  }
+}
+
+RepeatEat: {
+  label: "RepeatEat"
+
+  Frontend: {
+    label: "Frontend"
+    style: {
+      stroke: "#6B7280"
+    }
+
+    VitePWAReactApp: {
+      label: "Vite PWA React App\n(React + Vite)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    TanStackQuery: {
+      label: "Server State Cache\n(TanStack Query)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    Axios: {
+      label: "API Client (Axios)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    i18nextTranslation: {
+      label: "Translations\n(i18next)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    ZustandState: {
+      label: "Client State Management\n(Zustand)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    AuthClient: {
+      label: "Authorization client\n(BetterAuth)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+  }
+
+  
+  Backend: {
+    label: "Backend"
+    direction: right
+    style: {
+      stroke: "#6B7280"
+    }
+
+    AuthMiddleware: {
+      label: "Auth Middleware"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    ExpressAPI: {
+      label: "Express API"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    betterAuth: {
+      label: "BetterAuth"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    DrizzleORM: {
+      label: "Drizzle ORM"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    Validation: {
+      label: "Request Validation\n(Zod)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+
+    ServiceLayer: {
+      label: "Service Layer\n(Business Logic)"
+      style: {
+        fill: "#1168BD"
+        stroke: "#1168BD"
+        font-color: "#ffffff"
+      }
+    }
+  }
+
+  PostgreSQL: {
+    label: "PostgreSQL"
+    style: {
+      fill: "#1168BD"
+      stroke: "#1168BD"
+      font-color: "#ffffff"
+    }
+  }
+}
+
+User -> RepeatEat.Frontend: "Interacts"
+RepeatEat.Frontend.VitePWAReactApp -> RepeatEat.Frontend.TanStackQuery: "useQuery/useMutation"
+RepeatEat.Frontend.VitePWAReactApp -> RepeatEat.Frontend.AuthClient: "User credentials"
+RepeatEat.Frontend.AuthClient -> RepeatEat.Frontend.Axios: "Auth requests"
+RepeatEat.Frontend.TanStackQuery -> RepeatEat.Frontend.Axios: "queryFn/mutationFn"
+RepeatEat.Frontend.Axios -> RepeatEat.Backend.ExpressAPI: "API calls"
+RepeatEat.Frontend.Axios -> RepeatEat.Backend.AuthMiddleware: "API calls (that require authorization)"
+RepeatEat.Frontend.VitePWAReactApp <-> RepeatEat.Frontend.i18nextTranslation: "Uses translations"
+RepeatEat.Frontend.VitePWAReactApp <-> RepeatEat.Frontend.ZustandState: "Uses app state"
+RepeatEat.Backend.AuthMiddleware -> RepeatEat.Backend.ExpressAPI: "Auth requests"
+RepeatEat.Backend.ExpressAPI -> RepeatEat.Backend.betterAuth: "Auth operations"
+RepeatEat.Backend.ExpressAPI -> RepeatEat.Backend.Validation: "Validate Input"
+RepeatEat.Backend.Validation -> RepeatEat.Backend.ServiceLayer: "Valid data"
+RepeatEat.Backend.ServiceLayer -> RepeatEat.Backend.DrizzleORM: "DB operations"
+RepeatEat.Backend.betterAuth -> RepeatEat.Backend.DrizzleORM: "Reads/writes auth data"
+RepeatEat.Backend.DrizzleORM -> RepeatEat.PostgreSQL: "SQL"

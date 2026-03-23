@@ -6,8 +6,9 @@ The app is in production at [repeat-eat.com](https://repeat-eat.com)
 
 ## Future Features
 
-- User can add recipes to household favorites and keep track of when they've last cooked them
-- Based on this, the app will create suggested meal plans and shopping lists
+- User can create meal plans and shopping lists based on recent cooking activity
+- Google login and registration
+- More detailed recipe statistics for users (eg. how many times cooked per year)
 
 ## Quick start — development
 
@@ -53,7 +54,7 @@ The app is in production at [repeat-eat.com](https://repeat-eat.com)
 
 ## Project Architecture
 
-- Coming soon
+- [Architecture diagram](https://github.com/uN1K0Rn86/RepeatEat/tree/main/docs/architecture.svg)
 
 ## License
 
