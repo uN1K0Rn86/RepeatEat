@@ -19,8 +19,6 @@ const createMealPlan = async (
   preference: MealPlanPreference,
   user: User,
 ) => {
-  if (householdRecipes.length < recipeAmount) return
-
   const sortedRecipes = sortHouseholdRecipes(householdRecipes, preference)
   const weightedRecipes = toWeightedRecipes(sortedRecipes, preference)
   const selectedRecipes = pickWeightedRecipes(weightedRecipes, recipeAmount)
@@ -44,8 +42,10 @@ const createMealPlan = async (
 
     await tx.insert(mealPlanItem).values(mealPlanItems)
 
-    return newMealPlan
+    return { ...newMealPlan, recipes: selectedRecipes }
   })
+
+  return newMealPlan
 }
 
 export { createMealPlan }

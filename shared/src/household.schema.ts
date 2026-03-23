@@ -75,7 +75,7 @@ export const cookLogFromFrontendSchema = createCookLogSchema.extend({
 })
 
 const addCookLogInputSchema = cookLogFromFrontendSchema.extend({
-  cookedBy: z.string(),
+  cookedBy: z.string().nullable(),
 })
 
 const cookLogSchema = addCookLogInputSchema.extend({

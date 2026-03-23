@@ -313,11 +313,9 @@ describe('Household-related endpoints', () => {
       const userHouseholds = await getUserHouseholds(user.id)
       const householdId = userHouseholds[0].householdId
       const allRecipes = await getAllRecipes()
-      const recipeToAddId = allRecipes[1].id
+      const recipeToAddId = allRecipes[9].id
       await addHouseholdRecipe(user.id, householdId, recipeToAddId)
-
-      const householdRecipes = await getHouseholdRecipes(householdId)
-      const recipeToDeleteId = householdRecipes[0].recipeId
+      const recipeToDeleteId = recipeToAddId
 
       const deleteResponse = await request(app)
         .delete(`/api/household/${householdId}/recipe/${recipeToDeleteId}`)
@@ -334,7 +332,7 @@ describe('Household-related endpoints', () => {
       const addUserHouseholds = await getUserHouseholds(addUser.user.id)
       const addedHouseholdId = addUserHouseholds[0].householdId
       const allRecipes = await getAllRecipes()
-      const addedRecipeId = allRecipes[0].id
+      const addedRecipeId = allRecipes[9].id
       await addHouseholdRecipe(addUser.user.id, addedHouseholdId, addedRecipeId)
 
       const { authCookie } = await loginUser('other@google.com', 'password123')
