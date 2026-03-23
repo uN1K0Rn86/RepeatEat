@@ -27,6 +27,7 @@ mealPlanRouter.post('/', async (req: AuthRequest, res: Response) => {
     endDate,
     preference,
   } = req.body
+  const user = req.user!
 
   if (householdRecipes.length < recipeAmount)
     throw new AppError('insufficient_household_recipes', 422)
@@ -39,6 +40,7 @@ mealPlanRouter.post('/', async (req: AuthRequest, res: Response) => {
     startDate,
     endDate,
     preference,
+    user,
   )
 })
 

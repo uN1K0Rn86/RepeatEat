@@ -33,4 +33,4 @@
 | 2026-03-02 | Set default household, remove recipe from household view                                                                  | 6h   | 142h            |
 | 2026-03-04 | Fix layout, start work on e2e tests                                                                                       | 7h   | 149h            |
 | 2026-03-20 | Work on e2e tests, start work on meal plans                                                                               | 7h   | 156h            |
-| 2026-03-23 | Update README, add architecture diagram                                                                                   | 2h   | 158h            |
+| 2026-03-23 | Update README, add architecture diagram, work on meal plan backend                                                        | 4h   | 160h            |
