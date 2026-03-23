@@ -67,7 +67,7 @@ const removedHouseholdRecipeSchema = z.object({
 export const createCookLogSchema = z.object({
   recipeId: z.number(),
   notes: z.string().max(500).optional(),
-  cookedAt: z.coerce.date().optional(),
+  cookedAt: z.coerce.date(),
 })
 
 export const cookLogFromFrontendSchema = createCookLogSchema.extend({
@@ -82,17 +82,19 @@ const cookLogSchema = addCookLogInputSchema.extend({
   id: z.number().positive(),
 })
 
+export const recipeWithHistorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  authorId: z.string().nullable(),
+  private: z.boolean(),
+  cookingHistory: cookLogSchema.array(),
+})
+
 export const householdRecipeSchema = z.object({
   recipeId: z.number(),
   householdId: z.number(),
   addedBy: z.string().nullable(),
-  recipe: z.object({
-    id: z.number(),
-    name: z.string(),
-    authorId: z.string().nullable(),
-    private: z.boolean(),
-    cookingHistory: cookLogSchema.array(),
-  }),
+  recipe: recipeWithHistorySchema,
 })
 
 export type UserHousehold = z.infer<typeof userHouseholdSchema>
@@ -105,6 +107,7 @@ export type HouseholdRecipeResponse = z.infer<
 export type RemovedHouseholdRecipe = z.infer<
   typeof removedHouseholdRecipeSchema
 >
+export type RecipeWithHistory = z.infer<typeof recipeWithHistorySchema>
 export type HouseholdRecipe = z.infer<typeof householdRecipeSchema>
 export type HouseholdResponse = z.infer<typeof householdResponseSchema>
 export type CreateCookLog = z.infer<typeof createCookLogSchema>

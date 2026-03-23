@@ -12,5 +12,6 @@
   "must_login": "You must login to perform this action",
   "default_household_fail": "Could not set default household",
   "choose_household": "Please choose a household",
-  "recipe_remove_household_fail": "Removing recipe from household failed"
+  "recipe_remove_household_fail": "Removing recipe from household failed",
+  "insufficient_household_recipes": "Household does not have enough recipes to generate this meal plan"
 }

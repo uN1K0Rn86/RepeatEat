@@ -17,8 +17,9 @@ export const useMe = () => {
   return useQuery({
     queryKey: ['user', 'me'],
     queryFn: userService.me,
-    staleTime: Infinity,
+    refetchOnWindowFocus: false,
     retry: false,
+    staleTime: 60_000,
   })
 }
 
