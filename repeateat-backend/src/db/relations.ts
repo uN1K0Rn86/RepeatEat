@@ -16,6 +16,7 @@ import {
   householdRecipe,
   householdUser,
 } from './tables/household'
+import { mealPlan, mealPlanItem } from './tables/mealPlan'
 
 export const userRelations = relations(user, ({ one, many }) => ({
   sessions: many(session),
@@ -26,6 +27,7 @@ export const userRelations = relations(user, ({ one, many }) => ({
   householdRecipes: many(householdRecipe),
   cookingHistory: many(cookingHistory),
   profile: one(profile, { fields: [user.id], references: [profile.userId] }),
+  mealPlans: many(mealPlan),
 }))
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -97,6 +99,7 @@ export const householdRelations = relations(household, ({ many }) => ({
   invites: many(householdInvite),
   cookingHistory: many(cookingHistory),
   isDefault: many(profile),
+  mealPlans: many(mealPlan),
 }))
 
 export const householdRecipeRelations = relations(
@@ -165,5 +168,31 @@ export const profileRelations = relations(profile, ({ one }) => ({
   defaultHousehold: one(household, {
     fields: [profile.defaultHouseholdId],
     references: [household.id],
+  }),
+}))
+
+export const mealPlanRelations = relations(mealPlan, ({ one }) => ({
+  householdId: one(household, {
+    fields: [mealPlan.householdId],
+    references: [household.id],
+  }),
+  createdById: one(user, {
+    fields: [mealPlan.createdBy],
+    references: [user.id],
+  }),
+}))
+
+export const mealPlanItemRelations = relations(mealPlanItem, ({ one }) => ({
+  mealPlanId: one(mealPlan, {
+    fields: [mealPlanItem.mealPlanId],
+    references: [mealPlan.id],
+  }),
+  recipeId: one(recipe, {
+    fields: [mealPlanItem.recipeId],
+    references: [recipe.id],
+  }),
+  assignedToUserId: one(user, {
+    fields: [mealPlanItem.assignedToUserId],
+    references: [user.id],
   }),
 }))
