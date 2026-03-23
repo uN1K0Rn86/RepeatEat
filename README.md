@@ -54,7 +54,7 @@ The app is in production at [repeat-eat.com](https://repeat-eat.com)
 
 ## Project Architecture
 
-- [Architecture diagram](https://github.com/uN1K0Rn86/RepeatEat/tree/main/docs/architecture.svg)
+![Architecture diagram](docs/architecture.png)
 
 ## License
 
