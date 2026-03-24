@@ -22,5 +22,16 @@
   "set_as_default": "Set as default",
   "log": "Log",
   "remove_recipe": "Remove from household",
-  "confirm_remove": "Are you sure you want to remove this recipe from the household view?"
+  "confirm_remove": "Are you sure you want to remove this recipe from the household view?",
+  "overview": "Overview",
+  "meal_plans": "Meal plans",
+  "new_meal_plan": "New meal plan",
+  "recipe_amount": "Recipe amount",
+  "start_date": "Start date",
+  "end_date": "End date",
+  "preference": "Meal plan type",
+  "balanced": "Balanced",
+  "random": "Random",
+  "favorites": "Favorites",
+  "meal_plan_created": "Meal plan created successfully"
 }

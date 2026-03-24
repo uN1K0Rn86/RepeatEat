@@ -4,6 +4,10 @@ import { User } from 'better-auth/types'
 
 import { auth } from '../utils/auth'
 import { createRecipe } from '../services/recipe.service'
+import {
+  addCookingHistory,
+  addHouseholdRecipe,
+} from '../services/household.service'
 
 import * as schema from './schema'
 
@@ -497,7 +501,7 @@ export async function seed() {
     memberUser: User,
     invitedUser: User,
   ) => {
-    await db.transaction(async (tx) => {
+    return await db.transaction(async (tx) => {
       const existing = await tx
         .select({ id: schema.household.id, name: schema.household.name })
         .from(schema.household)
@@ -550,24 +554,65 @@ export async function seed() {
             expiresAt,
           })
         }
+        return insertedHouseholds
       }
     })
   }
 
   // Insert households and invites with seeduser and otheruser
 
-  await insertHouseholds(
+  const seedUserHouseholds = await insertHouseholds(
     ['Mekhar', 'Kellanved'],
     seedUser,
     memberUser,
     invitedUser,
   )
-  await insertHouseholds(
+  const otherUserHouseholds = await insertHouseholds(
     ['Fiddler', 'Hedge'],
     otherUser,
     otherMemberUser,
     invitedUser,
   )
+
+  // Add recipes to households
+
+  for (const [index, recipeId] of addedRecipeIds.slice(0, 8).entries()) {
+    // Generate sequential cookdates and several cookdates for selected recipes
+    const cookedAt = new Date(2026, 2, 1)
+    cookedAt.setDate(cookedAt.getDate() + index)
+    const householdId = seedUserHouseholds![0].id
+    await addCookingHistory({
+      householdId,
+      recipeId,
+      cookedBy: seedUser.id,
+      cookedAt,
+    })
+    if (index === 0) {
+      cookedAt.setDate(cookedAt.getDate() - 2)
+      await addCookingHistory({
+        householdId,
+        recipeId,
+        cookedBy: seedUser.id,
+        cookedAt,
+      })
+    }
+    if ([0, 1].includes(index)) {
+      cookedAt.setDate(cookedAt.getDate() - 4)
+      await addCookingHistory({
+        householdId,
+        recipeId,
+        cookedBy: seedUser.id,
+        cookedAt,
+      })
+    }
+    await addHouseholdRecipe(seedUser.id, householdId, recipeId)
+  }
+
+  for (const recipeId of addedRecipeIds.slice(4, 12)) {
+    await addHouseholdRecipe(otherUser.id, otherUserHouseholds![0].id, recipeId)
+  }
+
+  // Add cooking history
 
   console.log('--- Seeding Completed Successfully ---')
 }

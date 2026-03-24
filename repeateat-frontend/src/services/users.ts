@@ -18,8 +18,18 @@ const me = async (): Promise<UserWithInfo | null> => {
     const response = await axios.get<MeResponse>(`${baseUrl}/me`)
     return response.data.user
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      return null
+    if (axios.isAxiosError(error)) {
+      const status = error.response?.status
+      if (
+        status === 401 ||
+        status === 403 ||
+        status === 502 ||
+        status === 503 ||
+        status === 504 ||
+        !error.response
+      ) {
+        return null
+      }
     }
     throw error
   }

@@ -22,7 +22,7 @@ const HouseholdSelector = ({ userHouseholds }: SelectorProps) => {
             <Button
               type="button"
               variant={
-                activeHouseholdId === h.householdId ? 'default' : 'outline'
+                activeHouseholdId === h.householdId ? 'accent' : 'outline'
               }
               onClick={() => setActiveHouseholdId(h.householdId)}
             >

@@ -49,7 +49,9 @@ export const mealPlanItem = pgTable('meal_plan_item', {
     .references(() => mealPlan.id, { onDelete: 'cascade' }),
   date: date(),
   mealType: mealTypeEnum('meal_type'),
-  recipeId: integer('recipe_id').references(() => recipe.id),
+  recipeId: integer('recipe_id').references(() => recipe.id, {
+    onDelete: 'cascade',
+  }),
   title: text(),
   assignedToUserId: text().references(() => user.id),
 })

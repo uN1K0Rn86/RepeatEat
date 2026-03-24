@@ -17,8 +17,9 @@ export const useMe = () => {
   return useQuery({
     queryKey: ['user', 'me'],
     queryFn: userService.me,
-    staleTime: Infinity,
+    refetchOnWindowFocus: false,
     retry: false,
+    staleTime: 60_000,
   })
 }
 
@@ -65,7 +66,7 @@ export const useLogin = (setError: UseFormSetError<LoginInput>) => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:login', { username: data.user.name }))
-      void navigate('/')
+      void navigate('/household')
     },
     onError: (error) => {
       setError('root', {
@@ -125,7 +126,7 @@ export const useRegister = (setError: UseFormSetError<RegisterInput>) => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:register_success', { username: data.user.name }))
-      void navigate('/')
+      void navigate('/household')
     },
     onError: (error) => {
       setError('root', {

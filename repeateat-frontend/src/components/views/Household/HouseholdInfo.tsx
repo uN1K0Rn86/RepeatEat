@@ -1,3 +1,4 @@
+import { useOutletContext } from 'react-router-dom'
 import { Accordion } from '@/components/ui/accordion'
 import { Separator } from '@/components/ui/separator'
 import type { UserHousehold } from '@repeateat/shared'
@@ -12,7 +13,8 @@ export interface InfoProps {
   household: UserHousehold
 }
 
-const HouseholdInfo = ({ household }: InfoProps) => {
+const HouseholdInfo = () => {
+  const { household } = useOutletContext<{ household: UserHousehold }>()
   const { t } = useTranslation()
   const defaultHouseholdMutation = useSetDefaultHousehold()
 

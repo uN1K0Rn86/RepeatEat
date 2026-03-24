@@ -16,7 +16,7 @@ export const statusEnum = pgEnum('status', ['accepted', 'pending', 'declined'])
 
 export const household = pgTable('household', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  name: varchar({ length: 255 }),
+  name: varchar({ length: 255 }).notNull(),
 })
 
 export const householdUser = pgTable(

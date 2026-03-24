@@ -94,7 +94,7 @@ export const useRemoveHouseholdRecipe = () => {
   })
 }
 
-export const useHouseholdRecipes = (householdId: number | null | undefined) => {
+export const useHouseholdRecipes = (householdId: number | null) => {
   return useQuery<HouseholdRecipe[]>({
     queryKey: ['householdRecipes', householdId],
     queryFn: () => householdService.getHouseholdRecipes(householdId!),
@@ -106,7 +106,7 @@ export const useHouseholdRecipes = (householdId: number | null | undefined) => {
           ...r.recipe,
           cookingHistory: r.recipe.cookingHistory.map((log) => ({
             ...log,
-            cookedAt: log.cookedAt ? new Date(log.cookedAt) : undefined,
+            cookedAt: new Date(log.cookedAt),
           })),
         },
       })),

@@ -16,7 +16,11 @@ import {
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
 
+import mealPlanRouter from './mealPlan'
+
 const householdRouter = express.Router()
+
+householdRouter.use('/:id/meal-plans', mealPlanRouter)
 
 householdRouter.post(
   '/',
