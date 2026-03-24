@@ -9,6 +9,10 @@ import { Button } from '@/components/ui/button'
 import { useTranslation } from 'react-i18next'
 import { useSetDefaultHousehold } from '@/hooks/useUser'
 
+export interface InfoProps {
+  household: UserHousehold
+}
+
 const HouseholdInfo = () => {
   const { household } = useOutletContext<{ household: UserHousehold }>()
   const { t } = useTranslation()
