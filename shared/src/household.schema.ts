@@ -66,7 +66,7 @@ const removedHouseholdRecipeSchema = z.object({
 
 export const createCookLogSchema = z.object({
   recipeId: z.number(),
-  notes: z.string().max(500).optional(),
+  notes: z.string().max(500).nullish(),
   cookedAt: z.coerce.date(),
 })
 

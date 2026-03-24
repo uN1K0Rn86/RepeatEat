@@ -581,13 +581,11 @@ export async function seed() {
     const cookedAt = new Date(2026, 2, 1)
     cookedAt.setDate(cookedAt.getDate() + index)
     const householdId = seedUserHouseholds![0].id
-    const notes = ''
     await addCookingHistory({
       householdId,
       recipeId,
       cookedBy: seedUser.id,
       cookedAt,
-      notes,
     })
     if (index === 0) {
       cookedAt.setDate(cookedAt.getDate() - 2)
@@ -596,7 +594,6 @@ export async function seed() {
         recipeId,
         cookedBy: seedUser.id,
         cookedAt,
-        notes,
       })
     }
     if ([0, 1].includes(index)) {
@@ -606,7 +603,6 @@ export async function seed() {
         recipeId,
         cookedBy: seedUser.id,
         cookedAt,
-        notes,
       })
     }
     await addHouseholdRecipe(seedUser.id, householdId, recipeId)
