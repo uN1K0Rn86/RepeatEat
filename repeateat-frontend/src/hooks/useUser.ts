@@ -66,7 +66,7 @@ export const useLogin = (setError: UseFormSetError<LoginInput>) => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:login', { username: data.user.name }))
-      void navigate('/')
+      void navigate('/household')
     },
     onError: (error) => {
       setError('root', {

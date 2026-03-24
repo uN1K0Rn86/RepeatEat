@@ -22,7 +22,7 @@ const NavBar = () => {
             icon={<Home size={20} />}
             label={t('household:household')}
             active={isActive('household')}
-            onClick={() => void navigate('/')}
+            onClick={() => void navigate('/household')}
           />
         ) : (
           <NavButton

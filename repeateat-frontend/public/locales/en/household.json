@@ -22,5 +22,7 @@
   "set_as_default": "Set as default",
   "log": "Log",
   "remove_recipe": "Remove from household",
-  "confirm_remove": "Are you sure you want to remove this recipe from the household view?"
+  "confirm_remove": "Are you sure you want to remove this recipe from the household view?",
+  "overview": "Overview",
+  "meal_plans": "Meal plans"
 }
