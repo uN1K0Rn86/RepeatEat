@@ -24,5 +24,14 @@
   "remove_recipe": "Poista kotitaloudesta",
   "confirm_remove": "Oletko varma että haluat poistaa tämän reseptin kotitalouden näkymästä?",
   "overview": "Yleiskatsaus",
-  "meal_plans": "Ateriasuunnitelmat"
+  "meal_plans": "Ateriasuunnitelmat",
+  "new_meal_plan": "Uusi ateriasuunnitelma",
+  "recipe_amount": "Reseptien määrä",
+  "start_date": "Aloituspäivämäärä",
+  "end_date": "Lopetuspäivämäärä",
+  "preference": "Ateriasuunnitelman tyyppi",
+  "balanced": "Tasapainoinen",
+  "random": "Satunnainen",
+  "favorites": "Suosikkipainoitteinen",
+  "meal_plan_created": "Ateriasuunnitelma luotu onnistuneesti"
 }

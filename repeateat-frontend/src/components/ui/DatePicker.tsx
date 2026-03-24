@@ -9,14 +9,18 @@ import { Calendar } from './calendar'
 interface DatePickerProps {
   date: Date | undefined
   setDate: Dispatch<SetStateAction<Date>>
+  id?: string
+  ariaLabelledBy?: string
 }
 
-const DatePicker = ({ date, setDate }: DatePickerProps) => {
+const DatePicker = ({ date, setDate, id, ariaLabelledBy }: DatePickerProps) => {
   const { t } = useTranslation(['common'])
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          id={id}
+          aria-labelledby={ariaLabelledBy}
           variant="outline"
           data-empty={!date}
           className="data-[empty=true]:text-muted-foreground justify-start text-left font-normal"
