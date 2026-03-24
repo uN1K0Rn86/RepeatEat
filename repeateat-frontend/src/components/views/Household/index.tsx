@@ -24,9 +24,11 @@ const HouseholdView = () => {
 
   const userHouseholds: UserHousehold[] = data
 
-  const activeHousehold = userHouseholds.find(
-    (h) => h.householdId === activeHouseholdId,
-  )
+  const effectiveHouseholdId =
+    activeHouseholdId ?? userHouseholds[0]?.householdId ?? null
+
+  const activeHousehold =
+    userHouseholds.find((h) => h.householdId === effectiveHouseholdId) ?? null
 
   return (
     <Card className="w-full sm:max-w-md max-h-[85vh]">

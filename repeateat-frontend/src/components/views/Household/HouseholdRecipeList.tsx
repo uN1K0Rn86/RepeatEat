@@ -61,7 +61,7 @@ const HouseholdRecipeList = ({ householdId }: HouseholdRecipeListProps) => {
                       {t('household:last_cooked')}:{' '}
                       {r.recipe.cookingHistory.length > 0
                         ? format(
-                            r.recipe.cookingHistory[0].cookedAt!,
+                            r.recipe.cookingHistory[0].cookedAt,
                             'yyyy-MM-dd',
                           )
                         : t('common:never')}

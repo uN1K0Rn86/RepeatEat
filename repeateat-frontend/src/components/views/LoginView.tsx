@@ -106,7 +106,12 @@ const LoginView = () => {
           orientation="horizontal"
           className="flex flex-row justify-between"
         >
-          <Button type="submit" form="login-form" disabled={isPending}>
+          <Button
+            type="submit"
+            data-testid="login-form-button"
+            form="login-form"
+            disabled={isPending}
+          >
             {t('common:login')}
           </Button>
           <Button

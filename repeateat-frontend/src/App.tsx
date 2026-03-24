@@ -16,6 +16,7 @@ import { useMe } from './hooks/useUser'
 import { useBoundStore } from './store'
 import HouseholdInfo from './components/views/Household/HouseholdInfo'
 import HouseholdMealPlansTab from './components/views/Household/HouseholdMealPlansTab'
+import MealPlanDetailsView from './components/views/Household/HouseholdMealPlansTab/MealPlanDetailsView'
 
 const App = () => {
   const { data: user, isLoading } = useMe()
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/household" element={<HouseholdView />}>
             <Route index element={<HouseholdInfo />} />
             <Route path="meal-plans" element={<HouseholdMealPlansTab />} />
+            <Route path="meal-plans/:id" element={<MealPlanDetailsView />} />
           </Route>
         </Routes>
       </main>

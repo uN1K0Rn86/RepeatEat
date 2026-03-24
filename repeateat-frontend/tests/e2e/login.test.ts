@@ -15,8 +15,10 @@ test('User can login with valid credentials', async ({ page }) => {
 
   try {
     await Promise.all([
-      page.waitForURL((url) => url.pathname === '/', { timeout: 15000 }),
-      page.getByRole('button', { name: 'Login' }).click(),
+      page.waitForURL((url) => url.pathname === '/household', {
+        timeout: 15000,
+      }),
+      page.getByTestId('login-form-button').click(),
     ])
   } catch (err) {
     await page.screenshot({ path: `debug-login-screenshot-${Date.now()}.png` })

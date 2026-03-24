@@ -126,7 +126,7 @@ export const useRegister = (setError: UseFormSetError<RegisterInput>) => {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: ['user', 'me'] })
       notify.success(t('notify:register_success', { username: data.user.name }))
-      void navigate('/')
+      void navigate('/household')
     },
     onError: (error) => {
       setError('root', {

@@ -18,7 +18,9 @@ test('Registration is successful with valid inputs', async ({ page }) => {
 
   try {
     await Promise.all([
-      page.waitForURL((url) => url.pathname === '/', { timeout: 15000 }),
+      page.waitForURL((url) => url.pathname === '/household', {
+        timeout: 15000,
+      }),
       page.getByRole('button', { name: 'Register' }).click(),
     ])
   } catch (err) {
