@@ -9,10 +9,12 @@ const sortHouseholdRecipes = (
   preference: MealPlanPreference,
 ) => {
   if (preference === 'balanced') {
-    // Sort oldest first
+    // Sort oldest (most recent per recipe) cook date first
     return [...householdRecipes].sort((a, b) => {
-      const aTime = a.cookingHistory[0]?.cookedAt?.getTime() ?? 0
-      const bTime = b.cookingHistory[0]?.cookedAt?.getTime() ?? 0
+      const aTime =
+        a.cookingHistory[a.cookingHistory.length - 1]?.cookedAt?.getTime() ?? 0
+      const bTime =
+        b.cookingHistory[b.cookingHistory.length - 1]?.cookedAt?.getTime() ?? 0
       return aTime - bTime
     })
   }
