@@ -34,4 +34,4 @@
 | 2026-03-04 | Fix layout, start work on e2e tests                                                                                       | 7h   | 149h            |
 | 2026-03-20 | Work on e2e tests, start work on meal plans                                                                               | 7h   | 156h            |
 | 2026-03-23 | Update README, add architecture diagram, work on meal plan backend                                                        | 6h   | 162h            |
-| 2026-03-24 | Tests for meal plans, add frontend form for creating meal plan                                                            | 5h   | 167h            |
+| 2026-03-24 | Tests for meal plans, add frontend form for creating meal plan                                                            | 6h   | 168h            |
