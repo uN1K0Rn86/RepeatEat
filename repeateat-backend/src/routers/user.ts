@@ -4,6 +4,7 @@ import { AuthRequest, isAuthenticated } from '../middleware/auth'
 import { AppError } from '../utils/errors'
 import {
   getDefaultHouseholdId,
+  getUserById,
   pendingInvites,
   searchByEmail,
   setDefaultHousehold,
@@ -59,6 +60,19 @@ userRouter.put(
     const updatedProfile = await setDefaultHousehold(userId, newDefaultId)
 
     res.status(200).json(updatedProfile)
+  },
+)
+
+userRouter.get(
+  '/:id',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const userId = req.params.id as string
+    const user = await getUserById(userId)
+
+    if (user === undefined) throw new AppError('errors:user_not_found', 404)
+
+    res.status(200).json(user)
   },
 )
 

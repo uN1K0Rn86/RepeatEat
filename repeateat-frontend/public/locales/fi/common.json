@@ -44,5 +44,6 @@
   "install_description": "Asenna sovellus laitteellesi, niin saat nopeamman ja saumattomamman käyttökokemuksen. Sovellus toimii myös offline-tilassa ja tuntuu aivan tavalliselta sovellukselta – erillistä latausta sovelluskaupasta ei tarvita.",
   "install": "Asenna",
   "install_prompt": "Napauta Jaa (Share) → Lisää kotivalikkoon (Add to Home Screen) asentaaksesi RepeatEatin.",
-  "install_title": "Asenna sovellus kotivalikkoon"
+  "install_title": "Asenna sovellus kotivalikkoon",
+  "created_by": "Luonut"
 }

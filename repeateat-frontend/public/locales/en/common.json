@@ -44,5 +44,6 @@
   "install_description": "Install this app to your device for a faster, offline-capable, and more seamless experience. It works just like a native app—no app store download required.",
   "install": "Install",
   "install_prompt": "Tap Share → Add to Home Screen to install RepeatEat.",
-  "install_title": "Install app to home screen"
+  "install_title": "Install app to home screen",
+  "created_by": "Created by"
 }
