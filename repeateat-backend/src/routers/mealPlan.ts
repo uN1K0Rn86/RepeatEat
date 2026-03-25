@@ -3,7 +3,7 @@ import { createMealPlanSchema } from '@repeateat/shared'
 
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
-import { createMealPlan } from '../services/mealPlan.service'
+import { createMealPlan, getMealPlans } from '../services/mealPlan.service'
 
 const mealPlanRouter = express.Router({ mergeParams: true })
 
@@ -11,10 +11,10 @@ mealPlanRouter.get(
   '/',
   isAuthenticated,
   async (req: AuthRequest, res: Response) => {
-    // Placeholder
     const householdId = Number(req.params.id)
+    const mealPlans = await getMealPlans(householdId)
 
-    return res.json({ householdId })
+    return res.json(mealPlans)
   },
 )
 
