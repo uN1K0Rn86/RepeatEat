@@ -16,5 +16,6 @@
   "view_details": "Näytä tiedot",
   "confirm_del": "Oletko varma että haluat poistaa tämän reseptin?",
   "prep_date": "Valmistuspäivä",
-  "private_hover_description": "Yksityinen resepti näkyy vain sinulle ja niille jotka kuuluvat kotitalouksiin joihin se on lisätty."
+  "private_hover_description": "Yksityinen resepti näkyy vain sinulle ja niille jotka kuuluvat kotitalouksiin joihin se on lisätty.",
+  "name_placeholder": "esim. Pasta Carbonara"
 }

@@ -68,7 +68,10 @@ const AddRecipeForm = () => {
   return (
     <Card className="w-full sm:max-w-md">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
           <CardHeader>
             <FieldLegend>{t('recipe:add_recipe')}</FieldLegend>
           </CardHeader>
@@ -78,7 +81,7 @@ const AddRecipeForm = () => {
               <Input
                 {...methods.register('name')}
                 id="recipe-name"
-                placeholder="eg. Pasta Carbonara"
+                placeholder={t('recipe:name_placeholder')}
                 required
               />
               <FieldError>{methods.formState.errors.name?.message}</FieldError>
