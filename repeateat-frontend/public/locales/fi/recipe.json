@@ -15,5 +15,6 @@
   "private_recipe": "Yksityinen resepti",
   "view_details": "Näytä tiedot",
   "confirm_del": "Oletko varma että haluat poistaa tämän reseptin?",
-  "prep_date": "Valmistuspäivä"
+  "prep_date": "Valmistuspäivä",
+  "private_hover_description": "Yksityinen resepti näkyy vain sinulle ja niille jotka kuuluvat kotitalouksiin joihin se on lisätty."
 }
