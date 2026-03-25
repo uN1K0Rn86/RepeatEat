@@ -45,5 +45,6 @@
   "install": "Install",
   "install_prompt": "Tap Share → Add to Home Screen to install RepeatEat.",
   "install_title": "Install app to home screen",
-  "created_by": "Created by"
+  "created_by": "Created by",
+  "valid": "Valid"
 }

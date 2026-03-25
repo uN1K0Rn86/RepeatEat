@@ -45,5 +45,6 @@
   "install": "Asenna",
   "install_prompt": "Napauta Jaa (Share) → Lisää kotivalikkoon (Add to Home Screen) asentaaksesi RepeatEatin.",
   "install_title": "Asenna sovellus kotivalikkoon",
-  "created_by": "Luonut"
+  "created_by": "Luonut",
+  "valid": "Voimassa"
 }
