@@ -6,6 +6,7 @@ import NewMealPlanForm from './NewMealPlanForm'
 import { Accordion } from '@/components/ui/accordion'
 import { Home } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
+import HouseholdMealPlans from './HouseholdMealPlans'
 
 const HouseholdMealPlansTab = () => {
   const { household } = useOutletContext<{ household: UserHousehold }>()
@@ -15,8 +16,8 @@ const HouseholdMealPlansTab = () => {
 
   if (isLoading) return <div>Loading...</div>
 
-  console.log(household)
-  console.log(householdRecipes)
+  console.log('Loggin from MealPlansTab:', household)
+  console.log('Loggin from MealPlansTab:', householdRecipes)
 
   return (
     <div>
@@ -27,6 +28,7 @@ const HouseholdMealPlansTab = () => {
         </div>
         <Separator />
         <NewMealPlanForm />
+        <HouseholdMealPlans />
       </Accordion>
     </div>
   )

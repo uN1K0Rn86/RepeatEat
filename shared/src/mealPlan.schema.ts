@@ -15,16 +15,15 @@ export const weightedRecipeSchema = z.object({
 export const createMealPlanSchema = z.object({
   householdRecipes: z.array(recipeWithHistorySchema),
   recipeAmount: z.number().int().positive(),
-  name: z.string().min(1),
+  name: z.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   preference: mealPlanPreferenceSchema,
 })
 
-export const mealPlanSchema = z.object({
-  recipes: z.array(recipeWithHistorySchema),
+export const mealPlanBaseSchema = z.object({
   id: z.number(),
-  name: z.string().min(1),
+  name: z.string().nullable(),
   householdId: z.number(),
   startDate: z.date(),
   endDate: z.date(),
@@ -33,7 +32,35 @@ export const mealPlanSchema = z.object({
   createdBy: z.string(),
 })
 
+export const mealPlanResponseSchema = mealPlanBaseSchema.extend({
+  recipes: z.array(recipeWithHistorySchema),
+})
+
+export const mealTypeEnum = z.enum([
+  'breakfast',
+  'lunch',
+  'dinner',
+  'snack',
+  null,
+])
+
+export const mealPlanItemSchema = z.object({
+  id: z.number(),
+  recipeId: z.number().nullable(),
+  date: z.date().nullable(),
+  mealPlanId: z.number(),
+  mealType: mealTypeEnum,
+  title: z.string().nullable(),
+  assignedToUserId: z.string().nullable(),
+})
+
+export const mealPlanSchema = mealPlanBaseSchema.extend({
+  mealPlanItems: z.array(mealPlanItemSchema),
+})
+
 export type MealPlan = z.infer<typeof mealPlanSchema>
+export type MealPlanItem = z.infer<typeof mealPlanItemSchema>
+export type MealPlanResponse = z.infer<typeof mealPlanResponseSchema>
 export type MealPlanPreference = z.infer<typeof mealPlanPreferenceSchema>
 export type WeightedRecipe = z.infer<typeof weightedRecipeSchema>
 export type CreateMealPlan = z.infer<typeof createMealPlanSchema>

@@ -48,4 +48,15 @@ const createMealPlan = async (
   return newMealPlan
 }
 
-export { createMealPlan }
+const getMealPlans = async (householdId: number) => {
+  const mealPlans = await db.query.mealPlan.findMany({
+    where: (mealPlan, { eq }) => eq(mealPlan.householdId, householdId),
+    with: {
+      mealPlanItems: true,
+    },
+  })
+
+  return mealPlans
+}
+
+export { createMealPlan, getMealPlans }

@@ -3,7 +3,7 @@ import { createMealPlanSchema } from '@repeateat/shared'
 
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
-import { createMealPlan } from '../services/mealPlan'
+import { createMealPlan } from '../services/mealPlan.service'
 
 const mealPlanRouter = express.Router({ mergeParams: true })
 
