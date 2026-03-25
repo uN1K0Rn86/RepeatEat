@@ -54,8 +54,19 @@ export const mealPlanItemSchema = z.object({
   assignedToUserId: z.string().nullable(),
 })
 
+export const mealPlanItemWithRecipeSchema = mealPlanItemSchema.extend({
+  recipe: z
+    .object({
+      id: z.number(),
+      name: z.string(),
+      authorId: z.string().nullable(),
+      private: z.boolean(),
+    })
+    .nullable(),
+})
+
 export const mealPlanSchema = mealPlanBaseSchema.extend({
-  mealPlanItems: z.array(mealPlanItemSchema),
+  mealPlanItems: z.array(mealPlanItemWithRecipeSchema),
 })
 
 export type MealPlan = z.infer<typeof mealPlanSchema>

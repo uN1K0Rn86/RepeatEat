@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query'
-import type { CreateMealPlanPayload } from '@repeateat/shared'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { type MealPlan, type CreateMealPlanPayload } from '@repeateat/shared'
 
 import mealPlanService from '../services/mealPlans'
 import { notify } from '@/utils/notify'
@@ -20,5 +20,12 @@ export const useCreateMealPlan = () => {
         error.response?.data?.error || 'errors:something_wrong'
       notify.error(t(serverMessage))
     },
+  })
+}
+
+export const useMealPlans = (householdId: number) => {
+  return useQuery<MealPlan[]>({
+    queryKey: ['mealPlans', householdId],
+    queryFn: () => mealPlanService.getMealPlans(householdId),
   })
 }

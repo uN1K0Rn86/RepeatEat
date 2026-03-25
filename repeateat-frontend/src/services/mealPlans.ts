@@ -1,4 +1,8 @@
-import type { CreateMealPlanPayload, MealPlanResponse } from '@repeateat/shared'
+import type {
+  CreateMealPlanPayload,
+  MealPlan,
+  MealPlanResponse,
+} from '@repeateat/shared'
 import axios from 'axios'
 
 const baseUrl = '/api/household'
@@ -13,4 +17,11 @@ const createMealPlan = async (
   return response.data
 }
 
-export default { createMealPlan }
+const getMealPlans = async (householdId: number): Promise<MealPlan[]> => {
+  const response = await axios.get<MealPlan[]>(
+    `${baseUrl}/${householdId}/meal-plans`,
+  )
+  return response.data
+}
+
+export default { createMealPlan, getMealPlans }

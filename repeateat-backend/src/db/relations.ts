@@ -184,11 +184,11 @@ export const mealPlanRelations = relations(mealPlan, ({ one, many }) => ({
 }))
 
 export const mealPlanItemRelations = relations(mealPlanItem, ({ one }) => ({
-  mealPlanId: one(mealPlan, {
+  mealPlan: one(mealPlan, {
     fields: [mealPlanItem.mealPlanId],
     references: [mealPlan.id],
   }),
-  recipeId: one(recipe, {
+  recipe: one(recipe, {
     fields: [mealPlanItem.recipeId],
     references: [recipe.id],
   }),
