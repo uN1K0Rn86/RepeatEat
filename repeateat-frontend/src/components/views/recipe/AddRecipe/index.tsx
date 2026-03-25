@@ -23,10 +23,10 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useMe } from '@/hooks/useUser'
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card'
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover'
 import { Info } from 'lucide-react'
 
 const AddRecipeForm = () => {
@@ -101,16 +101,15 @@ const AddRecipeForm = () => {
               >
                 {t('recipe:private_recipe')}
               </FieldLabel>
-              <HoverCard openDelay={10} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <Info />
-                </HoverCardTrigger>
-                <HoverCardContent>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Info className="w-5 h-5" />
+                </PopoverTrigger>
+                <PopoverContent className="w-52 text-sm">
                   {t('recipe:private_hover_description')}
-                </HoverCardContent>
-              </HoverCard>
+                </PopoverContent>
+              </Popover>
             </div>
-
             <IngredientPicker />
             <StepAdder />
             <CategoryPicker />
