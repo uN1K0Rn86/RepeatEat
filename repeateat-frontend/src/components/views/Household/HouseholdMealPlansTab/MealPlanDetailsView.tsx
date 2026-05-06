@@ -115,9 +115,7 @@ const MealPlanDetailsView = () => {
       <FormProvider {...methods}>
         <form
           className="flex flex-col gap-3"
-          onSubmit={methods.handleSubmit(onSubmit, (errors) =>
-            console.log('form errors', errors),
-          )}
+          onSubmit={methods.handleSubmit(onSubmit)}
         >
           <FieldGroup className="flex flex-row">
             <Field>
