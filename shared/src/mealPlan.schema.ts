@@ -65,6 +65,13 @@ export const mealPlanSchema = mealPlanBaseSchema.extend({
   mealPlanItems: z.array(mealPlanItemWithRecipeSchema),
 })
 
+export const editMealPlanSchema = z.object({
+  mealPlanToUpdate: mealPlanSchema,
+  removedRecipes: z.array(z.number()),
+  newRecipeIds: z.array(z.number()),
+})
+
+export type BaseMealPlan = z.infer<typeof mealPlanBaseSchema>
 export type MealPlan = z.infer<typeof mealPlanSchema>
 export type MealPlanItem = z.infer<typeof mealPlanItemSchema>
 export type MealPlanResponse = z.infer<typeof mealPlanResponseSchema>
@@ -75,3 +82,4 @@ export type CreateMealPlanFormValues = z.input<typeof createMealPlanSchema>
 export type CreateMealPlanPayload = CreateMealPlanFormValues & {
   householdId: number
 }
+export type EditMealPlanPayload = z.infer<typeof editMealPlanSchema>

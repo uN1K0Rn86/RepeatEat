@@ -1,6 +1,6 @@
 import { type UserHousehold } from '@repeateat/shared'
 import { Link, useOutletContext, useParams } from 'react-router-dom'
-import { useMealPlans } from '@/hooks/useMealPlan'
+import { useEditMealPlan, useMealPlans } from '@/hooks/useMealPlan'
 import { useHouseholdRecipes } from '@/hooks/useHousehold'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -42,6 +42,8 @@ const MealPlanDetailsView = () => {
   )
   const [removedItemIds, setRemovedItemIds] = useState<number[]>([])
   const [newRecipeIds, setNewRecipeIds] = useState<number[]>([])
+
+  const editMealPlanMutation = useEditMealPlan()
 
   const mealPlan = mealPlans?.find((mp) => mp.id === mealPlanId)
 
@@ -91,9 +93,21 @@ const MealPlanDetailsView = () => {
   }
 
   const onSubmit = async (data: EditMealPlanFormValues) => {
-    console.log('Removed: ', removedItemIds)
-    console.log('Added: ', newRecipeIds)
-    console.log('Data: ', data)
+    const payload = {
+      mealPlanToUpdate: {
+        ...mealPlan,
+        name: data.name,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        updatedAt: new Date(),
+      },
+      removedRecipes: removedItemIds,
+      newRecipeIds: newRecipeIds,
+    }
+    setRemovedItemIds([])
+    setNewRecipeIds([])
+
+    editMealPlanMutation.mutate(payload)
   }
 
   return (

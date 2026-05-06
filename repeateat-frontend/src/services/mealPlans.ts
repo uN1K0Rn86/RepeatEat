@@ -1,5 +1,7 @@
 import type {
+  BaseMealPlan,
   CreateMealPlanPayload,
+  EditMealPlanPayload,
   MealPlan,
   MealPlanResponse,
 } from '@repeateat/shared'
@@ -24,4 +26,14 @@ const getMealPlans = async (householdId: number): Promise<MealPlan[]> => {
   return response.data
 }
 
-export default { createMealPlan, getMealPlans }
+const updateMealPlan = async (
+  payload: EditMealPlanPayload,
+): Promise<BaseMealPlan> => {
+  const response = await axios.put<BaseMealPlan>(
+    `${baseUrl}/${payload.mealPlanToUpdate.householdId}/meal-plans/${payload.mealPlanToUpdate.id}`,
+    payload,
+  )
+  return response.data
+}
+
+export default { createMealPlan, getMealPlans, updateMealPlan }
