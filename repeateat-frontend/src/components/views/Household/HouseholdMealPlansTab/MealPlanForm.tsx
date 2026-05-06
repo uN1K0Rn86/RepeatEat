@@ -19,10 +19,15 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 
-import { type CreateMealPlanFormValues, type MealPlan } from '@repeateat/shared'
-import { Link } from 'react-router-dom'
+import {
+  type CreateMealPlanFormValues,
+  type MealPlan,
+  type UserHousehold,
+} from '@repeateat/shared'
+import { Link, useOutletContext } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useHouseholdRecipes } from '@/hooks/useHousehold'
 
 interface MealPlanFormProps {
   mode: 'create' | 'edit'
@@ -32,6 +37,22 @@ interface MealPlanFormProps {
 const MealPlanForm = ({ mode, mealPlan }: MealPlanFormProps) => {
   const { t } = useTranslation()
   const methods = useFormContext<CreateMealPlanFormValues>()
+  const { household } = useOutletContext<{ household: UserHousehold | null }>()
+  const {
+    data: householdRecipes,
+    isLoading,
+    isError,
+  } = useHouseholdRecipes(household?.householdId ?? null)
+
+  if (!household) return <div>No active household</div>
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Failed to load meal plans</div>
+  if (!mealPlan) return <div>Meal plan not found</div>
+
+  const usedRecipeIds = mealPlan.mealPlanItems.map((item) => item.recipeId)
+  const unusedRecipes = householdRecipes?.filter(
+    (r) => !usedRecipeIds.includes(r.recipeId),
+  )
 
   return (
     <>
@@ -129,34 +150,67 @@ const MealPlanForm = ({ mode, mealPlan }: MealPlanFormProps) => {
       )}
 
       {mode === 'edit' && (
-        <table className="w-full table-auto border-collapse mx-auto">
-          <thead>
-            <tr className="even:bg-muted m-0 border-t p-0">
-              <th className="border px-2 py-2 text-center font-bold w-1/2">
-                {t('common:recipes')}
-              </th>
-              <th className="border px-2 py-2 text-center font-bold w-1/2">
-                {t('common:remove')}
-              </th>
-            </tr>
-          </thead>
-          {mealPlan!.mealPlanItems.map((item) => (
-            <tr key={item.id} className="even:bg-muted m-0 border-t p-0">
-              <th className="border px-2 py-2 text-left w-3/4">
-                <Link
-                  to={item.recipeId ? `/recipe/${item.recipeId}` : '#'}
-                  className="flex flex-row hover:bg-muted/50 justify-between"
-                >
-                  <div>{item.recipe?.name}</div>
-                  <ArrowRight />
-                </Link>
-              </th>
-              <th className="border px-2 py-2">
-                <Checkbox />
-              </th>
-            </tr>
-          ))}
-        </table>
+        <>
+          <table className="w-full table-auto border-collapse mx-auto">
+            <thead>
+              <tr className="even:bg-muted m-0 border-t p-0">
+                <th className="border px-2 py-2 text-center font-bold w-1/2">
+                  {t('common:recipes')}
+                </th>
+                <th className="border px-2 py-2 text-center font-bold w-1/2">
+                  {t('common:remove')}
+                </th>
+              </tr>
+            </thead>
+            {mealPlan.mealPlanItems.map((item) => (
+              <tr key={item.id} className="even:bg-muted m-0 border-t p-0">
+                <th className="border px-2 py-2 text-left w-3/4">
+                  <Link
+                    to={item.recipeId ? `/recipe/${item.recipeId}` : '#'}
+                    className="flex flex-row hover:bg-muted/50 justify-between"
+                  >
+                    <div>{item.recipe?.name}</div>
+                    <ArrowRight />
+                  </Link>
+                </th>
+                <th className="border px-2 py-2">
+                  <Checkbox />
+                </th>
+              </tr>
+            ))}
+          </table>
+
+          {unusedRecipes && (
+            <table className="w-full table-auto border-collapse mx-auto">
+              <thead>
+                <tr className="even:bg-muted m-0 border-t p-0">
+                  <th className="border px-2 py-2 text-center font-bold w-1/2">
+                    {t('common:unused_recipes')}
+                  </th>
+                  <th className="border px-2 py-2 text-center font-bold w-1/2">
+                    {t('common:add')}
+                  </th>
+                </tr>
+              </thead>
+              {unusedRecipes.map((r) => (
+                <tr key={r.recipeId} className="even:bg-muted m-0 border-t p-0">
+                  <th className="border px-2 py-2 text-left w-3/4">
+                    <Link
+                      to={r.recipeId ? `/recipe/${r.recipeId}` : '#'}
+                      className="flex flex-row hover:bg-muted/50 justify-between"
+                    >
+                      <div>{r.recipe.name}</div>
+                      <ArrowRight />
+                    </Link>
+                  </th>
+                  <th className="border px-2 py-2">
+                    <Checkbox />
+                  </th>
+                </tr>
+              ))}
+            </table>
+          )}
+        </>
       )}
 
       <FieldGroup>
