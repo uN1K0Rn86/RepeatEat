@@ -33,5 +33,6 @@
   "balanced": "Tasapainoinen",
   "random": "Satunnainen",
   "favorites": "Suosikkipainoitteinen",
-  "meal_plan_created": "Ateriasuunnitelma luotu onnistuneesti"
+  "meal_plan_created": "Ateriasuunnitelma luotu onnistuneesti",
+  "meal_plan_updated": "Ateriasuunnitelma päivitetty onnistuneesti"
 }

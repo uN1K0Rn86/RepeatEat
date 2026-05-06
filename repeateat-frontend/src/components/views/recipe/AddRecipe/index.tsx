@@ -22,6 +22,12 @@ import { notify } from '@/utils/notify'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useMe } from '@/hooks/useUser'
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover'
+import { Info } from 'lucide-react'
 
 const AddRecipeForm = () => {
   const { data: user } = useMe()
@@ -60,12 +66,12 @@ const AddRecipeForm = () => {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="flex min-h-screen flex-col items-center"
-      >
-        <Card className="w-full sm:max-w-md">
+    <Card className="w-full sm:max-w-md">
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
           <CardHeader>
             <FieldLegend>{t('recipe:add_recipe')}</FieldLegend>
           </CardHeader>
@@ -75,35 +81,38 @@ const AddRecipeForm = () => {
               <Input
                 {...methods.register('name')}
                 id="recipe-name"
-                placeholder="eg. Pasta Carbonara"
+                placeholder={t('recipe:name_placeholder')}
                 required
               />
               <FieldError>{methods.formState.errors.name?.message}</FieldError>
             </Field>
-            <div className="flex flex-row gap-2">
-              <div className="flex items-center">
-                <Controller
-                  control={methods.control}
-                  name="private"
-                  render={({ field }) => (
-                    <Checkbox
-                      id="recipe-private"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  )}
-                />
-              </div>
-              <div className="space-y-1 leading-none">
-                <FieldLabel
-                  htmlFor="recipe-private"
-                  className="text-sm font-medium"
-                >
-                  {t('recipe:private_recipe')}
-                </FieldLabel>
-              </div>
+            <div className="flex flex-row gap-2 items-center">
+              <Controller
+                control={methods.control}
+                name="private"
+                render={({ field }) => (
+                  <Checkbox
+                    id="recipe-private"
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
+              />
+              <FieldLabel
+                htmlFor="recipe-private"
+                className="text-sm font-medium"
+              >
+                {t('recipe:private_recipe')}
+              </FieldLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Info className="w-5 h-5" />
+                </PopoverTrigger>
+                <PopoverContent className="w-52 text-sm">
+                  {t('recipe:private_hover_description')}
+                </PopoverContent>
+              </Popover>
             </div>
-
             <IngredientPicker />
             <StepAdder />
             <CategoryPicker />
@@ -115,9 +124,9 @@ const AddRecipeForm = () => {
                 : t('recipe:add_recipe')}
             </Button>
           </CardFooter>
-        </Card>
-      </form>
-    </FormProvider>
+        </form>
+      </FormProvider>
+    </Card>
   )
 }
 

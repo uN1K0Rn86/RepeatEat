@@ -9,9 +9,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "baseUrl": ".",
     "paths": {
-      "@repeateat/shared": ["../shared/src/index.ts"]
+      "@repeateat/shared": ["../shared/src/index.ts"],
+      "drizzle-orm": ["./node_modules/drizzle-orm"],
+      "drizzle-orm/*": ["./node_modules/drizzle-orm/*"]
     }
   },
   "include": ["src", "../shared/src", "../shared/tsconfig.json"],

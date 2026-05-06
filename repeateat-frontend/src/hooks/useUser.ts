@@ -135,3 +135,11 @@ export const useRegister = (setError: UseFormSetError<RegisterInput>) => {
     },
   })
 }
+
+export const useUserInfo = (userId: string) => {
+  return useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => userService.getUserInfo(userId),
+    enabled: !!userId,
+  })
+}

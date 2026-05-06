@@ -33,5 +33,6 @@
   "balanced": "Balanced",
   "random": "Random",
   "favorites": "Favorites",
-  "meal_plan_created": "Meal plan created successfully"
+  "meal_plan_created": "Meal plan created successfully",
+  "meal_plan_updated": "Meal plan updated successfully"
 }

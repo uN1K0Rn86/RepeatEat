@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest'
 import app from '../app'
 import { generateMealPlanInputs, loginUser } from '../__tests__/utils'
 import { getUserHouseholds } from '../services/household.service'
+import { getMealPlans } from '../services/mealPlan.service'
 
 describe('Meal plan -related endpoints', () => {
   describe('POST /', () => {
@@ -115,7 +116,37 @@ describe('Meal plan -related endpoints', () => {
       .send(mealPlanInput)
 
     expect(mealPlanResponse.body.error).toEqual(
-      'insufficient_household_recipes',
+      'errors:insufficient_household_recipes',
     )
+  })
+
+  describe('PUT /:id', () => {
+    it('succeeds when user is authenticated and correct information is provided', async () => {
+      const { user, authCookie } = await loginUser(
+        'def@google.com',
+        'password123',
+      )
+
+      const userHouseholds = await getUserHouseholds(user.id)
+      const householdId = userHouseholds[0].householdId
+      const mealPlans = await getMealPlans(householdId)
+      const [mealPlanToChange] = mealPlans.filter(
+        (mp) => mp.name === 'Seed meal plan',
+      )
+
+      const updatedMealPlan = { ...mealPlanToChange, name: 'Updated' }
+      const mealPlanObject = {
+        mealPlanToUpdate: updatedMealPlan,
+        removedRecipes: [],
+        newRecipeIds: [],
+      }
+
+      const mealPlanResponse = await request(app)
+        .put(`/api/household/${householdId}/meal-plans/${mealPlanToChange.id}`)
+        .set('Cookie', authCookie!)
+        .send(mealPlanObject)
+
+      expect(mealPlanResponse.body.name).toEqual('Updated')
+    })
   })
 })

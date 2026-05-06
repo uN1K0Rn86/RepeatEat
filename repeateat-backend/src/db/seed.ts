@@ -7,7 +7,9 @@ import { createRecipe } from '../services/recipe.service'
 import {
   addCookingHistory,
   addHouseholdRecipe,
+  getHouseholdRecipes,
 } from '../services/household.service'
+import { createMealPlan } from '../services/mealPlan.service'
 
 import * as schema from './schema'
 
@@ -554,8 +556,9 @@ export async function seed() {
             expiresAt,
           })
         }
-        return insertedHouseholds
+        return [...existing, ...insertedHouseholds]
       }
+      return existing
     })
   }
 
@@ -612,7 +615,23 @@ export async function seed() {
     await addHouseholdRecipe(otherUser.id, otherUserHouseholds![0].id, recipeId)
   }
 
-  // Add cooking history
+  // Insert meal plan
+
+  const seedUserHouseholdId = seedUserHouseholds![0].id
+  const seedUserHouseholdRecipes = (
+    await getHouseholdRecipes(seedUserHouseholdId)
+  ).map((r) => r.recipe)
+
+  await createMealPlan(
+    seedUserHouseholdId,
+    seedUserHouseholdRecipes,
+    3,
+    'Seed meal plan',
+    new Date(2026, 5, 6),
+    new Date(2026, 5, 13),
+    'balanced',
+    seedUser,
+  )
 
   console.log('--- Seeding Completed Successfully ---')
 }

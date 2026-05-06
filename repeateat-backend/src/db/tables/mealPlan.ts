@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  integer,
-  text,
-  timestamp,
-  date,
-  pgEnum,
-} from 'drizzle-orm/pg-core'
+import { pgTable, integer, text, timestamp, pgEnum } from 'drizzle-orm/pg-core'
 import { sql } from 'drizzle-orm'
 
 import { household } from './household'
@@ -47,7 +40,7 @@ export const mealPlanItem = pgTable('meal_plan_item', {
   mealPlanId: integer('meal_plan_id')
     .notNull()
     .references(() => mealPlan.id, { onDelete: 'cascade' }),
-  date: date(),
+  date: timestamp('date', { withTimezone: true }),
   mealType: mealTypeEnum('meal_type'),
   recipeId: integer('recipe_id').references(() => recipe.id, {
     onDelete: 'cascade',

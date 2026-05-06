@@ -1,8 +1,8 @@
 import axios from 'axios'
-import type { User as BaseUser } from 'better-auth'
+import type { User } from 'better-auth'
 import type { Invite, UserProfile } from '@repeateat/shared'
 
-export type UserWithInfo = BaseUser & {
+export type UserWithInfo = User & {
   invites: Invite[]
   defaultHouseholdId: number | null
 }
@@ -46,4 +46,10 @@ const setDefaultHousehold = async (
   return response.data
 }
 
-export default { me, setDefaultHousehold }
+const getUserInfo = async (userId: string): Promise<User> => {
+  const response = await axios.get<User>(`${baseUrl}/${userId}`)
+
+  return response.data
+}
+
+export default { getUserInfo, me, setDefaultHousehold }

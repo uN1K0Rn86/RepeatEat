@@ -74,9 +74,17 @@ const setDefaultHousehold = async (
   return result
 }
 
+const getUserById = async (userId: string): Promise<User | undefined> => {
+  const user = await db.query.user.findFirst({
+    where: (user, { eq }) => eq(user.id, userId),
+  })
+  return user
+}
+
 export {
   searchByEmail,
   pendingInvites,
   getDefaultHouseholdId,
   setDefaultHousehold,
+  getUserById,
 }

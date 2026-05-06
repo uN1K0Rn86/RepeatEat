@@ -13,5 +13,7 @@
   "default_household_fail": "Could not set default household",
   "choose_household": "Please choose a household",
   "recipe_remove_household_fail": "Removing recipe from household failed",
-  "insufficient_household_recipes": "Household does not have enough recipes to generate this meal plan"
+  "insufficient_household_recipes": "Household does not have enough recipes to generate this meal plan",
+  "user_not_found": "A user with that id cannot be found",
+  "mealplan_ids_not_matching": "The meal plan you are trying to edit does not match the ID"
 }

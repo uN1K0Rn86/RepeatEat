@@ -1,0 +1,1 @@
+ALTER TABLE "meal_plan_item" ALTER COLUMN "date" SET DATA TYPE timestamp with time zone;

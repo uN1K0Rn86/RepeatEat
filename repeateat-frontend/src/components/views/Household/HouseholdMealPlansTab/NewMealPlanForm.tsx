@@ -104,7 +104,7 @@ const NewMealPlanForm = () => {
                 {t('household:recipe_amount')}
               </FieldLabel>
               <Input
-                {...methods.register('recipeAmount')}
+                {...methods.register('recipeAmount', { valueAsNumber: true })}
                 id="recipe-amount"
                 type="number"
                 required
