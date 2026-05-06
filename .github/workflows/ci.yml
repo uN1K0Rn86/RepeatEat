@@ -30,26 +30,33 @@ jobs:
       - name: Install backend dependencies
         working-directory: ./repeateat-backend
         run: npm install
+
       - name: Backend lint
         working-directory: ./repeateat-backend
         run: npm run lint
+
       - name: Build shared folder for types
         working-directory: ./shared
         run: npm run build
+
       - name: Initialize DB for tests
-        run: docker compose -f docker-compose.citest.yml up postgres-test -d
+        run: docker compose -f docker-compose.citest.yml up postgres-test -d --wait
+
       - name: Backend tests
         working-directory: ./repeateat-backend
         run: npm run test
         env:
           TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
           NODE_ENV: 'test'
+
       - name: Shut down DB container
+        if: always()
         run: docker compose -f docker-compose.citest.yml down
 
       - name: Install frontend dependencies
         working-directory: ./repeateat-frontend
         run: npm install
+
       - name: Frontend lint
         working-directory: ./repeateat-frontend
         run: npm run lint
