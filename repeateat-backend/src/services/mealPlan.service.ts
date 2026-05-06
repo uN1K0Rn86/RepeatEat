@@ -1,4 +1,9 @@
-import { MealPlanPreference, RecipeWithHistory } from '@repeateat/shared'
+import {
+  MealPlan,
+  MealPlanItem,
+  MealPlanPreference,
+  RecipeWithHistory,
+} from '@repeateat/shared'
 import { User } from 'better-auth/types'
 
 import {
@@ -8,6 +13,10 @@ import {
 } from '../utils/recipes'
 import db from '../db'
 import { mealPlan, mealPlanItem } from '../db/schema'
+import { inArray, sql } from 'drizzle-orm'
+
+type MealPlanItemId = MealPlanItem['id']
+type RecipeId = RecipeWithHistory['id']
 
 const createMealPlan = async (
   householdId: number,
@@ -63,4 +72,39 @@ const getMealPlans = async (householdId: number) => {
   return mealPlans
 }
 
-export { createMealPlan, getMealPlans }
+const updateMealPlan = async (
+  mealPlanToUpdate: MealPlan,
+  removedRecipes: MealPlanItemId[],
+  newRecipeIds: RecipeId[],
+) => {
+  const updatedMealPlan = await db.transaction(async (tx) => {
+    if (removedRecipes.length > 0) {
+      await tx
+        .delete(mealPlanItem)
+        .where(inArray(mealPlanItem.id, removedRecipes))
+    }
+
+    if (newRecipeIds.length > 0) {
+      const newMealPlanItems = newRecipeIds.map((rId) => ({
+        mealPlanId: mealPlanToUpdate.id,
+        recipeId: rId,
+      }))
+      await tx.insert(mealPlanItem).values(newMealPlanItems)
+    }
+
+    const [updatedMealPlanData] = await tx
+      .update(mealPlan)
+      .set({
+        updatedAt: sql`NOW()`,
+        startDate: mealPlanToUpdate.startDate,
+        endDate: mealPlanToUpdate.endDate,
+        name: mealPlanToUpdate.name,
+      })
+      .returning()
+
+    return updatedMealPlanData
+  })
+  return updatedMealPlan
+}
+
+export { createMealPlan, getMealPlans, updateMealPlan }

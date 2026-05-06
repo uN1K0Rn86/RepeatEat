@@ -14,5 +14,6 @@
   "choose_household": "Valitse kotitalous",
   "recipe_remove_household_fail": "Reseptin poistaminen kotitaloudesta epäonnistui",
   "insufficient_household_recipes": "Kotitaloudessa ei ole tarpeeksi reseptejä tätä ateriasuunnitelmaa varten",
-  "user_not_found": "Käyttäjää ei löydy kyseisellä id:llä"
+  "user_not_found": "Käyttäjää ei löydy kyseisellä id:llä",
+  "mealplan_ids_not_matching": "Kyseisen ruokalistan ID ei täsmää tietokannan kanssa"
 }

@@ -58,6 +58,7 @@ const MealPlanDetailsView = () => {
   const unusedRecipes = householdRecipes?.filter(
     (r) => !usedRecipeIds.includes(r.recipeId),
   )
+  console.log(mealPlan)
 
   return (
     <div>

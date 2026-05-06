@@ -3,7 +3,11 @@ import { createMealPlanSchema } from '@repeateat/shared'
 
 import { isAuthenticated, AuthRequest } from '../middleware/auth'
 import { AppError } from '../utils/errors'
-import { createMealPlan, getMealPlans } from '../services/mealPlan.service'
+import {
+  createMealPlan,
+  getMealPlans,
+  updateMealPlan,
+} from '../services/mealPlan.service'
 
 const mealPlanRouter = express.Router({ mergeParams: true })
 
@@ -36,7 +40,7 @@ mealPlanRouter.post(
     const user = req.user!
 
     if (householdRecipes.length < recipeAmount)
-      throw new AppError('insufficient_household_recipes', 422)
+      throw new AppError('errors:insufficient_household_recipes', 422)
 
     const newMealPlan = await createMealPlan(
       householdId,
@@ -50,6 +54,33 @@ mealPlanRouter.post(
     )
 
     return res.status(201).json(newMealPlan)
+  },
+)
+
+mealPlanRouter.put(
+  '/:id',
+  isAuthenticated,
+  async (req: AuthRequest, res: Response) => {
+    const mealPlanId = Number(req.params.id)
+    const { mealPlanToUpdate, removedRecipes, newRecipeIds } = req.body
+
+    if (mealPlanId !== mealPlanToUpdate.id) {
+      throw new AppError('errors:mealplan_ids_not_matching', 400)
+    }
+
+    const mealPlanWithDates = {
+      ...mealPlanToUpdate,
+      startDate: new Date(mealPlanToUpdate.startDate),
+      endDate: new Date(mealPlanToUpdate.endDate),
+    }
+
+    const updatedMealPlan = await updateMealPlan(
+      mealPlanWithDates,
+      removedRecipes,
+      newRecipeIds,
+    )
+
+    return res.json(updatedMealPlan)
   },
 )
 
