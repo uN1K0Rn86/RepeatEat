@@ -1,7 +1,6 @@
 import { useOutletContext } from 'react-router-dom'
 
 import { type UserHousehold } from '@repeateat/shared'
-import { useHouseholdRecipes } from '@/hooks/useHousehold'
 import NewMealPlanForm from './NewMealPlanForm'
 import { Accordion } from '@/components/ui/accordion'
 import { Home } from 'lucide-react'
@@ -10,14 +9,6 @@ import HouseholdMealPlans from './HouseholdMealPlans'
 
 const HouseholdMealPlansTab = () => {
   const { household } = useOutletContext<{ household: UserHousehold }>()
-  const { data: householdRecipes, isLoading } = useHouseholdRecipes(
-    household.householdId,
-  )
-
-  if (isLoading) return <div>Loading...</div>
-
-  console.log('Loggin from MealPlansTab:', household)
-  console.log('Loggin from MealPlansTab:', householdRecipes)
 
   return (
     <div>
