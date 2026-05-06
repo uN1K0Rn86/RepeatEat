@@ -1,8 +1,4 @@
-import {
-  createMealPlanSchema,
-  type CreateMealPlanFormValues,
-  type UserHousehold,
-} from '@repeateat/shared'
+import { type UserHousehold } from '@repeateat/shared'
 import { Link, useOutletContext, useParams } from 'react-router-dom'
 import { useMealPlans } from '@/hooks/useMealPlan'
 import { useHouseholdRecipes } from '@/hooks/useHousehold'
@@ -22,6 +18,16 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import DatePicker from '@/components/ui/DatePicker'
 import { useTranslation } from 'react-i18next'
+import { useState, useEffect } from 'react'
+import z from 'zod'
+
+const editMealPlanSchema = z.object({
+  name: z.string(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+})
+
+type EditMealPlanFormValues = z.output<typeof editMealPlanSchema>
 
 const MealPlanDetailsView = () => {
   const { t } = useTranslation()
@@ -34,20 +40,29 @@ const MealPlanDetailsView = () => {
   const { data: householdRecipes } = useHouseholdRecipes(
     household?.householdId ?? null,
   )
+  const [removedItemIds, setRemovedItemIds] = useState<number[]>([])
+  const [newRecipeIds, setNewRecipeIds] = useState<number[]>([])
 
   const mealPlan = mealPlans?.find((mp) => mp.id === mealPlanId)
 
-  const methods = useForm<CreateMealPlanFormValues>({
-    resolver: zodResolver(createMealPlanSchema),
+  const methods = useForm({
+    resolver: zodResolver(editMealPlanSchema),
     defaultValues: {
-      householdRecipes: [],
-      recipeAmount: mealPlan?.mealPlanItems.length,
       name: mealPlan?.name ?? '',
       startDate: mealPlan?.startDate,
       endDate: mealPlan?.endDate,
-      preference: 'balanced',
     },
   })
+
+  useEffect(() => {
+    if (mealPlan) {
+      methods.reset({
+        name: mealPlan.name ?? '',
+        startDate: mealPlan.startDate,
+        endDate: mealPlan.endDate,
+      })
+    }
+  }, [mealPlan, methods])
 
   if (!household) return <div>No active household</div>
   if (isLoading) return <div>Loading...</div>
@@ -58,12 +73,38 @@ const MealPlanDetailsView = () => {
   const unusedRecipes = householdRecipes?.filter(
     (r) => !usedRecipeIds.includes(r.recipeId),
   )
-  console.log(mealPlan)
+
+  const handleRemoveToggle = (mealPlanItemId: number) => {
+    setRemovedItemIds((prev) =>
+      prev.includes(mealPlanItemId)
+        ? prev.filter((id) => id !== mealPlanItemId)
+        : [...prev, mealPlanItemId],
+    )
+  }
+
+  const handleAddToggle = (recipeId: number) => {
+    setNewRecipeIds((prev) =>
+      prev.includes(recipeId)
+        ? prev.filter((id) => id !== recipeId)
+        : [...prev, recipeId],
+    )
+  }
+
+  const onSubmit = async (data: EditMealPlanFormValues) => {
+    console.log('Removed: ', removedItemIds)
+    console.log('Added: ', newRecipeIds)
+    console.log('Data: ', data)
+  }
 
   return (
     <div>
       <FormProvider {...methods}>
-        <form className="flex flex-col gap-3">
+        <form
+          className="flex flex-col gap-3"
+          onSubmit={methods.handleSubmit(onSubmit, (errors) =>
+            console.log('form errors', errors),
+          )}
+        >
           <FieldGroup className="flex flex-row">
             <Field>
               <FieldLabel htmlFor="mealplan-name">
@@ -124,22 +165,27 @@ const MealPlanDetailsView = () => {
                 </th>
               </tr>
             </thead>
-            {mealPlan.mealPlanItems.map((item) => (
-              <tr key={item.id} className="even:bg-muted m-0 border-t p-0">
-                <th className="border px-2 py-2 text-left w-3/4">
-                  <Link
-                    to={item.recipeId ? `/recipe/${item.recipeId}` : '#'}
-                    className="flex flex-row hover:bg-muted/50 justify-between"
-                  >
-                    <div>{item.recipe?.name}</div>
-                    <ArrowRight />
-                  </Link>
-                </th>
-                <th className="border px-2 py-2">
-                  <Checkbox />
-                </th>
-              </tr>
-            ))}
+            <tbody>
+              {mealPlan.mealPlanItems.map((item) => (
+                <tr key={item.id} className="even:bg-muted m-0 border-t p-0">
+                  <th className="border px-2 py-2 text-left w-3/4">
+                    <Link
+                      to={item.recipeId ? `/recipe/${item.recipeId}` : '#'}
+                      className="flex flex-row hover:bg-muted/50 justify-between"
+                    >
+                      <div>{item.recipe?.name}</div>
+                      <ArrowRight />
+                    </Link>
+                  </th>
+                  <th className="border px-2 py-2">
+                    <Checkbox
+                      checked={removedItemIds.includes(item.id)}
+                      onCheckedChange={() => handleRemoveToggle(item.id)}
+                    />
+                  </th>
+                </tr>
+              ))}
+            </tbody>
           </table>
 
           {unusedRecipes && (
@@ -154,22 +200,30 @@ const MealPlanDetailsView = () => {
                   </th>
                 </tr>
               </thead>
-              {unusedRecipes.map((r) => (
-                <tr key={r.recipeId} className="even:bg-muted m-0 border-t p-0">
-                  <th className="border px-2 py-2 text-left w-3/4">
-                    <Link
-                      to={r.recipeId ? `/recipe/${r.recipeId}` : '#'}
-                      className="flex flex-row hover:bg-muted/50 justify-between"
-                    >
-                      <div>{r.recipe.name}</div>
-                      <ArrowRight />
-                    </Link>
-                  </th>
-                  <th className="border px-2 py-2">
-                    <Checkbox />
-                  </th>
-                </tr>
-              ))}
+              <tbody>
+                {unusedRecipes.map((r) => (
+                  <tr
+                    key={r.recipeId}
+                    className="even:bg-muted m-0 border-t p-0"
+                  >
+                    <th className="border px-2 py-2 text-left w-3/4">
+                      <Link
+                        to={r.recipeId ? `/recipe/${r.recipeId}` : '#'}
+                        className="flex flex-row hover:bg-muted/50 justify-between"
+                      >
+                        <div>{r.recipe.name}</div>
+                        <ArrowRight />
+                      </Link>
+                    </th>
+                    <th className="border px-2 py-2">
+                      <Checkbox
+                        checked={newRecipeIds.includes(r.recipeId)}
+                        onCheckedChange={() => handleAddToggle(r.recipeId)}
+                      />
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           )}
 

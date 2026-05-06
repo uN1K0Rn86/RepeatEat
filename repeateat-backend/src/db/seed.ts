@@ -615,10 +615,12 @@ export async function seed() {
   }
 
   // Insert meal plan
+
   const seedUserHouseholdId = seedUserHouseholds![0].id
   const seedUserHouseholdRecipes = (
     await getHouseholdRecipes(seedUserHouseholdId)
   ).map((r) => r.recipe)
+
   await createMealPlan(
     seedUserHouseholdId,
     seedUserHouseholdRecipes,
