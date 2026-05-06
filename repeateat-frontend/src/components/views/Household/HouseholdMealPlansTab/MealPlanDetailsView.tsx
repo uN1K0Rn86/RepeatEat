@@ -92,7 +92,7 @@ const MealPlanDetailsView = () => {
     )
   }
 
-  const onSubmit = async (data: EditMealPlanFormValues) => {
+  const onSubmit = (data: EditMealPlanFormValues) => {
     const payload = {
       mealPlanToUpdate: {
         ...mealPlan,

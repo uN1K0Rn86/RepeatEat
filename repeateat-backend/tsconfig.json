@@ -9,7 +9,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "baseUrl": ".",
     "paths": {
       "@repeateat/shared": ["../shared/src/index.ts"],
       "drizzle-orm": ["./node_modules/drizzle-orm"],

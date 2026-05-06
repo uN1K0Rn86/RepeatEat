@@ -9,11 +9,11 @@ import {
   addHouseholdRecipe,
   getHouseholdRecipes,
 } from '../services/household.service'
+import { createMealPlan } from '../services/mealPlan.service'
 
 import * as schema from './schema'
 
 import db from '.'
-import { createMealPlan } from '../services/mealPlan.service'
 
 export async function seed() {
   console.log('--- Seeding Database ---')
@@ -556,8 +556,9 @@ export async function seed() {
             expiresAt,
           })
         }
-        return insertedHouseholds
+        return [...existing, ...insertedHouseholds]
       }
+      return existing
     })
   }
 

@@ -5,6 +5,7 @@ import {
   RecipeWithHistory,
 } from '@repeateat/shared'
 import { User } from 'better-auth/types'
+import { inArray, sql } from 'drizzle-orm'
 
 import {
   pickWeightedRecipes,
@@ -13,7 +14,6 @@ import {
 } from '../utils/recipes'
 import db from '../db'
 import { mealPlan, mealPlanItem } from '../db/schema'
-import { inArray, sql } from 'drizzle-orm'
 
 type MealPlanItemId = MealPlanItem['id']
 type RecipeId = RecipeWithHistory['id']
@@ -49,7 +49,9 @@ const createMealPlan = async (
       recipeId: recipe.id,
     }))
 
-    await tx.insert(mealPlanItem).values(mealPlanItems)
+    if (mealPlanItems.length > 0) {
+      await tx.insert(mealPlanItem).values(mealPlanItems)
+    }
 
     return { ...newMealPlan, recipes: selectedRecipes }
   })
