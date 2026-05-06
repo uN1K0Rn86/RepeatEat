@@ -19,7 +19,7 @@ const MealPlanDetailsView = () => {
 
   return (
     <div>
-      <div></div>
+      <div>{mealPlan.name}</div>
     </div>
   )
 }

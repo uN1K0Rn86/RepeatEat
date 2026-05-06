@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { type MealPlan, type CreateMealPlanPayload } from '@repeateat/shared'
 
 import mealPlanService from '../services/mealPlans'
@@ -9,10 +9,15 @@ import type { BackendError } from './useHousehold'
 
 export const useCreateMealPlan = () => {
   const { t } = useTranslation(['household'])
+  const queryClient = useQueryClient()
+
   return useMutation({
     mutationFn: (payload: CreateMealPlanPayload) =>
       mealPlanService.createMealPlan(payload),
-    onSuccess: () => {
+    onSuccess: async (_data, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: ['mealPlans', variables.householdId],
+      })
       notify.success(t('household:meal_plan_created'))
     },
     onError: (error: AxiosError<BackendError>) => {
