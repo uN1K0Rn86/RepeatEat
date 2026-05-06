@@ -85,10 +85,9 @@ jobs:
           cache-from: type=gha,scope=repeateat-frontend
           cache-to: type=gha,scope=repeateat-frontend,mode=max
 
-      - name: Start containerized app
-        run: docker compose -f docker-compose.citest.yml up -d --wait
       - name: Install all workspace deps
         run: npm ci
+
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
@@ -96,12 +95,32 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('repeateat-frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
+
       - name: Install Playwright browsers
         working-directory: repeateat-frontend
         run: npx playwright install chromium
+
+      - name: Start containerized app
+        run: docker compose -f docker-compose.citest.yml up -d --wait
+
+      - name: Wait for frontend
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8080/login >/dev/null; then
+              echo "Frontend is up"
+              exit 0
+            fi
+            echo "Waiting for frontend..."
+            sleep 2
+          done
+          echo "Frontend did not become ready"
+          docker compose -f docker-compose.citest.yml logs frontend
+          exit 1
+
       - name: Run Playwright
         working-directory: repeateat-frontend
         run: npm run test:e2e
+
       - name: Stop stack
         if: always()
         run: docker compose -f docker-compose.citest.yml down -v
