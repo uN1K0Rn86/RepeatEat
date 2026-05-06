@@ -19,9 +19,17 @@ import {
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 
-import { type CreateMealPlanFormValues } from '@repeateat/shared'
+import { type CreateMealPlanFormValues, type MealPlan } from '@repeateat/shared'
+import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
 
-const MealPlanForm = () => {
+interface MealPlanFormProps {
+  mode: 'create' | 'edit'
+  mealPlan?: MealPlan
+}
+
+const MealPlanForm = ({ mode, mealPlan }: MealPlanFormProps) => {
   const { t } = useTranslation()
   const methods = useFormContext<CreateMealPlanFormValues>()
 
@@ -84,38 +92,77 @@ const MealPlanForm = () => {
           />
         </Field>
       </FieldGroup>
-      <Field>
-        <FieldLabel htmlFor="preference">
-          {t('household:preference')}
-        </FieldLabel>
-        <Controller
-          control={methods.control}
-          name="preference"
-          render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger>
-                <SelectValue placeholder={t('household:preference')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="balanced">
-                    {t('household:balanced')}
-                  </SelectItem>
-                  <SelectItem value="random">
-                    {t('household:random')}
-                  </SelectItem>
-                  <SelectItem value="favorites">
-                    {t('household:favorites')}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          )}
-        />
-        <FieldError>{methods.formState.errors.preference?.message}</FieldError>
-      </Field>
+
+      {mode === 'create' && (
+        <Field>
+          <FieldLabel htmlFor="preference">
+            {t('household:preference')}
+          </FieldLabel>
+          <Controller
+            control={methods.control}
+            name="preference"
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t('household:preference')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="balanced">
+                      {t('household:balanced')}
+                    </SelectItem>
+                    <SelectItem value="random">
+                      {t('household:random')}
+                    </SelectItem>
+                    <SelectItem value="favorites">
+                      {t('household:favorites')}
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          />
+          <FieldError>
+            {methods.formState.errors.preference?.message}
+          </FieldError>
+        </Field>
+      )}
+
+      {mode === 'edit' && (
+        <table className="w-full table-auto border-collapse mx-auto">
+          <thead>
+            <tr className="even:bg-muted m-0 border-t p-0">
+              <th className="border px-2 py-2 text-center font-bold w-1/2">
+                {t('common:recipes')}
+              </th>
+              <th className="border px-2 py-2 text-center font-bold w-1/2">
+                {t('common:remove')}
+              </th>
+            </tr>
+          </thead>
+          {mealPlan!.mealPlanItems.map((item) => (
+            <tr key={item.id} className="even:bg-muted m-0 border-t p-0">
+              <th className="border px-2 py-2 text-left w-3/4">
+                <Link
+                  to={item.recipeId ? `/recipe/${item.recipeId}` : '#'}
+                  className="flex flex-row hover:bg-muted/50 justify-between"
+                >
+                  <div>{item.recipe?.name}</div>
+                  <ArrowRight />
+                </Link>
+              </th>
+              <th className="border px-2 py-2">
+                <Checkbox />
+              </th>
+            </tr>
+          ))}
+        </table>
+      )}
+
       <FieldGroup>
-        <Button type="submit">{t('common:create')}</Button>
+        <Button type="submit">
+          {mode === 'create' ? t('common:create') : t('common:edit')}
+        </Button>
       </FieldGroup>
     </>
   )

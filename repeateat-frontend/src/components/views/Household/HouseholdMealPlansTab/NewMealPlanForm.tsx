@@ -71,7 +71,7 @@ const NewMealPlanForm = () => {
             onSubmit={methods.handleSubmit(onSubmit)}
             className="flex flex-col gap-3"
           >
-            <MealPlanForm />
+            <MealPlanForm mode="create" mealPlan={null} />
           </form>
         </FormProvider>
       </AccordionContent>

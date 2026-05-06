@@ -36,13 +36,9 @@ export const mealPlanResponseSchema = mealPlanBaseSchema.extend({
   recipes: z.array(recipeWithHistorySchema),
 })
 
-export const mealTypeEnum = z.enum([
-  'breakfast',
-  'lunch',
-  'dinner',
-  'snack',
-  null,
-])
+export const mealTypeEnum = z
+  .enum(['breakfast', 'lunch', 'dinner', 'snack'])
+  .nullable()
 
 export const mealPlanItemSchema = z.object({
   id: z.number(),
