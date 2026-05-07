@@ -37,3 +37,4 @@
 | 2026-03-24 | Tests for meal plans, add frontend form for creating meal plan                                                            | 6h   | 168h            |
 | 2026-03-25 | Add route for fetching meal plans, work on frontend UI for displaying them                                                | 4h   | 172h            |
 | 2026-05-06 | Work on view for single mealplan details, add put route and editing logic for meal plans                                  | 6h   | 178h            |
+| 2026-05-07 | Update documentation                                                                                                      | 2h   | 180h            |
