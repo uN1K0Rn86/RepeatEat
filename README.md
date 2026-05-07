@@ -72,7 +72,7 @@ Here is a suggested flow for testing how the app works:
 
 ## Project Architecture
 
-[Architecture diagram](docs/architecture.md)
+[Architecture diagram](docs/architecture.png)
 
 ## Use of Generative AI
 
