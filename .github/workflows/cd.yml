@@ -9,6 +9,7 @@ on:
       - 'worklogs.md'
       - 'README.md'
       - 'LICENSE'
+      - 'docs/**'
 
 jobs:
   build-and-push:
