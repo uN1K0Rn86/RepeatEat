@@ -58,14 +58,22 @@ Here is a suggested flow for testing how the app works:
 ## Testing and linting
 
 - Backend tests (vitest):
+
   ```
   npm run test -w repeateat-backend
   ```
+
+- E2E tests (playwright):
+
+  ```
+  npm run test:e2e -w repeateat-frontend
+  ```
+
 - Backend lint:
   ```
   npm run lint -w repeateat-backend
   ```
-  -Frontend lint:
+- Frontend lint:
   ```
   npm run lint -w repeateat-frontend
   ```
